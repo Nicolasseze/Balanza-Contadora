@@ -1,0 +1,35 @@
+# === STM32CubeIDE build output ===
+build/
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+*.o
+*.d
+
+# === STM32CubeMX auto-generated files ===
+*.ioc
+.ioc_backup/
+
+# === IDE settings and project metadata ===
+.project
+.cproject
+.settings/
+*.launch
+*.log
+*.mxproject
+
+# === Editor/IDE configs ===
+.vscode/
+.idea/
+
+# === Backup and temp files ===
+*~
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+
+# === Optional: ignore generated HAL drivers ===
+# Drivers/STM32F4xx_HAL_Driver/
