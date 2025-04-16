@@ -1,0 +1,2 @@
+../Drivers/API/src/hx711_driver.c:14:6:initReadWeight	16	static
+../Drivers/API/src/hx711_driver.c:37:7:readWeight	24	static

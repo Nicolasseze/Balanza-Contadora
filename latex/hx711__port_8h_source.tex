@@ -1,0 +1,51 @@
+\doxysection{hx711\+\_\+port.\+h}
+\hypertarget{hx711__port_8h_source}{}\label{hx711__port_8h_source}\index{Drivers/API/inc/hx711\_port.h@{Drivers/API/inc/hx711\_port.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ hx711\_port.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Apr\ 14,\ 2025}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ nicolas-\/porco}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ API\_INC\_HX711\_PORT\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ API\_INC\_HX711\_PORT\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}stdint.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}stdbool.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}stm32f4xx\_hal.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ rate\{}
+\DoxyCodeLine{00018\ \ \ \ \ fq\_10hz,}
+\DoxyCodeLine{00019\ \ \ \ \ fq\_80hz,}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \}\ FreqRate\_t;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00024\ \ \ \ \ GPIO\_TypeDef*\ din\_port;}
+\DoxyCodeLine{00025\ \ \ \ \ uint16\_t\ din\_pin;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ GPIO\_TypeDef*\ sck\_port;}
+\DoxyCodeLine{00028\ \ \ \ \ uint16\_t\ sck\_pin;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ GPIO\_TypeDef*\ rate\_port;}
+\DoxyCodeLine{00031\ \ \ \ \ uint16\_t\ rate\_pin;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ uint8\_t\ gain;\ \ \textcolor{comment}{//\ 128,\ 64\ (32\ no\ va\ a\ ser\ usada\ porque\ esta\ en\ otro\ canal)}}
+\DoxyCodeLine{00034\ \ \ \ \ FreqRate\_t\ rate;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ int32\_t\ data;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \}\ \mbox{\hyperlink{structHX711__t}{HX711\_t}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keywordtype}{void}\ HX711\_Init(\mbox{\hyperlink{structHX711__t}{HX711\_t}}\ *hx);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ int32\_t\ HX711\_Read(\mbox{\hyperlink{structHX711__t}{HX711\_t}}\ *hx);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ API\_INC\_HX711\_PORT\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

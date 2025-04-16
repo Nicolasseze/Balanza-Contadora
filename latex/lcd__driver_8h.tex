@@ -1,0 +1,408 @@
+\doxysection{Drivers/\+API/inc/lcd\+\_\+driver.h File Reference}
+\hypertarget{lcd__driver_8h}{}\label{lcd__driver_8h}\index{Drivers/API/inc/lcd\_driver.h@{Drivers/API/inc/lcd\_driver.h}}
+
+
+Interfaz de alto nivel para el control de un LCD mediante comandos compatibles con HD44780.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+Include dependency graph for lcd\+\_\+driver.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Macros}
+\begin{Indent}\textbf{ Comandos básicos del LCD}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a3f2897b31d9b8ee5ada65f840adb635b}{LCD\+\_\+\+CLEAR\+\_\+\+DISPLAY}}~0x01
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a8f9bf7b2d236dfd31791e1c178e43e74}{LCD\+\_\+\+RETURN\+\_\+\+HOME}}~0x02
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Modo de entrada (Entry Mode Set)}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a809306710382f542f2cc75e67ee03062}{LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+INC}}~0x06
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a80f35eec3640ca9ce7e51f6442a6fe92}{LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+DEC}}~0x04
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_aebc350f0efc6328f4ff9232911069306}{LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+INC\+\_\+\+SHIFT}}~0x07
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a9640b5d0f8f18dbefed5d3b6aef43ab2}{LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+DEC\+\_\+\+SHIFT}}~0x05
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Control de display (Display Control)}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_ab1b96426e59139b68ae95df45d697087}{LCD\+\_\+\+DISPLAY\+\_\+\+OFF}}~0x08
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a846dac5d1bb72bef7a76ee110c0445b6}{LCD\+\_\+\+DISPLAY\+\_\+\+ON}}~0x0C
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a2595d2c12a8a0a2368713fa815f34baa}{LCD\+\_\+\+DISPLAY\+\_\+\+ON\+\_\+\+CURSOR}}~0x0E
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_ad68b83ec21743fe3e91e85a91da3d6dc}{LCD\+\_\+\+DISPLAY\+\_\+\+ON\+\_\+\+BLINK}}~0x0D
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a5291b1c0250efb4615d78f6c3270ea5c}{LCD\+\_\+\+DISPLAY\+\_\+\+ON\+\_\+\+CURSOR\+\_\+\+BLINK}}~0x0F
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Desplazamiento del cursor/display}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a58443645d4d2be23591b5ab146177a71}{LCD\+\_\+\+CURSOR\+\_\+\+SHIFT\+\_\+\+LEFT}}~0x10
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a7ddc6e55cf67470ed441f9eac0535b87}{LCD\+\_\+\+CURSOR\+\_\+\+SHIFT\+\_\+\+RIGHT}}~0x14
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a1654759c8da2a65b4a74c5a542320e83}{LCD\+\_\+\+DISPLAY\+\_\+\+SHIFT\+\_\+\+LEFT}}~0x18
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a55e541c5f46ba4563b2346e2c11b23a0}{LCD\+\_\+\+DISPLAY\+\_\+\+SHIFT\+\_\+\+RIGHT}}~0x1C
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Configuración del LCD (Function Set)}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a1e3d2eb956577757ee401d6ebdb53082}{LCD\+\_\+\+FUNCTION\+\_\+8\+BIT\+\_\+1\+LINE\+\_\+5x8}}~0x30
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a6a4c547d2a3020d5ba009b6896f9049d}{LCD\+\_\+\+FUNCTION\+\_\+8\+BIT\+\_\+2\+LINE\+\_\+5x8}}~0x38
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_a1823397b1aa05fb598cc15e1b633678c}{LCD\+\_\+\+FUNCTION\+\_\+4\+BIT\+\_\+1\+LINE\+\_\+5x8}}~0x20
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_af38e5a8fd5be25333458d935378d6f64}{LCD\+\_\+\+FUNCTION\+\_\+4\+BIT\+\_\+2\+LINE\+\_\+5x8}}~0x28
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Direcciones base para las líneas del LCD}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_ab2c9800cfbcade8d61c06ace535436dd}{LCD\+\_\+\+LINEA1}}~(0x80 + 0x00)
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_aa1be0849275a0fc76a979d18e6cb596e}{LCD\+\_\+\+LINEA2}}~(0x80 + 0x40)
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_aa17ae9310cf628d1fa78c3129c648320}{LCD\+\_\+\+LINEA3}}~(0x80 + 0x14)
+\item 
+\#define \mbox{\hyperlink{lcd__driver_8h_ad0264c3269c59fa6a30f8340a9490488}{LCD\+\_\+\+LINEA4}}~(0x80 + 0x54)
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{lcd__driver_8h_a2b21255bd7f7192db778983b15089208}\label{lcd__driver_8h_a2b21255bd7f7192db778983b15089208} 
+typedef bool {\bfseries bool\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5d}{LCD\+\_\+\+Status\+\_\+t}} \{ \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5dab4ae24c39f9cff11aff86d245c3e28ce}{LCD\+\_\+\+OK}} = 0x00U
+, \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5da436765093a97917433c52af526c7b4fc}{LCD\+\_\+\+ERROR}} = 0x01U
+ \}
+\begin{DoxyCompactList}\small\item\em Estado de retorno para funciones del LCD. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} \mbox{\hyperlink{lcd__driver_8h_a7e78dcb1c4d3749c8dcae8fd4d75a6df}{lcd\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el controlador del LCD. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8h_a33ae394d426d486ccb84b73b2aed9104}{lcd\+Clear}} (void)
+\begin{DoxyCompactList}\small\item\em Limpia el contenido del display. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8h_ac68a487df84e98706bbe073f83b99b50}{lcd\+Set\+Cursor}} (uint8\+\_\+t row, uint8\+\_\+t col)
+\begin{DoxyCompactList}\small\item\em Posiciona el cursor en una fila y columna específica. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8h_aee7c68149876b3fdefa879d07c715051}{lcd\+Print}} (const char \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Imprime una cadena de texto en la posición actual del cursor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8h_a4ad1bbb392f9aad8e794174f14a759f2}{lcd\+Command}} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Envía un comando directo al LCD. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8h_a49c8f51fe1e2c73a777debfdd3e9a7f1}{lcd\+Data}} (uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Envía un dato al LCD (usado para imprimir un carácter). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interfaz de alto nivel para el control de un LCD mediante comandos compatibles con HD44780. 
+
+Este módulo encapsula el control lógico del LCD, permitiendo enviar comandos, posicionar el cursor y mostrar texto, todo sobre una interfaz abstracta independiente del puerto físico. 
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{lcd__driver_8h_a3f2897b31d9b8ee5ada65f840adb635b}\label{lcd__driver_8h_a3f2897b31d9b8ee5ada65f840adb635b} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_CLEAR\_DISPLAY@{LCD\_CLEAR\_DISPLAY}}
+\index{LCD\_CLEAR\_DISPLAY@{LCD\_CLEAR\_DISPLAY}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_CLEAR\_DISPLAY}{LCD\_CLEAR\_DISPLAY}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+CLEAR\+\_\+\+DISPLAY~0x01}
+
+Limpia el display y vuelve el cursor a la posición 0 \Hypertarget{lcd__driver_8h_a58443645d4d2be23591b5ab146177a71}\label{lcd__driver_8h_a58443645d4d2be23591b5ab146177a71} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_CURSOR\_SHIFT\_LEFT@{LCD\_CURSOR\_SHIFT\_LEFT}}
+\index{LCD\_CURSOR\_SHIFT\_LEFT@{LCD\_CURSOR\_SHIFT\_LEFT}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_CURSOR\_SHIFT\_LEFT}{LCD\_CURSOR\_SHIFT\_LEFT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+CURSOR\+\_\+\+SHIFT\+\_\+\+LEFT~0x10}
+
+Desplaza cursor a la izquierda \Hypertarget{lcd__driver_8h_a7ddc6e55cf67470ed441f9eac0535b87}\label{lcd__driver_8h_a7ddc6e55cf67470ed441f9eac0535b87} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_CURSOR\_SHIFT\_RIGHT@{LCD\_CURSOR\_SHIFT\_RIGHT}}
+\index{LCD\_CURSOR\_SHIFT\_RIGHT@{LCD\_CURSOR\_SHIFT\_RIGHT}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_CURSOR\_SHIFT\_RIGHT}{LCD\_CURSOR\_SHIFT\_RIGHT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+CURSOR\+\_\+\+SHIFT\+\_\+\+RIGHT~0x14}
+
+Desplaza cursor a la derecha \Hypertarget{lcd__driver_8h_ab1b96426e59139b68ae95df45d697087}\label{lcd__driver_8h_ab1b96426e59139b68ae95df45d697087} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_OFF@{LCD\_DISPLAY\_OFF}}
+\index{LCD\_DISPLAY\_OFF@{LCD\_DISPLAY\_OFF}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_OFF}{LCD\_DISPLAY\_OFF}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+OFF~0x08}
+
+Apaga display, cursor y parpadeo \Hypertarget{lcd__driver_8h_a846dac5d1bb72bef7a76ee110c0445b6}\label{lcd__driver_8h_a846dac5d1bb72bef7a76ee110c0445b6} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_ON@{LCD\_DISPLAY\_ON}}
+\index{LCD\_DISPLAY\_ON@{LCD\_DISPLAY\_ON}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_ON}{LCD\_DISPLAY\_ON}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+ON~0x0C}
+
+Enciende display, sin cursor ni parpadeo \Hypertarget{lcd__driver_8h_ad68b83ec21743fe3e91e85a91da3d6dc}\label{lcd__driver_8h_ad68b83ec21743fe3e91e85a91da3d6dc} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_ON\_BLINK@{LCD\_DISPLAY\_ON\_BLINK}}
+\index{LCD\_DISPLAY\_ON\_BLINK@{LCD\_DISPLAY\_ON\_BLINK}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_ON\_BLINK}{LCD\_DISPLAY\_ON\_BLINK}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+ON\+\_\+\+BLINK~0x0D}
+
+Enciende display y parpadeo \Hypertarget{lcd__driver_8h_a2595d2c12a8a0a2368713fa815f34baa}\label{lcd__driver_8h_a2595d2c12a8a0a2368713fa815f34baa} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_ON\_CURSOR@{LCD\_DISPLAY\_ON\_CURSOR}}
+\index{LCD\_DISPLAY\_ON\_CURSOR@{LCD\_DISPLAY\_ON\_CURSOR}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_ON\_CURSOR}{LCD\_DISPLAY\_ON\_CURSOR}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+ON\+\_\+\+CURSOR~0x0E}
+
+Enciende display y cursor \Hypertarget{lcd__driver_8h_a5291b1c0250efb4615d78f6c3270ea5c}\label{lcd__driver_8h_a5291b1c0250efb4615d78f6c3270ea5c} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_ON\_CURSOR\_BLINK@{LCD\_DISPLAY\_ON\_CURSOR\_BLINK}}
+\index{LCD\_DISPLAY\_ON\_CURSOR\_BLINK@{LCD\_DISPLAY\_ON\_CURSOR\_BLINK}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_ON\_CURSOR\_BLINK}{LCD\_DISPLAY\_ON\_CURSOR\_BLINK}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+ON\+\_\+\+CURSOR\+\_\+\+BLINK~0x0F}
+
+Enciende display, cursor y parpadeo \Hypertarget{lcd__driver_8h_a1654759c8da2a65b4a74c5a542320e83}\label{lcd__driver_8h_a1654759c8da2a65b4a74c5a542320e83} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_SHIFT\_LEFT@{LCD\_DISPLAY\_SHIFT\_LEFT}}
+\index{LCD\_DISPLAY\_SHIFT\_LEFT@{LCD\_DISPLAY\_SHIFT\_LEFT}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_SHIFT\_LEFT}{LCD\_DISPLAY\_SHIFT\_LEFT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+SHIFT\+\_\+\+LEFT~0x18}
+
+Desplaza todo el contenido a la izquierda \Hypertarget{lcd__driver_8h_a55e541c5f46ba4563b2346e2c11b23a0}\label{lcd__driver_8h_a55e541c5f46ba4563b2346e2c11b23a0} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_DISPLAY\_SHIFT\_RIGHT@{LCD\_DISPLAY\_SHIFT\_RIGHT}}
+\index{LCD\_DISPLAY\_SHIFT\_RIGHT@{LCD\_DISPLAY\_SHIFT\_RIGHT}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_DISPLAY\_SHIFT\_RIGHT}{LCD\_DISPLAY\_SHIFT\_RIGHT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+DISPLAY\+\_\+\+SHIFT\+\_\+\+RIGHT~0x1C}
+
+Desplaza todo el contenido a la derecha \Hypertarget{lcd__driver_8h_a80f35eec3640ca9ce7e51f6442a6fe92}\label{lcd__driver_8h_a80f35eec3640ca9ce7e51f6442a6fe92} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_ENTRY\_MODE\_DEC@{LCD\_ENTRY\_MODE\_DEC}}
+\index{LCD\_ENTRY\_MODE\_DEC@{LCD\_ENTRY\_MODE\_DEC}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_ENTRY\_MODE\_DEC}{LCD\_ENTRY\_MODE\_DEC}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+DEC~0x04}
+
+Cursor decrementa, sin desplazamiento de display \Hypertarget{lcd__driver_8h_a9640b5d0f8f18dbefed5d3b6aef43ab2}\label{lcd__driver_8h_a9640b5d0f8f18dbefed5d3b6aef43ab2} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_ENTRY\_MODE\_DEC\_SHIFT@{LCD\_ENTRY\_MODE\_DEC\_SHIFT}}
+\index{LCD\_ENTRY\_MODE\_DEC\_SHIFT@{LCD\_ENTRY\_MODE\_DEC\_SHIFT}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_ENTRY\_MODE\_DEC\_SHIFT}{LCD\_ENTRY\_MODE\_DEC\_SHIFT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+DEC\+\_\+\+SHIFT~0x05}
+
+Cursor decrementa, con desplazamiento de display \Hypertarget{lcd__driver_8h_a809306710382f542f2cc75e67ee03062}\label{lcd__driver_8h_a809306710382f542f2cc75e67ee03062} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_ENTRY\_MODE\_INC@{LCD\_ENTRY\_MODE\_INC}}
+\index{LCD\_ENTRY\_MODE\_INC@{LCD\_ENTRY\_MODE\_INC}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_ENTRY\_MODE\_INC}{LCD\_ENTRY\_MODE\_INC}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+INC~0x06}
+
+Cursor incrementa, sin desplazamiento de display \Hypertarget{lcd__driver_8h_aebc350f0efc6328f4ff9232911069306}\label{lcd__driver_8h_aebc350f0efc6328f4ff9232911069306} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_ENTRY\_MODE\_INC\_SHIFT@{LCD\_ENTRY\_MODE\_INC\_SHIFT}}
+\index{LCD\_ENTRY\_MODE\_INC\_SHIFT@{LCD\_ENTRY\_MODE\_INC\_SHIFT}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_ENTRY\_MODE\_INC\_SHIFT}{LCD\_ENTRY\_MODE\_INC\_SHIFT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+ENTRY\+\_\+\+MODE\+\_\+\+INC\+\_\+\+SHIFT~0x07}
+
+Cursor incrementa, con desplazamiento de display \Hypertarget{lcd__driver_8h_a1823397b1aa05fb598cc15e1b633678c}\label{lcd__driver_8h_a1823397b1aa05fb598cc15e1b633678c} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_FUNCTION\_4BIT\_1LINE\_5x8@{LCD\_FUNCTION\_4BIT\_1LINE\_5x8}}
+\index{LCD\_FUNCTION\_4BIT\_1LINE\_5x8@{LCD\_FUNCTION\_4BIT\_1LINE\_5x8}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_FUNCTION\_4BIT\_1LINE\_5x8}{LCD\_FUNCTION\_4BIT\_1LINE\_5x8}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+FUNCTION\+\_\+4\+BIT\+\_\+1\+LINE\+\_\+5x8~0x20}
+
+4 bits, 1 línea, matriz 5x8 \Hypertarget{lcd__driver_8h_af38e5a8fd5be25333458d935378d6f64}\label{lcd__driver_8h_af38e5a8fd5be25333458d935378d6f64} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_FUNCTION\_4BIT\_2LINE\_5x8@{LCD\_FUNCTION\_4BIT\_2LINE\_5x8}}
+\index{LCD\_FUNCTION\_4BIT\_2LINE\_5x8@{LCD\_FUNCTION\_4BIT\_2LINE\_5x8}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_FUNCTION\_4BIT\_2LINE\_5x8}{LCD\_FUNCTION\_4BIT\_2LINE\_5x8}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+FUNCTION\+\_\+4\+BIT\+\_\+2\+LINE\+\_\+5x8~0x28}
+
+4 bits, 2 líneas, matriz 5x8 \Hypertarget{lcd__driver_8h_a1e3d2eb956577757ee401d6ebdb53082}\label{lcd__driver_8h_a1e3d2eb956577757ee401d6ebdb53082} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_FUNCTION\_8BIT\_1LINE\_5x8@{LCD\_FUNCTION\_8BIT\_1LINE\_5x8}}
+\index{LCD\_FUNCTION\_8BIT\_1LINE\_5x8@{LCD\_FUNCTION\_8BIT\_1LINE\_5x8}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_FUNCTION\_8BIT\_1LINE\_5x8}{LCD\_FUNCTION\_8BIT\_1LINE\_5x8}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+FUNCTION\+\_\+8\+BIT\+\_\+1\+LINE\+\_\+5x8~0x30}
+
+8 bits, 1 línea, matriz 5x8 \Hypertarget{lcd__driver_8h_a6a4c547d2a3020d5ba009b6896f9049d}\label{lcd__driver_8h_a6a4c547d2a3020d5ba009b6896f9049d} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_FUNCTION\_8BIT\_2LINE\_5x8@{LCD\_FUNCTION\_8BIT\_2LINE\_5x8}}
+\index{LCD\_FUNCTION\_8BIT\_2LINE\_5x8@{LCD\_FUNCTION\_8BIT\_2LINE\_5x8}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_FUNCTION\_8BIT\_2LINE\_5x8}{LCD\_FUNCTION\_8BIT\_2LINE\_5x8}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+FUNCTION\+\_\+8\+BIT\+\_\+2\+LINE\+\_\+5x8~0x38}
+
+8 bits, 2 líneas, matriz 5x8 \Hypertarget{lcd__driver_8h_ab2c9800cfbcade8d61c06ace535436dd}\label{lcd__driver_8h_ab2c9800cfbcade8d61c06ace535436dd} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_LINEA1@{LCD\_LINEA1}}
+\index{LCD\_LINEA1@{LCD\_LINEA1}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_LINEA1}{LCD\_LINEA1}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+LINEA1~(0x80 + 0x00)}
+
+Dirección inicio línea 1 \Hypertarget{lcd__driver_8h_aa1be0849275a0fc76a979d18e6cb596e}\label{lcd__driver_8h_aa1be0849275a0fc76a979d18e6cb596e} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_LINEA2@{LCD\_LINEA2}}
+\index{LCD\_LINEA2@{LCD\_LINEA2}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_LINEA2}{LCD\_LINEA2}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+LINEA2~(0x80 + 0x40)}
+
+Dirección inicio línea 2 \Hypertarget{lcd__driver_8h_aa17ae9310cf628d1fa78c3129c648320}\label{lcd__driver_8h_aa17ae9310cf628d1fa78c3129c648320} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_LINEA3@{LCD\_LINEA3}}
+\index{LCD\_LINEA3@{LCD\_LINEA3}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_LINEA3}{LCD\_LINEA3}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+LINEA3~(0x80 + 0x14)}
+
+Dirección inicio línea 3 (si existe) \Hypertarget{lcd__driver_8h_ad0264c3269c59fa6a30f8340a9490488}\label{lcd__driver_8h_ad0264c3269c59fa6a30f8340a9490488} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_LINEA4@{LCD\_LINEA4}}
+\index{LCD\_LINEA4@{LCD\_LINEA4}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_LINEA4}{LCD\_LINEA4}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+LINEA4~(0x80 + 0x54)}
+
+Dirección inicio línea 4 (si existe) \Hypertarget{lcd__driver_8h_a8f9bf7b2d236dfd31791e1c178e43e74}\label{lcd__driver_8h_a8f9bf7b2d236dfd31791e1c178e43e74} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_RETURN\_HOME@{LCD\_RETURN\_HOME}}
+\index{LCD\_RETURN\_HOME@{LCD\_RETURN\_HOME}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_RETURN\_HOME}{LCD\_RETURN\_HOME}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+RETURN\+\_\+\+HOME~0x02}
+
+Retorna el cursor a la posición inicial sin borrar contenido 
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5d}\label{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5d} 
+\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_Status\_t@{LCD\_Status\_t}}
+\index{LCD\_Status\_t@{LCD\_Status\_t}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_Status\_t}{LCD\_Status\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5d}{LCD\+\_\+\+Status\+\_\+t}}}
+
+
+
+Estado de retorno para funciones del LCD. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LCD\_OK@{LCD\_OK}!lcd\_driver.h@{lcd\_driver.h}}\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_OK@{LCD\_OK}}}\Hypertarget{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5dab4ae24c39f9cff11aff86d245c3e28ce}\label{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5dab4ae24c39f9cff11aff86d245c3e28ce} 
+LCD\+\_\+\+OK&Operación exitosa \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LCD\_ERROR@{LCD\_ERROR}!lcd\_driver.h@{lcd\_driver.h}}\index{lcd\_driver.h@{lcd\_driver.h}!LCD\_ERROR@{LCD\_ERROR}}}\Hypertarget{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5da436765093a97917433c52af526c7b4fc}\label{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5da436765093a97917433c52af526c7b4fc} 
+LCD\+\_\+\+ERROR&Error en la operación \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{lcd__driver_8h_a33ae394d426d486ccb84b73b2aed9104}\label{lcd__driver_8h_a33ae394d426d486ccb84b73b2aed9104} 
+\index{lcd\_driver.h@{lcd\_driver.h}!lcdClear@{lcdClear}}
+\index{lcdClear@{lcdClear}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{lcdClear()}{lcdClear()}}
+{\footnotesize\ttfamily void lcd\+Clear (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Limpia el contenido del display. 
+
+Limpia el contenido del display. \Hypertarget{lcd__driver_8h_a4ad1bbb392f9aad8e794174f14a759f2}\label{lcd__driver_8h_a4ad1bbb392f9aad8e794174f14a759f2} 
+\index{lcd\_driver.h@{lcd\_driver.h}!lcdCommand@{lcdCommand}}
+\index{lcdCommand@{lcdCommand}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{lcdCommand()}{lcdCommand()}}
+{\footnotesize\ttfamily void lcd\+Command (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Envía un comando directo al LCD. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Comando a enviar (por ejemplo {\ttfamily LCD\+\_\+\+CLEAR\+\_\+\+DISPLAY}).\\
+\hline
+\end{DoxyParams}
+Envía un comando directo al LCD.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Comando del conjunto de instrucciones HD44780. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lcd__driver_8h_a49c8f51fe1e2c73a777debfdd3e9a7f1}\label{lcd__driver_8h_a49c8f51fe1e2c73a777debfdd3e9a7f1} 
+\index{lcd\_driver.h@{lcd\_driver.h}!lcdData@{lcdData}}
+\index{lcdData@{lcdData}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{lcdData()}{lcdData()}}
+{\footnotesize\ttfamily void lcd\+Data (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Envía un dato al LCD (usado para imprimir un carácter). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Byte de datos (código ASCII u otro carácter).\\
+\hline
+\end{DoxyParams}
+Envía un dato al LCD (usado para imprimir un carácter).
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Carácter (byte) a mostrar en pantalla. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lcd__driver_8h_a7e78dcb1c4d3749c8dcae8fd4d75a6df}\label{lcd__driver_8h_a7e78dcb1c4d3749c8dcae8fd4d75a6df} 
+\index{lcd\_driver.h@{lcd\_driver.h}!lcdInit@{lcdInit}}
+\index{lcdInit@{lcdInit}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{lcdInit()}{lcdInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} lcd\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el controlador del LCD. 
+
+Debe llamarse una vez antes de utilizar cualquier otra función.
+
+\begin{DoxyReturn}{Returns}
+true si se inicializó correctamente, false en caso de error.
+\end{DoxyReturn}
+Inicializa el controlador del LCD.
+
+Configura el display con dos líneas, fuente de 5x8, entrada incremental y display encendido.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} si la inicialización fue exitosa. 
+\end{DoxyReturn}
+\Hypertarget{lcd__driver_8h_aee7c68149876b3fdefa879d07c715051}\label{lcd__driver_8h_aee7c68149876b3fdefa879d07c715051} 
+\index{lcd\_driver.h@{lcd\_driver.h}!lcdPrint@{lcdPrint}}
+\index{lcdPrint@{lcdPrint}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{lcdPrint()}{lcdPrint()}}
+{\footnotesize\ttfamily void lcd\+Print (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{str }\end{DoxyParamCaption})}
+
+
+
+Imprime una cadena de texto en la posición actual del cursor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & Puntero a la cadena de texto terminada en null.\\
+\hline
+\end{DoxyParams}
+Imprime una cadena de texto en la posición actual del cursor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & Puntero a la cadena terminada en null. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lcd__driver_8h_ac68a487df84e98706bbe073f83b99b50}\label{lcd__driver_8h_ac68a487df84e98706bbe073f83b99b50} 
+\index{lcd\_driver.h@{lcd\_driver.h}!lcdSetCursor@{lcdSetCursor}}
+\index{lcdSetCursor@{lcdSetCursor}!lcd\_driver.h@{lcd\_driver.h}}
+\doxysubsubsection{\texorpdfstring{lcdSetCursor()}{lcdSetCursor()}}
+{\footnotesize\ttfamily void lcd\+Set\+Cursor (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row,  }\item[{uint8\+\_\+t}]{col }\end{DoxyParamCaption})}
+
+
+
+Posiciona el cursor en una fila y columna específica. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Fila (0 a 3, según el modelo de LCD) \\
+\hline
+{\em col} & Columna (0 a 19 en LCD 20x4)\\
+\hline
+\end{DoxyParams}
+Posiciona el cursor en una fila y columna específica.
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Número de fila (0 a 3). \\
+\hline
+{\em col} & Número de columna (0 a 19). \\
+\hline
+\end{DoxyParams}

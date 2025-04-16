@@ -1,0 +1,37 @@
+\doxysection{API\+\_\+delay.\+h}
+\hypertarget{API__delay_8h_source}{}\label{API__delay_8h_source}\index{Drivers/API/inc/API\_delay.h@{Drivers/API/inc/API\_delay.h}}
+\mbox{\hyperlink{API__delay_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ API\_INC\_API\_DELAY\_H\_}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ API\_INC\_API\_DELAY\_H\_}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{/*\ Includes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}stdint.h"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}stdbool.h"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}stm32f4xx\_hal.h"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ Typedef\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{typedef}\ uint32\_t\ tick\_t;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}};}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{00027\ \ \ \ tick\_t\ startTime;\ \textcolor{comment}{//\ Marca\ de\ tiempo\ inicial}}
+\DoxyCodeLine{00028\ \ \ \ tick\_t\ duration;\ \ \textcolor{comment}{//\ Duracion\ del\ retardo\ en\ ms}}
+\DoxyCodeLine{00029\ \ \ \ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}}\ running;\ \ \ \textcolor{comment}{//\ Indica\ si\ el\ retardo\ esta\ en\ ejecucion}}
+\DoxyCodeLine{00030\ \}\ \mbox{\hyperlink{structdelay__t}{delay\_t}};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{/*\ Function\ prototypes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00039\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{API__delay_8h_a6613427678149cadd03bac79e79475f3}{delayInit}}(\ \mbox{\hyperlink{structdelay__t}{delay\_t}}\ *\ delay,\ tick\_t\ duration\ );}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00046\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}}\ \mbox{\hyperlink{API__delay_8h_afecaa44225b94ebfb354e4b6b7e6e9ce}{delayRead}}(\ \mbox{\hyperlink{structdelay__t}{delay\_t}}\ *\ delay\ );}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00053\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{API__delay_8h_a2af041ac01bb3db8ecf87ce371fac67d}{delayWrite}}(\ \mbox{\hyperlink{structdelay__t}{delay\_t}}\ *\ delay,\ tick\_t\ duration\ );}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00061\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}}\ \mbox{\hyperlink{API__delay_8h_aad0ea619d3ba38f798e3aff003603131}{delayIsRunning}}\ (\mbox{\hyperlink{structdelay__t}{delay\_t}}\ *delay);}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ API\_INC\_API\_DELAY\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

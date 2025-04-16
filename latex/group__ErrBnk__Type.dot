@@ -1,0 +1,13 @@
+digraph "Error Banking Registers (IMPLEMENTATION DEFINED)"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir=LR;
+  Node2 [id="Node000002",label="External Wakeup Interrupt\l Controller Registers",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group__EWIC__Type.html",tooltip="Type definitions for the External Wakeup Interrupt Controller Registers (EWIC)"];
+  Node1 [id="Node000001",label="Error Banking Registers\l (IMPLEMENTATION DEFINED)",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Type definitions for the Error Banking Registers (ERRBNK)"];
+  Node3 [id="Node000003",label="Processor Configuration\l Information Registers\l (IMPLEMENTATION DEFINED)",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group__PrcCfgInf__Type.html",tooltip="Type definitions for the Processor Configuration Information Registerss (PRCCFGINF)"];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+}

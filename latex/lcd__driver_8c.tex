@@ -1,0 +1,132 @@
+\doxysection{Drivers/\+API/src/lcd\+\_\+driver.c File Reference}
+\hypertarget{lcd__driver_8c}{}\label{lcd__driver_8c}\index{Drivers/API/src/lcd\_driver.c@{Drivers/API/src/lcd\_driver.c}}
+
+
+Implementación del controlador de alto nivel para un LCD tipo HD44780 vía I2C.  
+
+
+{\ttfamily \#include "{}lcd\+\_\+driver.\+h"{}}\newline
+{\ttfamily \#include "{}lcd\+\_\+port.\+h"{}}\newline
+{\ttfamily \#include "{}stm32f4xx\+\_\+hal.\+h"{}}\newline
+Include dependency graph for lcd\+\_\+driver.\+c\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{lcd__driver_8c_a4ad1bbb392f9aad8e794174f14a759f2}{lcd\+Command}} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Envía un comando al LCD (interfaz pública). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8c_a49c8f51fe1e2c73a777debfdd3e9a7f1}{lcd\+Data}} (uint8\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Envía un carácter al LCD (interfaz pública). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} \mbox{\hyperlink{lcd__driver_8c_a7e78dcb1c4d3749c8dcae8fd4d75a6df}{lcd\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el LCD en modo 4 bits y configuración estándar. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8c_a33ae394d426d486ccb84b73b2aed9104}{lcd\+Clear}} (void)
+\begin{DoxyCompactList}\small\item\em Limpia completamente el contenido del LCD. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8c_ac68a487df84e98706bbe073f83b99b50}{lcd\+Set\+Cursor}} (uint8\+\_\+t row, uint8\+\_\+t col)
+\begin{DoxyCompactList}\small\item\em Posiciona el cursor en una coordenada específica del display. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__driver_8c_aee7c68149876b3fdefa879d07c715051}{lcd\+Print}} (const char \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Muestra una cadena de texto en el LCD desde la posición actual del cursor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementación del controlador de alto nivel para un LCD tipo HD44780 vía I2C. 
+
+Este archivo contiene las funciones necesarias para inicializar el display, enviar comandos, imprimir texto y posicionar el cursor. Utiliza la capa {\ttfamily lcd\+\_\+port} para acceder al hardware físico mediante I2C. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{lcd__driver_8c_a33ae394d426d486ccb84b73b2aed9104}\label{lcd__driver_8c_a33ae394d426d486ccb84b73b2aed9104} 
+\index{lcd\_driver.c@{lcd\_driver.c}!lcdClear@{lcdClear}}
+\index{lcdClear@{lcdClear}!lcd\_driver.c@{lcd\_driver.c}}
+\doxysubsubsection{\texorpdfstring{lcdClear()}{lcdClear()}}
+{\footnotesize\ttfamily void lcd\+Clear (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Limpia completamente el contenido del LCD. 
+
+Limpia el contenido del display. \Hypertarget{lcd__driver_8c_a4ad1bbb392f9aad8e794174f14a759f2}\label{lcd__driver_8c_a4ad1bbb392f9aad8e794174f14a759f2} 
+\index{lcd\_driver.c@{lcd\_driver.c}!lcdCommand@{lcdCommand}}
+\index{lcdCommand@{lcdCommand}!lcd\_driver.c@{lcd\_driver.c}}
+\doxysubsubsection{\texorpdfstring{lcdCommand()}{lcdCommand()}}
+{\footnotesize\ttfamily void lcd\+Command (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Envía un comando al LCD (interfaz pública). 
+
+Envía un comando directo al LCD.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Comando del conjunto de instrucciones HD44780. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lcd__driver_8c_a49c8f51fe1e2c73a777debfdd3e9a7f1}\label{lcd__driver_8c_a49c8f51fe1e2c73a777debfdd3e9a7f1} 
+\index{lcd\_driver.c@{lcd\_driver.c}!lcdData@{lcdData}}
+\index{lcdData@{lcdData}!lcd\_driver.c@{lcd\_driver.c}}
+\doxysubsubsection{\texorpdfstring{lcdData()}{lcdData()}}
+{\footnotesize\ttfamily void lcd\+Data (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Envía un carácter al LCD (interfaz pública). 
+
+Envía un dato al LCD (usado para imprimir un carácter).
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Carácter (byte) a mostrar en pantalla. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lcd__driver_8c_a7e78dcb1c4d3749c8dcae8fd4d75a6df}\label{lcd__driver_8c_a7e78dcb1c4d3749c8dcae8fd4d75a6df} 
+\index{lcd\_driver.c@{lcd\_driver.c}!lcdInit@{lcdInit}}
+\index{lcdInit@{lcdInit}!lcd\_driver.c@{lcd\_driver.c}}
+\doxysubsubsection{\texorpdfstring{lcdInit()}{lcdInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} lcd\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el LCD en modo 4 bits y configuración estándar. 
+
+Inicializa el controlador del LCD.
+
+Configura el display con dos líneas, fuente de 5x8, entrada incremental y display encendido.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} si la inicialización fue exitosa. 
+\end{DoxyReturn}
+\Hypertarget{lcd__driver_8c_aee7c68149876b3fdefa879d07c715051}\label{lcd__driver_8c_aee7c68149876b3fdefa879d07c715051} 
+\index{lcd\_driver.c@{lcd\_driver.c}!lcdPrint@{lcdPrint}}
+\index{lcdPrint@{lcdPrint}!lcd\_driver.c@{lcd\_driver.c}}
+\doxysubsubsection{\texorpdfstring{lcdPrint()}{lcdPrint()}}
+{\footnotesize\ttfamily void lcd\+Print (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{str }\end{DoxyParamCaption})}
+
+
+
+Muestra una cadena de texto en el LCD desde la posición actual del cursor. 
+
+Imprime una cadena de texto en la posición actual del cursor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & Puntero a la cadena terminada en null. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{lcd__driver_8c_ac68a487df84e98706bbe073f83b99b50}\label{lcd__driver_8c_ac68a487df84e98706bbe073f83b99b50} 
+\index{lcd\_driver.c@{lcd\_driver.c}!lcdSetCursor@{lcdSetCursor}}
+\index{lcdSetCursor@{lcdSetCursor}!lcd\_driver.c@{lcd\_driver.c}}
+\doxysubsubsection{\texorpdfstring{lcdSetCursor()}{lcdSetCursor()}}
+{\footnotesize\ttfamily void lcd\+Set\+Cursor (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row,  }\item[{uint8\+\_\+t}]{col }\end{DoxyParamCaption})}
+
+
+
+Posiciona el cursor en una coordenada específica del display. 
+
+Posiciona el cursor en una fila y columna específica.
+
+
+\begin{DoxyParams}{Parameters}
+{\em row} & Número de fila (0 a 3). \\
+\hline
+{\em col} & Número de columna (0 a 19). \\
+\hline
+\end{DoxyParams}

@@ -1,63 +1,114 @@
-/*
- * lcd_driver.c
+/**
+ * @file lcd_driver.c
+ * @brief Implementación del controlador de alto nivel para un LCD tipo HD44780 vía I2C.
  *
- *  Created on: Apr 12, 2025
- *      Author: nicolas-porco
+ * Este archivo contiene las funciones necesarias para inicializar el display,
+ * enviar comandos, imprimir texto y posicionar el cursor. Utiliza la capa `lcd_port`
+ * para acceder al hardware físico mediante I2C.
  */
 
 #include "lcd_driver.h"
 #include "lcd_port.h"
 #include "stm32f4xx_hal.h"
 
+/**
+ * @brief Envía un comando al LCD.
+ *
+ * Esta función es interna y envía el comando utilizando la función de bajo nivel `lcdPortWrite`.
+ * Se agrega un pequeño retardo requerido por la hoja de datos del LCD.
+ *
+ * @param cmd Byte de comando a enviar.
+ */
 static void lcdSendCmd(uint8_t cmd) {
     lcdPortWrite(cmd, false);
     HAL_Delay(2);
 }
 
+/**
+ * @brief Envía un dato (carácter) al LCD.
+ *
+ * Esta función es interna y envía un carácter para mostrar en pantalla.
+ * Usa `lcdPortWrite` con el bit RS activado.
+ *
+ * @param data Byte de datos (por ejemplo, un código ASCII).
+ */
 static void lcdSendData(uint8_t data) {
     lcdPortWrite(data, true);
     HAL_Delay(2);
 }
 
+/**
+ * @brief Envía un comando al LCD (interfaz pública).
+ *
+ * @param cmd Comando del conjunto de instrucciones HD44780.
+ */
 void lcdCommand(uint8_t cmd) {
     lcdSendCmd(cmd);
 }
 
+/**
+ * @brief Envía un carácter al LCD (interfaz pública).
+ *
+ * @param data Carácter (byte) a mostrar en pantalla.
+ */
 void lcdData(uint8_t data) {
     lcdSendData(data);
 }
 
+/**
+ * @brief Inicializa el LCD en modo 4 bits y configuración estándar.
+ *
+ * Configura el display con dos líneas, fuente de 5x8, entrada incremental y display encendido.
+ *
+ * @return `true` si la inicialización fue exitosa.
+ */
 bool_t lcdInit(void) {
 
-    lcdPortInit(); //Power on and delay
+    lcdPortInit(); // Inicializa capa de bajo nivel y espera inicial
 
-    lcdSendCmd(0x28); // 4-bit, 2 line, 5x8 dots
-    lcdSendCmd(0x0C); // Display ON, Cursor OFF
-    lcdSendCmd(0x06); // Entry mode
-    lcdClear(); // Clear display
+    lcdSendCmd(LCD_FUNCTION_4BIT_2LINE_5x8);   // Configura modo 4 bits, 2 líneas
+    lcdSendCmd(LCD_DISPLAY_ON);               // Enciende display sin cursor ni blink
+    lcdSendCmd(LCD_ENTRY_MODE_INC);           // Cursor avanza a derecha, sin scroll
+    lcdClear();                               // Limpia display
     HAL_Delay(2);
 
     return true;
 }
 
+/**
+ * @brief Limpia completamente el contenido del LCD.
+ */
 void lcdClear(void) {
-    lcdSendCmd(0x01);
+    lcdSendCmd(LCD_CLEAR_DISPLAY);
     HAL_Delay(2);
 }
 
+/**
+ * @brief Posiciona el cursor en una coordenada específica del display.
+ *
+ * @param row Número de fila (0 a 3).
+ * @param col Número de columna (0 a 19).
+ */
 void lcdSetCursor(uint8_t row, uint8_t col) {
-    uint8_t address[] = {0x00, 0x40, 0x14, 0x54};
-    lcdSendCmd(0x80 | (address[row] + col));
+    uint8_t address[] = {LCD_LINEA1, LCD_LINEA2, LCD_LINEA3, LCD_LINEA4};
+
+    if (row > 3 || col > 19)
+        assert_param(0); // Verifica que la posición sea válida
+
+    lcdSendCmd(address[row] + col);
 }
 
-
+/**
+ * @brief Muestra una cadena de texto en el LCD desde la posición actual del cursor.
+ *
+ * @param str Puntero a la cadena terminada en null.
+ */
 void lcdPrint(const char *str) {
 
-	assert_param( str != NULL );
+    assert_param(str != NULL); // Asegura que el puntero no sea nulo
 
     while (*str) {
         lcdSendData(*str++);
     }
 }
-
 

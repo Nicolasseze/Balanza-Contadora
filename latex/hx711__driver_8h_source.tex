@@ -1,0 +1,44 @@
+\doxysection{hx711\+\_\+driver.\+h}
+\hypertarget{hx711__driver_8h_source}{}\label{hx711__driver_8h_source}\index{Drivers/API/inc/hx711\_driver.h@{Drivers/API/inc/hx711\_driver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ hx711\_driver.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Apr\ 14,\ 2025}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ nicolas-\/porco}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ API\_INC\_HX711\_DRIVER\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ API\_INC\_HX711\_DRIVER\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}hx711\_port.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ RateWeight\_Pin\ \ GPIO\_PIN\_13}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ RateWeight\_Port\ GPIOC}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ DinWeight\_Pin\ \ \ GPIO\_PIN\_13}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ DinWeight\_Port\ \ GPIOC}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ SckWeight\_Pin\ \ \ GPIO\_PIN\_13}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ SckWeight\_Port\ \ GPIOC}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ OFFSET\_WEIGHT\ \ \ 0}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ SCALE\_WEIGHT\ \ \ \ 1}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ GAIN\_DEFAULT\ \ \ \ 128}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ RATE\_DEFAULT\ \ \ \ fq\_10hz}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{float}\ weight\_kg;\ \ \ \ \ \ \ \textcolor{comment}{//\ Último\ valor\ medido,\ en\ kg}}
+\DoxyCodeLine{00027\ \ \ \ \ int32\_t\ offset;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ Valor\ de\ tara}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{float}\ scale;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Escala\ en\ cuentas\ por\ kg}}
+\DoxyCodeLine{00029\ \ \ \ \ uint8\_t\ gain;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ganancia\ actual}}
+\DoxyCodeLine{00030\ \ \ \ \ FreqRate\_t\ rate;\ \ \ \ \ \ \ \textcolor{comment}{//\ Frecuencia\ actual}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \}\ \mbox{\hyperlink{structWeightSensor__t}{WeightSensor\_t}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keywordtype}{void}\ initReadWeight\ (\ \mbox{\hyperlink{structWeightSensor__t}{WeightSensor\_t}}\ *wx\ );}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{keywordtype}{float}\ readWeight\ (\ \mbox{\hyperlink{structWeightSensor__t}{WeightSensor\_t}}\ *wx\ );}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ API\_INC\_HX711\_DRIVER\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

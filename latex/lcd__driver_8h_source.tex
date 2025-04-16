@@ -1,0 +1,58 @@
+\doxysection{lcd\+\_\+driver.\+h}
+\hypertarget{lcd__driver_8h_source}{}\label{lcd__driver_8h_source}\index{Drivers/API/inc/lcd\_driver.h@{Drivers/API/inc/lcd\_driver.h}}
+\mbox{\hyperlink{lcd__driver_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ API\_INC\_LCD\_DRIVER\_H\_}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ API\_INC\_LCD\_DRIVER\_H\_}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ LCD\_CLEAR\_DISPLAY\ \ \ \ \ \ \ \ \ \ \ 0x01\ \ }}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ LCD\_RETURN\_HOME\ \ \ \ \ \ \ \ \ \ \ \ \ 0x02\ \ }}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ LCD\_ENTRY\_MODE\_INC\ \ \ \ \ \ \ \ \ \ 0x06\ \ }}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ LCD\_ENTRY\_MODE\_DEC\ \ \ \ \ \ \ \ \ \ 0x04\ \ }}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ LCD\_ENTRY\_MODE\_INC\_SHIFT\ \ \ \ 0x07\ \ }}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ LCD\_ENTRY\_MODE\_DEC\_SHIFT\ \ \ \ 0x05\ \ }}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_OFF\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x08\ \ }}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_ON\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x0C\ \ }}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_ON\_CURSOR\ \ \ \ \ \ \ \ \ \ \ 0x0E\ \ }}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_ON\_BLINK\ \ \ \ \ \ \ \ \ \ \ \ 0x0D\ \ }}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_ON\_CURSOR\_BLINK\ \ \ \ \ 0x0F\ \ }}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ LCD\_CURSOR\_SHIFT\_LEFT\ \ \ \ \ \ \ 0x10\ \ }}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ LCD\_CURSOR\_SHIFT\_RIGHT\ \ \ \ \ \ 0x14\ \ }}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_SHIFT\_LEFT\ \ \ \ \ \ 0x18\ \ }}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ LCD\_DISPLAY\_SHIFT\_RIGHT\ \ \ \ \ 0x1C\ \ }}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ LCD\_FUNCTION\_8BIT\_1LINE\_5x8\ \ \ 0x30\ }}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ LCD\_FUNCTION\_8BIT\_2LINE\_5x8\ \ \ 0x38\ }}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ LCD\_FUNCTION\_4BIT\_1LINE\_5x8\ \ \ 0x20\ }}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ LCD\_FUNCTION\_4BIT\_2LINE\_5x8\ \ \ 0x28\ }}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ LCD\_LINEA1\ \ (0x80\ +\ 0x00)\ }}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ LCD\_LINEA2\ \ (0x80\ +\ 0x40)\ }}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ LCD\_LINEA3\ \ (0x80\ +\ 0x14)\ }}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ LCD\_LINEA4\ \ (0x80\ +\ 0x54)\ }}
+\DoxyCodeLine{00066\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00072\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5dab4ae24c39f9cff11aff86d245c3e28ce}{LCD\_OK}}\ =\ 0x00U,\ \ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5da436765093a97917433c52af526c7b4fc}{LCD\_ERROR}}\ =\ 0x01U\ }
+\DoxyCodeLine{00075\ \}\ \mbox{\hyperlink{lcd__driver_8h_ab4056e4a6aa1397863a7835fbfe87d5d}{LCD\_Status\_t}};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00084\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}}\ \mbox{\hyperlink{lcd__driver_8h_a7e78dcb1c4d3749c8dcae8fd4d75a6df}{lcdInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00089\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__driver_8h_a33ae394d426d486ccb84b73b2aed9104}{lcdClear}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00097\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__driver_8h_ac68a487df84e98706bbe073f83b99b50}{lcdSetCursor}}(uint8\_t\ row,\ uint8\_t\ col);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00104\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__driver_8h_aee7c68149876b3fdefa879d07c715051}{lcdPrint}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str);}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00111\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__driver_8h_a4ad1bbb392f9aad8e794174f14a759f2}{lcdCommand}}(uint8\_t\ cmd);}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00118\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__driver_8h_a49c8f51fe1e2c73a777debfdd3e9a7f1}{lcdData}}(uint8\_t\ data);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ API\_INC\_LCD\_DRIVER\_H\_}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ }
+
+\end{DoxyCode}

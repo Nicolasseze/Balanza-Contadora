@@ -1,0 +1,195 @@
+\doxysection{Drivers/\+API/inc/lcd\+\_\+port.h File Reference}
+\hypertarget{lcd__port_8h}{}\label{lcd__port_8h}\index{Drivers/API/inc/lcd\_port.h@{Drivers/API/inc/lcd\_port.h}}
+
+
+Interfaz de bajo nivel para el control de un LCD 20x4 mediante I2C utilizando PCF8574.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+Include dependency graph for lcd\+\_\+port.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{lcd__port_8h_aab25150c611eb3bcd9efa6945d1ef7f7}\label{lcd__port_8h_aab25150c611eb3bcd9efa6945d1ef7f7} 
+\#define {\bfseries LCD\+\_\+\+ADDRESS}~0x40U
+\begin{DoxyCompactList}\small\item\em Dirección I2C del dispositivo PCF8574 conectado al LCD. \end{DoxyCompactList}\item 
+\Hypertarget{lcd__port_8h_a8d4a9596af8bbfbd7472da7812ca6fc6}\label{lcd__port_8h_a8d4a9596af8bbfbd7472da7812ca6fc6} 
+\#define {\bfseries LCD\+\_\+\+INIT}~(0x30U $>$$>$ 1)
+\begin{DoxyCompactList}\small\item\em Comando de inicialización (modo 8 bits) desplazado para transmisión. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Definición de bits para el control del LCD}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a1640ffbc0d8ec0f7edb04a2b93918072}{LCD\+\_\+\+EN}}~0x04U
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a26089a10ddd59a0dc7283c19ccc02533}{LCD\+\_\+\+RW}}~0x02U
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_ae126b56829008041e19070d37786303f}{LCD\+\_\+\+RS\+\_\+\+CMD}}~0x00U
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a3a6b50cced8f719a771fb5f9448805ef}{LCD\+\_\+\+RS\+\_\+\+TXT}}~0x01U
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_ac059d24dfe9c1e1f7c07cb7869a1833b}{LCD\+\_\+\+BACKLIGHT}}~0x80U
+\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}\textbf{ Manejo de nibbles para la transmisión en 4 bits}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a309db0ebb25bc29aaca199a23c16f22f}{LCD\+\_\+\+HIGH\+\_\+\+NIBBLE\+\_\+\+MASK}}~0x\+F0
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a38741f760ac39e3eff169c79a534bd5a}{LCD\+\_\+\+LOW\+\_\+\+NIBBLE\+\_\+\+MASK}}~0x0F
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a757e86a704a4378e736c18c460812f48}{LCD\+\_\+\+HIGH\+\_\+\+NIBBLE\+\_\+\+SHIFT}}~1
+\item 
+\#define \mbox{\hyperlink{lcd__port_8h_a9a4fce95f9aab0d87fb7ab70df8c5893}{LCD\+\_\+\+LOW\+\_\+\+NIBBLE\+\_\+\+SHIFT}}~3
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{lcd__port_8h_a2b21255bd7f7192db778983b15089208}\label{lcd__port_8h_a2b21255bd7f7192db778983b15089208} 
+typedef bool {\bfseries bool\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{lcd__port_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler}} (void)
+\begin{DoxyCompactList}\small\item\em Manejador de errores general del sistema. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{lcd__port_8h_af4e1db828c94ccfa21cac8ba01a1344c}{lcd\+Port\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el puerto I2C y configura el entorno necesario para el LCD. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} \mbox{\hyperlink{lcd__port_8h_a7fed7276e6d4b1c10b7b25cb4d01bd61}{lcd\+Port\+Write}} (uint8\+\_\+t data, \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} rs)
+\begin{DoxyCompactList}\small\item\em Envía un byte al LCD a través del bus I2C. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Interfaz de bajo nivel para el control de un LCD 20x4 mediante I2C utilizando PCF8574. 
+
+Este módulo proporciona funciones para inicializar el puerto de comunicación y escribir datos o comandos al display LCD a través del expansor de I/O I2C. 
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{lcd__port_8h_ac059d24dfe9c1e1f7c07cb7869a1833b}\label{lcd__port_8h_ac059d24dfe9c1e1f7c07cb7869a1833b} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_BACKLIGHT@{LCD\_BACKLIGHT}}
+\index{LCD\_BACKLIGHT@{LCD\_BACKLIGHT}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_BACKLIGHT}{LCD\_BACKLIGHT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+BACKLIGHT~0x80U}
+
+Bit para activar retroiluminación \Hypertarget{lcd__port_8h_a1640ffbc0d8ec0f7edb04a2b93918072}\label{lcd__port_8h_a1640ffbc0d8ec0f7edb04a2b93918072} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_EN@{LCD\_EN}}
+\index{LCD\_EN@{LCD\_EN}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_EN}{LCD\_EN}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+EN~0x04U}
+
+Bit de habilitación (Enable) \Hypertarget{lcd__port_8h_a309db0ebb25bc29aaca199a23c16f22f}\label{lcd__port_8h_a309db0ebb25bc29aaca199a23c16f22f} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_HIGH\_NIBBLE\_MASK@{LCD\_HIGH\_NIBBLE\_MASK}}
+\index{LCD\_HIGH\_NIBBLE\_MASK@{LCD\_HIGH\_NIBBLE\_MASK}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_HIGH\_NIBBLE\_MASK}{LCD\_HIGH\_NIBBLE\_MASK}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+HIGH\+\_\+\+NIBBLE\+\_\+\+MASK~0x\+F0}
+
+Máscara para nibble alto \Hypertarget{lcd__port_8h_a757e86a704a4378e736c18c460812f48}\label{lcd__port_8h_a757e86a704a4378e736c18c460812f48} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_HIGH\_NIBBLE\_SHIFT@{LCD\_HIGH\_NIBBLE\_SHIFT}}
+\index{LCD\_HIGH\_NIBBLE\_SHIFT@{LCD\_HIGH\_NIBBLE\_SHIFT}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_HIGH\_NIBBLE\_SHIFT}{LCD\_HIGH\_NIBBLE\_SHIFT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+HIGH\+\_\+\+NIBBLE\+\_\+\+SHIFT~1}
+
+Shift para nibble alto en el byte transmitido \Hypertarget{lcd__port_8h_a38741f760ac39e3eff169c79a534bd5a}\label{lcd__port_8h_a38741f760ac39e3eff169c79a534bd5a} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_LOW\_NIBBLE\_MASK@{LCD\_LOW\_NIBBLE\_MASK}}
+\index{LCD\_LOW\_NIBBLE\_MASK@{LCD\_LOW\_NIBBLE\_MASK}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_LOW\_NIBBLE\_MASK}{LCD\_LOW\_NIBBLE\_MASK}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+LOW\+\_\+\+NIBBLE\+\_\+\+MASK~0x0F}
+
+Máscara para nibble bajo \Hypertarget{lcd__port_8h_a9a4fce95f9aab0d87fb7ab70df8c5893}\label{lcd__port_8h_a9a4fce95f9aab0d87fb7ab70df8c5893} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_LOW\_NIBBLE\_SHIFT@{LCD\_LOW\_NIBBLE\_SHIFT}}
+\index{LCD\_LOW\_NIBBLE\_SHIFT@{LCD\_LOW\_NIBBLE\_SHIFT}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_LOW\_NIBBLE\_SHIFT}{LCD\_LOW\_NIBBLE\_SHIFT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+LOW\+\_\+\+NIBBLE\+\_\+\+SHIFT~3}
+
+Shift para nibble bajo en el byte transmitido \Hypertarget{lcd__port_8h_ae126b56829008041e19070d37786303f}\label{lcd__port_8h_ae126b56829008041e19070d37786303f} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_RS\_CMD@{LCD\_RS\_CMD}}
+\index{LCD\_RS\_CMD@{LCD\_RS\_CMD}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_RS\_CMD}{LCD\_RS\_CMD}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+RS\+\_\+\+CMD~0x00U}
+
+Bit RS en modo comando \Hypertarget{lcd__port_8h_a3a6b50cced8f719a771fb5f9448805ef}\label{lcd__port_8h_a3a6b50cced8f719a771fb5f9448805ef} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_RS\_TXT@{LCD\_RS\_TXT}}
+\index{LCD\_RS\_TXT@{LCD\_RS\_TXT}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_RS\_TXT}{LCD\_RS\_TXT}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+RS\+\_\+\+TXT~0x01U}
+
+Bit RS en modo texto/datos \Hypertarget{lcd__port_8h_a26089a10ddd59a0dc7283c19ccc02533}\label{lcd__port_8h_a26089a10ddd59a0dc7283c19ccc02533} 
+\index{lcd\_port.h@{lcd\_port.h}!LCD\_RW@{LCD\_RW}}
+\index{LCD\_RW@{LCD\_RW}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{LCD\_RW}{LCD\_RW}}
+{\footnotesize\ttfamily \#define LCD\+\_\+\+RW~0x02U}
+
+Bit de lectura/escritura (RW). No se utiliza, se deja en 0 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{lcd__port_8h_a1730ffe1e560465665eb47d9264826f9}\label{lcd__port_8h_a1730ffe1e560465665eb47d9264826f9} 
+\index{lcd\_port.h@{lcd\_port.h}!Error\_Handler@{Error\_Handler}}
+\index{Error\_Handler@{Error\_Handler}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{Error\_Handler()}{Error\_Handler()}}
+{\footnotesize\ttfamily void Error\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Manejador de errores general del sistema. 
+
+Esta función se debe implementar en la aplicación para gestionar errores críticos.
+
+Manejador de errores general del sistema.
+
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\Hypertarget{lcd__port_8h_af4e1db828c94ccfa21cac8ba01a1344c}\label{lcd__port_8h_af4e1db828c94ccfa21cac8ba01a1344c} 
+\index{lcd\_port.h@{lcd\_port.h}!lcdPortInit@{lcdPortInit}}
+\index{lcdPortInit@{lcdPortInit}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{lcdPortInit()}{lcdPortInit()}}
+{\footnotesize\ttfamily void lcd\+Port\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el puerto I2C y configura el entorno necesario para el LCD. 
+
+Debe llamarse una vez al inicio antes de enviar cualquier comando o dato.
+
+Inicializa el puerto I2C y configura el entorno necesario para el LCD.
+
+Debe ser llamada una vez tras el encendido del sistema. Ejecuta la secuencia de inicialización especial exigida por la hoja de datos del controlador del LCD. \Hypertarget{lcd__port_8h_a7fed7276e6d4b1c10b7b25cb4d01bd61}\label{lcd__port_8h_a7fed7276e6d4b1c10b7b25cb4d01bd61} 
+\index{lcd\_port.h@{lcd\_port.h}!lcdPortWrite@{lcdPortWrite}}
+\index{lcdPortWrite@{lcdPortWrite}!lcd\_port.h@{lcd\_port.h}}
+\doxysubsubsection{\texorpdfstring{lcdPortWrite()}{lcdPortWrite()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} lcd\+Port\+Write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{data,  }\item[{\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}}}]{rs }\end{DoxyParamCaption})}
+
+
+
+Envía un byte al LCD a través del bus I2C. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Dato a enviar (nibble alto o bajo). \\
+\hline
+{\em rs} & Indica si el dato es comando (false) o carácter de texto (true). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true si la transmisión fue exitosa, false en caso de error.
+\end{DoxyReturn}
+Envía un byte al LCD a través del bus I2C.
+
+Transmite un byte de datos o comando al LCD en modo de 4 bits. El byte se divide en nibble alto y bajo, los cuales se transmiten por separado mediante la función {\ttfamily lcd\+Strobe()}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Byte a escribir en el LCD. \\
+\hline
+{\em rs} & Si es {\ttfamily true}, se trata de datos (texto); si es {\ttfamily false}, es un comando. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} si la operación fue exitosa. 
+\end{DoxyReturn}

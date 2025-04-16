@@ -1,0 +1,35 @@
+\doxysection{lcd\+\_\+port.\+h}
+\hypertarget{lcd__port_8h_source}{}\label{lcd__port_8h_source}\index{Drivers/API/inc/lcd\_port.h@{Drivers/API/inc/lcd\_port.h}}
+\mbox{\hyperlink{lcd__port_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ API\_INC\_LCD\_PORT\_H\_}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ API\_INC\_LCD\_PORT\_H\_}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ LCD\_ADDRESS\ \ \ \ \ 0x40U}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ LCD\_EN\ \ \ \ \ \ \ \ \ \ 0x04U\ \ }}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ LCD\_RW\ \ \ \ \ \ \ \ \ \ 0x02U\ \ }}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ LCD\_RS\_CMD\ \ \ \ \ \ 0x00U\ \ }}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ LCD\_RS\_TXT\ \ \ \ \ \ 0x01U\ \ }}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ LCD\_BACKLIGHT\ \ \ 0x80U\ \ }}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ LCD\_HIGH\_NIBBLE\_MASK\ \ \ \ 0xF0\ \ }}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ LCD\_LOW\_NIBBLE\_MASK\ \ \ \ \ 0x0F\ \ }}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ LCD\_HIGH\_NIBBLE\_SHIFT\ \ \ 1\ \ \ \ \ }}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ LCD\_LOW\_NIBBLE\_SHIFT\ \ \ \ 3\ \ \ \ \ }}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ LCD\_INIT\ \ \ \ (0x30U\ >>\ 1)}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__port_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00062\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lcd__port_8h_af4e1db828c94ccfa21cac8ba01a1344c}{lcdPortInit}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00071\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}}\ \mbox{\hyperlink{lcd__port_8h_a7fed7276e6d4b1c10b7b25cb4d01bd61}{lcdPortWrite}}(uint8\_t\ data,\ \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\_t}}\ rs);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ API\_INC\_LCD\_PORT\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

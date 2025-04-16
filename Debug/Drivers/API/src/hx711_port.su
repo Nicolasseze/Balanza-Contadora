@@ -1,0 +1,5 @@
+../Drivers/API/src/hx711_port.c:23:6:HX711_Init	40	static
+../Drivers/API/src/hx711_port.c:54:9:HX711_ReadRaw	32	static
+../Drivers/API/src/hx711_port.c:83:15:HX711_IsReady	16	static
+../Drivers/API/src/hx711_port.c:88:13:DWT_Delay_Init	4	static
+../Drivers/API/src/hx711_port.c:102:13:delay_us	24	static

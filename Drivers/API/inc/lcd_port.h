@@ -1,8 +1,9 @@
-/*
- * lcd_port.h
+/**
+ * @file lcd_port.h
+ * @brief Interfaz de bajo nivel para el control de un LCD 20x4 mediante I2C utilizando PCF8574.
  *
- *  Created on: Apr 12, 2025
- *      Author: nicolas-porco
+ * Este módulo proporciona funciones para inicializar el puerto de comunicación
+ * y escribir datos o comandos al display LCD a través del expansor de I/O I2C.
  */
 
 #ifndef API_INC_LCD_PORT_H_
@@ -11,28 +12,62 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-//Dirreccion I2C LCD
+/**
+ * @def LCD_ADDRESS
+ * @brief Dirección I2C del dispositivo PCF8574 conectado al LCD.
+ */
 #define LCD_ADDRESS 	0x40U
 
-//Definicion Bits en I2C
-#define LCD_EN        	0x04U
-#define LCD_RW        	0x02U
-#define LCD_RS_CMD    	0x00U
-#define LCD_RS_TXT    	0x01U
-#define LCD_BACKLIGHT 	0x80U
+/** @name Definición de bits para el control del LCD */
+/**@{*/
+#define LCD_EN        	0x04U  /**< Bit de habilitación (Enable) */
+#define LCD_RW        	0x02U  /**< Bit de lectura/escritura (RW). No se utiliza, se deja en 0 */
+#define LCD_RS_CMD    	0x00U  /**< Bit RS en modo comando */
+#define LCD_RS_TXT    	0x01U  /**< Bit RS en modo texto/datos */
+#define LCD_BACKLIGHT 	0x80U  /**< Bit para activar retroiluminación */
+/**@}*/
 
-//Manejo Nibbles
-#define LCD_HIGH_NIBBLE_MASK	0xF0
-#define LCD_LOW_NIBBLE_MASK		0x0F
-#define LCD_HIGH_NIBBLE_SHIFT	1
-#define LCD_LOW_NIBBLE_SHIFT	3
+/** @name Manejo de nibbles para la transmisión en 4 bits */
+/**@{*/
+#define LCD_HIGH_NIBBLE_MASK	0xF0  /**< Máscara para nibble alto */
+#define LCD_LOW_NIBBLE_MASK		0x0F  /**< Máscara para nibble bajo */
+#define LCD_HIGH_NIBBLE_SHIFT	1     /**< Shift para nibble alto en el byte transmitido */
+#define LCD_LOW_NIBBLE_SHIFT	3     /**< Shift para nibble bajo en el byte transmitido */
+/**@}*/
 
+/**
+ * @def LCD_INIT
+ * @brief Comando de inicialización (modo 8 bits) desplazado para transmisión.
+ */
+#define LCD_INIT	(0x30U >> 1)
+
+/**
+ * @typedef bool_t
+ * @brief Tipo booleano usado para compatibilidad con HAL y mayor claridad.
+ */
 typedef bool bool_t;
 
+/**
+ * @brief Manejador de errores general del sistema.
+ *
+ * Esta función se debe implementar en la aplicación para gestionar errores críticos.
+ */
 extern void Error_Handler(void);
 
-void lcdPortInit ( void );
+/**
+ * @brief Inicializa el puerto I2C y configura el entorno necesario para el LCD.
+ *
+ * Debe llamarse una vez al inicio antes de enviar cualquier comando o dato.
+ */
+void lcdPortInit(void);
 
-bool_t lcdPortWrite ( uint8_t data, bool_t rs );
+/**
+ * @brief Envía un byte al LCD a través del bus I2C.
+ *
+ * @param data Dato a enviar (nibble alto o bajo).
+ * @param rs Indica si el dato es comando (false) o carácter de texto (true).
+ * @return true si la transmisión fue exitosa, false en caso de error.
+ */
+bool_t lcdPortWrite(uint8_t data, bool_t rs);
 
 #endif /* API_INC_LCD_PORT_H_ */

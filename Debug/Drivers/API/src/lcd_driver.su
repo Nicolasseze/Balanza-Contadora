@@ -1,8 +1,8 @@
-../Drivers/API/src/lcd_driver.c:12:13:lcdSendCmd	16	static
-../Drivers/API/src/lcd_driver.c:17:13:lcdSendData	16	static
-../Drivers/API/src/lcd_driver.c:22:6:lcdCommand	16	static
-../Drivers/API/src/lcd_driver.c:26:6:lcdData	16	static
-../Drivers/API/src/lcd_driver.c:30:8:lcdInit	8	static
-../Drivers/API/src/lcd_driver.c:43:6:lcdClear	8	static
-../Drivers/API/src/lcd_driver.c:48:6:lcdSetCursor	24	static
-../Drivers/API/src/lcd_driver.c:54:6:lcdPrint	16	static
+../Drivers/API/src/lcd_driver.c:22:13:lcdSendCmd	16	static
+../Drivers/API/src/lcd_driver.c:35:13:lcdSendData	16	static
+../Drivers/API/src/lcd_driver.c:45:6:lcdCommand	16	static
+../Drivers/API/src/lcd_driver.c:54:6:lcdData	16	static
+../Drivers/API/src/lcd_driver.c:65:8:lcdInit	8	static
+../Drivers/API/src/lcd_driver.c:81:6:lcdClear	8	static
+../Drivers/API/src/lcd_driver.c:92:6:lcdSetCursor	24	static
+../Drivers/API/src/lcd_driver.c:106:6:lcdPrint	16	static

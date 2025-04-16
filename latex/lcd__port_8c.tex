@@ -1,0 +1,81 @@
+\doxysection{Drivers/\+API/src/lcd\+\_\+port.c File Reference}
+\hypertarget{lcd__port_8c}{}\label{lcd__port_8c}\index{Drivers/API/src/lcd\_port.c@{Drivers/API/src/lcd\_port.c}}
+
+
+Implementación de funciones de bajo nivel para manejar un LCD 20x4 mediante I2C usando PCF8574.  
+
+
+{\ttfamily \#include "{}lcd\+\_\+port.\+h"{}}\newline
+{\ttfamily \#include "{}stm32f4xx\+\_\+hal.\+h"{}}\newline
+Include dependency graph for lcd\+\_\+port.\+c\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{lcd__port_8c_af4e1db828c94ccfa21cac8ba01a1344c}{lcd\+Port\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el LCD en modo de operación de 4 bits. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} \mbox{\hyperlink{lcd__port_8c_a7fed7276e6d4b1c10b7b25cb4d01bd61}{lcd\+Port\+Write}} (uint8\+\_\+t data, \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} rs)
+\begin{DoxyCompactList}\small\item\em Escribe un byte en el LCD, dividiéndolo en nibbles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+I2\+C\+\_\+\+Handle\+Type\+Def \mbox{\hyperlink{lcd__port_8c_af7b2c26e44dadaaa798a5c3d82914ba7}{hi2c1}}
+\begin{DoxyCompactList}\small\item\em Manejador de I2C definido externamente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementación de funciones de bajo nivel para manejar un LCD 20x4 mediante I2C usando PCF8574. 
+
+Este archivo contiene la lógica de inicialización del LCD y el envío de datos o comandos a través de una interfaz I2C, utilizando el periférico configurado con HAL. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{lcd__port_8c_af4e1db828c94ccfa21cac8ba01a1344c}\label{lcd__port_8c_af4e1db828c94ccfa21cac8ba01a1344c} 
+\index{lcd\_port.c@{lcd\_port.c}!lcdPortInit@{lcdPortInit}}
+\index{lcdPortInit@{lcdPortInit}!lcd\_port.c@{lcd\_port.c}}
+\doxysubsubsection{\texorpdfstring{lcdPortInit()}{lcdPortInit()}}
+{\footnotesize\ttfamily void lcd\+Port\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el LCD en modo de operación de 4 bits. 
+
+Inicializa el puerto I2C y configura el entorno necesario para el LCD.
+
+Debe ser llamada una vez tras el encendido del sistema. Ejecuta la secuencia de inicialización especial exigida por la hoja de datos del controlador del LCD. \Hypertarget{lcd__port_8c_a7fed7276e6d4b1c10b7b25cb4d01bd61}\label{lcd__port_8c_a7fed7276e6d4b1c10b7b25cb4d01bd61} 
+\index{lcd\_port.c@{lcd\_port.c}!lcdPortWrite@{lcdPortWrite}}
+\index{lcdPortWrite@{lcdPortWrite}!lcd\_port.c@{lcd\_port.c}}
+\doxysubsubsection{\texorpdfstring{lcdPortWrite()}{lcdPortWrite()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} lcd\+Port\+Write (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{data,  }\item[{\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}}}]{rs }\end{DoxyParamCaption})}
+
+
+
+Escribe un byte en el LCD, dividiéndolo en nibbles. 
+
+Envía un byte al LCD a través del bus I2C.
+
+Transmite un byte de datos o comando al LCD en modo de 4 bits. El byte se divide en nibble alto y bajo, los cuales se transmiten por separado mediante la función {\ttfamily lcd\+Strobe()}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Byte a escribir en el LCD. \\
+\hline
+{\em rs} & Si es {\ttfamily true}, se trata de datos (texto); si es {\ttfamily false}, es un comando. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} si la operación fue exitosa. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{lcd__port_8c_af7b2c26e44dadaaa798a5c3d82914ba7}\label{lcd__port_8c_af7b2c26e44dadaaa798a5c3d82914ba7} 
+\index{lcd\_port.c@{lcd\_port.c}!hi2c1@{hi2c1}}
+\index{hi2c1@{hi2c1}!lcd\_port.c@{lcd\_port.c}}
+\doxysubsubsection{\texorpdfstring{hi2c1}{hi2c1}}
+{\footnotesize\ttfamily I2\+C\+\_\+\+Handle\+Type\+Def hi2c1\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Manejador de I2C definido externamente. 
+
+Este handler debe estar inicializado en otro módulo antes de utilizar estas funciones. 

@@ -1,0 +1,13 @@
+digraph "Status and Control Registers"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir=LR;
+  Node1 [id="Node000001",label="Status and Control\l Registers",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Core Register type definitions."];
+  Node3 [id="Node000003",label="Nested Vectored Interrupt\l Controller (NVIC)",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group__CMSIS__NVIC.html",tooltip="Type definitions for the NVIC Registers."];
+  Node2 [id="Node000002",label="Defines and Type Definitions",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$group__CMSIS__core__register.html",tooltip="Type definitions and defines for Cortex-M processor based devices."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+}

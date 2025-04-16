@@ -1,0 +1,138 @@
+\doxysection{Drivers/\+API/inc/\+API\+\_\+delay.h File Reference}
+\hypertarget{API__delay_8h}{}\label{API__delay_8h}\index{Drivers/API/inc/API\_delay.h@{Drivers/API/inc/API\_delay.h}}
+
+
+Módulo para manejo de retardos no bloqueantes.  
+
+
+{\ttfamily \#include "{}stdint.\+h"{}}\newline
+{\ttfamily \#include "{}stdbool.\+h"{}}\newline
+{\ttfamily \#include "{}stm32f4xx\+\_\+hal.\+h"{}}\newline
+Include dependency graph for API\+\_\+delay.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structdelay__t}{delay\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Estructura para manejar retardos no bloqueantes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{API__delay_8h_a451a7d205dfb766727eba25c6e61c687}\label{API__delay_8h_a451a7d205dfb766727eba25c6e61c687} 
+typedef uint32\+\_\+t {\bfseries tick\+\_\+t}
+\item 
+typedef bool \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Tipo booleano (alias de {\ttfamily bool}) usado por consistencia en la interfaz. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{API__delay_8h_a6613427678149cadd03bac79e79475f3}{delay\+Init}} (\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}delay, tick\+\_\+t duration)
+\begin{DoxyCompactList}\small\item\em Inicializa la estructura de retardo con una duración específica. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} \mbox{\hyperlink{API__delay_8h_afecaa44225b94ebfb354e4b6b7e6e9ce}{delay\+Read}} (\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}delay)
+\begin{DoxyCompactList}\small\item\em Verifica si el retardo ha finalizado. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{API__delay_8h_a2af041ac01bb3db8ecf87ce371fac67d}{delay\+Write}} (\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}delay, tick\+\_\+t duration)
+\begin{DoxyCompactList}\small\item\em Modifica la duración de un retardo en ejecución. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} \mbox{\hyperlink{API__delay_8h_aad0ea619d3ba38f798e3aff003603131}{delay\+Is\+Running}} (\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}delay)
+\begin{DoxyCompactList}\small\item\em Verifica si el retardo está en ejecución. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Módulo para manejo de retardos no bloqueantes. 
+
+\begin{DoxyAuthor}{Author}
+Nicolás 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025
+\end{DoxyDate}
+Este módulo permite la gestión de retardos mediante el uso de estructuras, evitando el uso de {\ttfamily delay()} y mejorando el rendimiento en sistemas embebidos. 
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}\label{API__delay_8h_a04dd5074964518403bf944f2b240a5f8} 
+\index{API\_delay.h@{API\_delay.h}!bool\_t@{bool\_t}}
+\index{bool\_t@{bool\_t}!API\_delay.h@{API\_delay.h}}
+\doxysubsubsection{\texorpdfstring{bool\_t}{bool\_t}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}}}
+
+
+
+Tipo booleano (alias de {\ttfamily bool}) usado por consistencia en la interfaz. 
+
+Tipo booleano usado para compatibilidad con HAL y mayor claridad. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{API__delay_8h_a6613427678149cadd03bac79e79475f3}\label{API__delay_8h_a6613427678149cadd03bac79e79475f3} 
+\index{API\_delay.h@{API\_delay.h}!delayInit@{delayInit}}
+\index{delayInit@{delayInit}!API\_delay.h@{API\_delay.h}}
+\doxysubsubsection{\texorpdfstring{delayInit()}{delayInit()}}
+{\footnotesize\ttfamily void delay\+Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{delay,  }\item[{tick\+\_\+t}]{duration }\end{DoxyParamCaption})}
+
+
+
+Inicializa la estructura de retardo con una duración específica. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em delay} & Puntero a la estructura \doxylink{structdelay__t}{delay\+\_\+t}. \\
+\hline
+{\em duration} & Duración del retardo en milisegundos. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{API__delay_8h_aad0ea619d3ba38f798e3aff003603131}\label{API__delay_8h_aad0ea619d3ba38f798e3aff003603131} 
+\index{API\_delay.h@{API\_delay.h}!delayIsRunning@{delayIsRunning}}
+\index{delayIsRunning@{delayIsRunning}!API\_delay.h@{API\_delay.h}}
+\doxysubsubsection{\texorpdfstring{delayIsRunning()}{delayIsRunning()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} delay\+Is\+Running (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{delay }\end{DoxyParamCaption})}
+
+
+
+Verifica si el retardo está en ejecución. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em delay} & Puntero a la estructura \doxylink{structdelay__t}{delay\+\_\+t}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} si el retardo está en ejecución, {\ttfamily false} si no lo está. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+La función utiliza {\ttfamily assert\+\_\+param()} para validar el puntero. 
+\end{DoxyNote}
+\Hypertarget{API__delay_8h_afecaa44225b94ebfb354e4b6b7e6e9ce}\label{API__delay_8h_afecaa44225b94ebfb354e4b6b7e6e9ce} 
+\index{API\_delay.h@{API\_delay.h}!delayRead@{delayRead}}
+\index{delayRead@{delayRead}!API\_delay.h@{API\_delay.h}}
+\doxysubsubsection{\texorpdfstring{delayRead()}{delayRead()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{API__delay_8h_a04dd5074964518403bf944f2b240a5f8}{bool\+\_\+t}} delay\+Read (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{delay }\end{DoxyParamCaption})}
+
+
+
+Verifica si el retardo ha finalizado. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em delay} & Puntero a la estructura \doxylink{structdelay__t}{delay\+\_\+t}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} si el retardo ha finalizado, {\ttfamily false} en caso contrario. 
+\end{DoxyReturn}
+\Hypertarget{API__delay_8h_a2af041ac01bb3db8ecf87ce371fac67d}\label{API__delay_8h_a2af041ac01bb3db8ecf87ce371fac67d} 
+\index{API\_delay.h@{API\_delay.h}!delayWrite@{delayWrite}}
+\index{delayWrite@{delayWrite}!API\_delay.h@{API\_delay.h}}
+\doxysubsubsection{\texorpdfstring{delayWrite()}{delayWrite()}}
+{\footnotesize\ttfamily void delay\+Write (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdelay__t}{delay\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{delay,  }\item[{tick\+\_\+t}]{duration }\end{DoxyParamCaption})}
+
+
+
+Modifica la duración de un retardo en ejecución. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em delay} & Puntero a la estructura \doxylink{structdelay__t}{delay\+\_\+t}. \\
+\hline
+{\em duration} & Nueva duración en milisegundos. \\
+\hline
+\end{DoxyParams}
