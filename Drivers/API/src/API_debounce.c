@@ -17,8 +17,8 @@ typedef enum{
 	BUTTON_RAISING,
 } debounceState_t;
 
-typedef struct{
 
+typedef struct{
 	debounceState_t state;
 	delay_t delay;
 	bool_t btnFalling;

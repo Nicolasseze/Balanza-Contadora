@@ -9,6 +9,8 @@ C_SRCS += \
 ../Drivers/API/src/API_delay.c \
 ../Drivers/API/src/hx711_driver.c \
 ../Drivers/API/src/hx711_port.c \
+../Drivers/API/src/keypad_driver.c \
+../Drivers/API/src/keypad_port.c \
 ../Drivers/API/src/lcd_driver.c \
 ../Drivers/API/src/lcd_port.c 
 
@@ -17,6 +19,8 @@ OBJS += \
 ./Drivers/API/src/API_delay.o \
 ./Drivers/API/src/hx711_driver.o \
 ./Drivers/API/src/hx711_port.o \
+./Drivers/API/src/keypad_driver.o \
+./Drivers/API/src/keypad_port.o \
 ./Drivers/API/src/lcd_driver.o \
 ./Drivers/API/src/lcd_port.o 
 
@@ -25,6 +29,8 @@ C_DEPS += \
 ./Drivers/API/src/API_delay.d \
 ./Drivers/API/src/hx711_driver.d \
 ./Drivers/API/src/hx711_port.d \
+./Drivers/API/src/keypad_driver.d \
+./Drivers/API/src/keypad_port.d \
 ./Drivers/API/src/lcd_driver.d \
 ./Drivers/API/src/lcd_port.d 
 
@@ -36,7 +42,7 @@ Drivers/API/src/%.o Drivers/API/src/%.su Drivers/API/src/%.cyclo: ../Drivers/API
 clean: clean-Drivers-2f-API-2f-src
 
 clean-Drivers-2f-API-2f-src:
-	-$(RM) ./Drivers/API/src/API_debounce.cyclo ./Drivers/API/src/API_debounce.d ./Drivers/API/src/API_debounce.o ./Drivers/API/src/API_debounce.su ./Drivers/API/src/API_delay.cyclo ./Drivers/API/src/API_delay.d ./Drivers/API/src/API_delay.o ./Drivers/API/src/API_delay.su ./Drivers/API/src/hx711_driver.cyclo ./Drivers/API/src/hx711_driver.d ./Drivers/API/src/hx711_driver.o ./Drivers/API/src/hx711_driver.su ./Drivers/API/src/hx711_port.cyclo ./Drivers/API/src/hx711_port.d ./Drivers/API/src/hx711_port.o ./Drivers/API/src/hx711_port.su ./Drivers/API/src/lcd_driver.cyclo ./Drivers/API/src/lcd_driver.d ./Drivers/API/src/lcd_driver.o ./Drivers/API/src/lcd_driver.su ./Drivers/API/src/lcd_port.cyclo ./Drivers/API/src/lcd_port.d ./Drivers/API/src/lcd_port.o ./Drivers/API/src/lcd_port.su
+	-$(RM) ./Drivers/API/src/API_debounce.cyclo ./Drivers/API/src/API_debounce.d ./Drivers/API/src/API_debounce.o ./Drivers/API/src/API_debounce.su ./Drivers/API/src/API_delay.cyclo ./Drivers/API/src/API_delay.d ./Drivers/API/src/API_delay.o ./Drivers/API/src/API_delay.su ./Drivers/API/src/hx711_driver.cyclo ./Drivers/API/src/hx711_driver.d ./Drivers/API/src/hx711_driver.o ./Drivers/API/src/hx711_driver.su ./Drivers/API/src/hx711_port.cyclo ./Drivers/API/src/hx711_port.d ./Drivers/API/src/hx711_port.o ./Drivers/API/src/hx711_port.su ./Drivers/API/src/keypad_driver.cyclo ./Drivers/API/src/keypad_driver.d ./Drivers/API/src/keypad_driver.o ./Drivers/API/src/keypad_driver.su ./Drivers/API/src/keypad_port.cyclo ./Drivers/API/src/keypad_port.d ./Drivers/API/src/keypad_port.o ./Drivers/API/src/keypad_port.su ./Drivers/API/src/lcd_driver.cyclo ./Drivers/API/src/lcd_driver.d ./Drivers/API/src/lcd_driver.o ./Drivers/API/src/lcd_driver.su ./Drivers/API/src/lcd_port.cyclo ./Drivers/API/src/lcd_port.d ./Drivers/API/src/lcd_port.o ./Drivers/API/src/lcd_port.su
 
 .PHONY: clean-Drivers-2f-API-2f-src
 

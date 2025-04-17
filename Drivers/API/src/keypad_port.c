@@ -1,45 +1,87 @@
-/*
- * keypad_port.c
+/**
+ * @file keypad_port.c
+ * @brief Implementación del acceso a hardware para teclado matricial.
  *
- *  Created on: Apr 15, 2025
- *      Author: nicolas-porco
+ * Este módulo permite configurar e interactuar con los pines GPIO conectados
+ * a un teclado matricial de forma dinámica. Las filas se configuran como salidas
+ * open-drain, y las columnas como entradas con pull-up.
  */
 
+#include "keypad_port.h"
 
+/**
+ * @brief Estructura interna para almacenar la configuración del hardware del teclado.
+ */
+typedef struct {
+    GPIO_TypeDef* row_ports[MAX_ROW_PORT];  /**< Array de punteros a puertos de filas */
+    uint16_t row_pins[MAX_ROW_PORT];        /**< Array de pines de filas */
+    GPIO_TypeDef* col_ports[MAX_COL_PORT];  /**< Array de punteros a puertos de columnas */
+    uint16_t col_pins[MAX_COL_PORT];        /**< Array de pines de columnas */
+    uint8_t rows;                /**< Cantidad de filas registradas */
+    uint8_t cols;                /**< Cantidad de columnas registradas */
+    bool_t initialized;          /**< Bandera de inicialización */
+} KeypadHardware_t;
 
-static const uint16_t row_pins[KEYPAD_ROWS] = { GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_2, GPIO_PIN_3 };
-static const uint16_t col_pins[KEYPAD_COLS] = { GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_6, GPIO_PIN_7 };
+/**
+ * @brief Instancia estática de la configuración de pines del teclado.
+ */
+static KeypadHardware_t hw = {0};
 
-void keypadPortInit(void) {
-    __HAL_RCC_GPIOB_CLK_ENABLE();
+void keypadPortAttachRow(uint8_t index, GPIO_TypeDef* port, uint16_t pin) {
+	assert_param(index < MAX_ROW_PORT);
+	assert_param(port != NULL);
+
+    hw.row_ports[index] = port;
+    hw.row_pins[index] = pin;
+}
+
+void keypadPortAttachCol(uint8_t index, GPIO_TypeDef* port, uint16_t pin) {
+	assert_param(index < MAX_COL_PORT);
+	assert_param(port != NULL);
+
+    hw.col_ports[index] = port;
+    hw.col_pins[index] = pin;
+}
+
+void keypadPortInit(uint8_t row_count, uint8_t col_count) {
+	assert_param(row_count <= MAX_ROW_PORT);
+	assert_param(col_count < MAX_COL_PORT);
+
+    hw.rows = row_count;
+    hw.cols = col_count;
+    hw.initialized = true;
 
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-    // Filas como salida Open Drain (apagadas por defecto)
+    // Configuración de filas: salida open-drain, sin pull-up
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 
-    for (int i = 0; i < KEYPAD_ROWS; i++) {
-        GPIO_InitStruct.Pin = row_pins[i];
-        HAL_GPIO_Init(ROW_GPIO, &GPIO_InitStruct);
-        HAL_GPIO_WritePin(ROW_GPIO, row_pins[i], GPIO_PIN_SET); // HIGH-Z (no activo)
+    for (uint8_t i = 0; i < hw.rows; i++) {
+        HAL_GPIO_WritePin(hw.row_ports[i], hw.row_pins[i], GPIO_PIN_SET); // high-Z (no activo)
+        HAL_GPIO_Init(hw.row_ports[i], &GPIO_InitStruct);
     }
 
-    // Columnas como entrada con pull-up
+    // Configuración de columnas: entrada con pull-up
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
 
-    for (int i = 0; i < KEYPAD_COLS; i++) {
-        GPIO_InitStruct.Pin = col_pins[i];
-        HAL_GPIO_Init(COL_GPIO, &GPIO_InitStruct);
+    for (uint8_t i = 0; i < hw.cols; i++) {
+        HAL_GPIO_Init(hw.col_ports[i], &GPIO_InitStruct);
     }
 }
 
-void keypadPortSetRow(uint8_t row, bool state) {
-    HAL_GPIO_WritePin(ROW_GPIO, row_pins[row], state ? GPIO_PIN_RESET : GPIO_PIN_SET);
+void keypadPortSetRow(uint8_t row, bool_t state) {
+    if (!hw.initialized) return;
+
+    // true = activo (LOW), false = inactivo (high-Z)
+    HAL_GPIO_WritePin(hw.row_ports[row], hw.row_pins[row], state ? GPIO_PIN_RESET : GPIO_PIN_SET);
 }
 
-bool keypadPortReadCol(uint8_t col) {
-    return (HAL_GPIO_ReadPin(COL_GPIO, col_pins[col]) == GPIO_PIN_RESET);
+bool_t keypadPortReadCol(uint8_t col) {
+    if (!hw.initialized) return false;
+
+    // Detecta si hay LOW en la columna (tecla presionada)
+    return (HAL_GPIO_ReadPin(hw.col_ports[col], hw.col_pins[col]) == GPIO_PIN_RESET);
 }
