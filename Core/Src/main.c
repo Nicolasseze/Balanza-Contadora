@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-//#include "lcd_driver.h"
+#include "lcd_driver.h"
 #include "hx711_driver.h"
 
 /* USER CODE END Includes */
@@ -81,8 +81,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  WeightSensor_t wx;
-  float weight;
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -99,10 +98,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   //Inicializacion de modulos
-  //lcdInit();
+  lcdInit();
 
-  //Prueba de comandos como llegan
-  initReadWeight(&wx);
 
   /* USER CODE END 2 */
 
@@ -110,7 +107,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	 weight = readWeight(&wx);
+	  lcdPrint("Hola mundo");
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

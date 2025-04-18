@@ -16,6 +16,8 @@
  */
 extern I2C_HandleTypeDef hi2c1;
 
+static uint8_t reverse_nibble(uint8_t nibble);
+
 /**
  * @brief Envía un pulso de habilitación al LCD para capturar el nibble actual.
  *
@@ -59,8 +61,9 @@ void lcdPortInit(void) {
     lcdStrobe(LCD_INIT);
     HAL_Delay(5);
 
-    lcdStrobe(LCD_INIT);
-    HAL_Delay(5); // Modo 4 bits habilitado
+    lcdStrobe(LCD_INIT2);
+    HAL_Delay(5);
+    // Modo 4 bits habilitado
 }
 
 /**
@@ -75,12 +78,27 @@ void lcdPortInit(void) {
  */
 bool_t lcdPortWrite(uint8_t data, bool_t rs) {
     uint8_t upper = (data & LCD_HIGH_NIBBLE_MASK) >> LCD_HIGH_NIBBLE_SHIFT;
+    upper = reverse_nibble(upper);
+
     uint8_t lower = (data & LCD_LOW_NIBBLE_MASK) << LCD_LOW_NIBBLE_SHIFT;
+    lower = reverse_nibble(lower);
+
     uint8_t control = rs ? LCD_RS_TXT : LCD_RS_CMD;
 
     lcdStrobe(upper | control);
     lcdStrobe(lower | control);
 
     return true;
+}
+
+static uint8_t reverse_nibble(uint8_t nibble) {
+	static const uint8_t reverse_table[16] = {
+			0x0, 0x8, 0x4, 0xC,
+			0x2, 0xA, 0x6, 0xE,
+			0x1, 0x9, 0x5, 0xD,
+			0x3, 0xB, 0x7, 0xF
+	};
+	return reverse_table[nibble & 0x0F];
+
 }
 

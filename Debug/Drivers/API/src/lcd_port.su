@@ -1,3 +1,4 @@
-../Drivers/API/src/lcd_port.c:27:13:lcdStrobe	32	static
-../Drivers/API/src/lcd_port.c:49:6:lcdPortInit	8	static
-../Drivers/API/src/lcd_port.c:76:8:lcdPortWrite	24	static
+../Drivers/API/src/lcd_port.c:29:13:lcdStrobe	32	static
+../Drivers/API/src/lcd_port.c:51:6:lcdPortInit	8	static
+../Drivers/API/src/lcd_port.c:79:8:lcdPortWrite	24	static
+../Drivers/API/src/lcd_port.c:94:16:reverse_nibble	16	static

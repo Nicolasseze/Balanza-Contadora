@@ -20,26 +20,28 @@
 
 /** @name Definición de bits para el control del LCD */
 /**@{*/
-#define LCD_EN        	0x04U  /**< Bit de habilitación (Enable) */
-#define LCD_RW        	0x02U  /**< Bit de lectura/escritura (RW). No se utiliza, se deja en 0 */
+#define LCD_EN        	0x20U  /**< Bit de habilitación (Enable) */
+#define LCD_RW        	0x40U  /**< Bit de lectura/escritura (RW). No se utiliza, se deja en 0 */
 #define LCD_RS_CMD    	0x00U  /**< Bit RS en modo comando */
-#define LCD_RS_TXT    	0x01U  /**< Bit RS en modo texto/datos */
-#define LCD_BACKLIGHT 	0x80U  /**< Bit para activar retroiluminación */
+#define LCD_RS_TXT    	0x80U  /**< Bit RS en modo texto/datos */
+
+#define LCD_BACKLIGHT 	0x00U  //Esta en 0 porque no lo tiene mas el de backlight/**< Bit para activar retroiluminación */
 /**@}*/
 
 /** @name Manejo de nibbles para la transmisión en 4 bits */
 /**@{*/
 #define LCD_HIGH_NIBBLE_MASK	0xF0  /**< Máscara para nibble alto */
 #define LCD_LOW_NIBBLE_MASK		0x0F  /**< Máscara para nibble bajo */
-#define LCD_HIGH_NIBBLE_SHIFT	1     /**< Shift para nibble alto en el byte transmitido */
-#define LCD_LOW_NIBBLE_SHIFT	3     /**< Shift para nibble bajo en el byte transmitido */
+#define LCD_HIGH_NIBBLE_SHIFT	4     /**< Shift para nibble alto en el byte transmitido */
+#define LCD_LOW_NIBBLE_SHIFT	0     /**< Shift para nibble bajo en el byte transmitido */
 /**@}*/
 
 /**
  * @def LCD_INIT
  * @brief Comando de inicialización (modo 8 bits) desplazado para transmisión.
  */
-#define LCD_INIT	(0x30U >> 1)
+#define LCD_INIT	(0x0CU)
+#define LCD_INIT2	(0x04U)
 
 /**
  * @typedef bool_t

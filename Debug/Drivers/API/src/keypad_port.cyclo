@@ -1,5 +1,5 @@
-../Drivers/API/src/keypad_port.c:30:6:keypadPortAttachRow	3
-../Drivers/API/src/keypad_port.c:38:6:keypadPortAttachCol	3
-../Drivers/API/src/keypad_port.c:46:6:keypadPortInit	5
+../Drivers/API/src/keypad_port.c:30:6:keypadPortAttachRow	1
+../Drivers/API/src/keypad_port.c:38:6:keypadPortAttachCol	1
+../Drivers/API/src/keypad_port.c:46:6:keypadPortInit	3
 ../Drivers/API/src/keypad_port.c:75:6:keypadPortSetRow	2
 ../Drivers/API/src/keypad_port.c:82:8:keypadPortReadCol	2
