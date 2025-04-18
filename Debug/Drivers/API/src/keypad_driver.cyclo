@@ -1,3 +1,3 @@
 ../Drivers/API/src/keypad_driver.c:32:6:keypadInit	1
-../Drivers/API/src/keypad_driver.c:45:8:keypadGetKey	4
+../Drivers/API/src/keypad_driver.c:46:8:keypadGetKey	4
 ../Drivers/API/src/keypad_driver.c:73:8:keypadScanAll	4

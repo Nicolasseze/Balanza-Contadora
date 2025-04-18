@@ -59,6 +59,7 @@ void keypadPortInit(uint8_t row_count, uint8_t col_count) {
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 
     for (uint8_t i = 0; i < hw.rows; i++) {
+    	GPIO_InitStruct.Pin = hw.row_pins[i];
         HAL_GPIO_WritePin(hw.row_ports[i], hw.row_pins[i], GPIO_PIN_SET); // high-Z (no activo)
         HAL_GPIO_Init(hw.row_ports[i], &GPIO_InitStruct);
     }
@@ -68,6 +69,7 @@ void keypadPortInit(uint8_t row_count, uint8_t col_count) {
     GPIO_InitStruct.Pull = GPIO_PULLUP;
 
     for (uint8_t i = 0; i < hw.cols; i++) {
+    	GPIO_InitStruct.Pin = hw.col_pins[i];
         HAL_GPIO_Init(hw.col_ports[i], &GPIO_InitStruct);
     }
 }

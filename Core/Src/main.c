@@ -23,6 +23,9 @@
 /* USER CODE BEGIN Includes */
 #include "lcd_driver.h"
 #include "hx711_driver.h"
+#include "keypad_driver.h"
+#include "keypad_port.h"
+
 
 /* USER CODE END Includes */
 
@@ -47,7 +50,12 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+const char keypadKeymap[KEYPAD_ROWS][KEYPAD_COLS] = {
+		{'1','2','3','A'},
+		{'4','5','6','B'},
+		{'7','8','9','C'},
+		{'*','0','#','D'}
+};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,8 +106,21 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   //Inicializacion de modulos
-  lcdInit();
+  //lcdInit();
+  keypadPortAttachRow(0, GPIOC, GPIO_PIN_7);
+  keypadPortAttachRow(1, GPIOA, GPIO_PIN_9);
+  keypadPortAttachRow(2, GPIOA, GPIO_PIN_8);
+  keypadPortAttachRow(3, GPIOB, GPIO_PIN_10);
+  keypadPortAttachCol(0, GPIOB, GPIO_PIN_4);
+  keypadPortAttachCol(1, GPIOB, GPIO_PIN_5);
+  keypadPortAttachCol(2, GPIOB, GPIO_PIN_3);
+  keypadPortAttachCol(3, GPIOA, GPIO_PIN_10);
 
+  keypadInit();
+  char key;
+  bool_t keyStates[4][4];
+
+  //lcdPrint("Hola mundo");
 
   /* USER CODE END 2 */
 
@@ -107,7 +128,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  lcdPrint("Hola mundo");
+	  if (keypadGetKey(&key)) {
+		  __NOP();// hacer algo con key
+	  }
+	  HAL_Delay(50);
+//	  if(keypadScanAll(keyStates)){
+//		  __NOP();
+//	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

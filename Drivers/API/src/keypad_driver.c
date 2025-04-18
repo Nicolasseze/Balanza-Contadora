@@ -30,6 +30,7 @@ extern const char keypadKeymap[KEYPAD_ROWS][KEYPAD_COLS];
  * Debe ser llamada una vez antes de usar cualquier otra función del driver.
  */
 void keypadInit(void) {
+
     keypadPortInit(KEYPAD_ROWS, KEYPAD_COLS);
 }
 
@@ -53,7 +54,6 @@ bool_t keypadGetKey(char* key) {
                 return true;
             }
         }
-
         keypadPortSetRow(row, false);
     }
 

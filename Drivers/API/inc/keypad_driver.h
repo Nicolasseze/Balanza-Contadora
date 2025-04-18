@@ -38,6 +38,8 @@
 #define KEYPAD_ROWS 4
 #define KEYPAD_COLS 4
 
+#define DELAY_MS_
+
 typedef bool bool_t;
 
 /**
