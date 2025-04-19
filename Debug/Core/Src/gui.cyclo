@@ -7,9 +7,10 @@
 ../Core/Src/gui.c:109:6:guiPesandoUpdate	2
 ../Core/Src/gui.c:121:6:guiMostrarTara	1
 ../Core/Src/gui.c:131:6:guiTaraUpdate	1
-../Core/Src/gui.c:138:6:guiMostrarReferenciaConteo	1
-../Core/Src/gui.c:148:6:guiMostrarConteo	1
-../Core/Src/gui.c:162:6:guiMostrarCalibrandoOffset	1
-../Core/Src/gui.c:170:6:guiMostrarCalibrandoGanancia	1
-../Core/Src/gui.c:178:6:guiMostrarConfirmacionCalibracion	1
-../Core/Src/gui.c:184:6:guiMostrarError	1
+../Core/Src/gui.c:138:6:guiTaraOk	1
+../Core/Src/gui.c:143:6:guiMostrarReferenciaConteo	1
+../Core/Src/gui.c:153:6:guiMostrarConteo	1
+../Core/Src/gui.c:167:6:guiMostrarCalibrandoOffset	1
+../Core/Src/gui.c:175:6:guiMostrarCalibrandoGanancia	1
+../Core/Src/gui.c:183:6:guiMostrarConfirmacionCalibracion	1
+../Core/Src/gui.c:189:6:guiMostrarError	1

@@ -131,8 +131,13 @@ void guiMostrarTara(uint32_t pesoGr) {
 void guiTaraUpdate(uint32_t pesoGr){
 	char buf[21] = "                    " ;
 	snprintf(buf, sizeof(buf), "%lu g", pesoGr);
-	lcdSetCursor(1, 6);
+	lcdSetCursor(2, 6);
 	lcdPrint(buf);
+}
+
+void guiTaraOk(void){
+	lcdClear();
+	printCentered(1,"TARA exitosa");
 }
 
 void guiMostrarReferenciaConteo(const char *s) {

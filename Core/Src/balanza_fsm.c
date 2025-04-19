@@ -8,6 +8,8 @@
 #include "balanza_fsm.h"
 #include "gui.h"
 
+#include "API_delay.h"
+
 #include "lcd_driver.h"
 #include "hx711_driver.h"
 #include "keypad_driver.h"
@@ -17,6 +19,8 @@ static BalanzaContexto_t ctx = {
     .evento = EVT_NINGUNO,
 
 };
+
+static delay_t delayTaraOk;
 
 // Cambiar estado y mostrar GUI asociada
 static void cambiarEstado(EstadoBalanza_t nuevo) {
@@ -38,6 +42,9 @@ static void cambiarEstado(EstadoBalanza_t nuevo) {
     	break;
     case EST_TARA:
     	guiMostrarTara(ctx.pesoActual);
+    	break;
+    case EST_TARA_OK:
+    	guiTaraOk();
     	break;
     case EST_CONTEO_POSITIVO:
     	guiMostrarReferenciaConteo("Positivo     ");
@@ -75,35 +82,39 @@ static void cambiarEstado(EstadoBalanza_t nuevo) {
 void balanzaFSM_Init(void) {
 
 	//Inicializo
+	/* INICIO PRUEBA */
 	ctx.pesoActual = 150;
 	ctx.pesoReferencia = 10;
 	ctx.piezasContadas = 75;
 	ctx.pesoTara = 100;
+	/* FIN PRUEBA */
 
 	guiMostrarInicio();
 	HAL_Delay(1500);
 	cambiarEstado(EST_MENU_PRINCIPAL);
+
+	delayInit(&delayTaraOk, 1000);
 
 }
 
 
 void balanzaStateMachine(void) {
 
-	if (ctx.evento == EVT_NINGUNO)
-		return;
+//	if (ctx.evento == EVT_NINGUNO)
+//		return;
 
 	//Para opciones del manu principal
 	static int opcionActual = 0;
 
 	switch (ctx.estadoActual) {
 
+	//LISTA O ESO CREO
 	case EST_MENU_PRINCIPAL:
 		if(ctx.evento == EVT_OK){
 			switch(opcionActual){
 			case MENU_OP_PESANDO:
 				cambiarEstado(EST_PESANDO);
 				break;
-
 			case MENU_OP_TARA:
 				cambiarEstado(EST_TARA);
 				break;
@@ -138,6 +149,7 @@ void balanzaStateMachine(void) {
 		}
 		break;
 
+	//	LISTA O ESO CREO
 	case EST_PESANDO:
 		if(ctx.evento == EVT_CANCELAR) {
 			cambiarEstado(EST_MENU_PRINCIPAL);
@@ -145,7 +157,7 @@ void balanzaStateMachine(void) {
 			break;
 		}
 		if(ctx.evento == EVT_OK)
-				ctx.tara = ctx.tara ? false : true;
+			ctx.tara = ctx.tara ? false : true;
 
 		if(ctx.tara)
 			guiPesandoUpdate(ctx.pesoActual-ctx.pesoTara, ctx.tara);
@@ -153,28 +165,37 @@ void balanzaStateMachine(void) {
 			guiPesandoUpdate(ctx.pesoActual, ctx.tara);
 		break;
 
+	//	LISTA O ESO CREO
 	case EST_TARA:
 		if (ctx.evento == EVT_CANCELAR) {
 			cambiarEstado(EST_MENU_PRINCIPAL);
 			opcionActual = 0;
+			break;
 		}
 		else if(ctx.evento == EVT_OK){
 			ctx.pesoTara = ctx.pesoActual;
-			cambiarEstado(EST_MENU_PRINCIPAL);
+			cambiarEstado(EST_TARA_OK);
 			break;
 		}
 		guiTaraUpdate(ctx.pesoActual);
 		break;
 
+	case EST_TARA_OK:
+		if(delayRead(&delayTaraOk) == true){
+			cambiarEstado(EST_MENU_PRINCIPAL);
+			opcionActual = 0;
+		}
+		break;
+
 	case EST_CONTEO_POSITIVO:
 		if(ctx.evento == EVT_CANCELAR){
 			cambiarEstado(EST_MENU_PRINCIPAL);
-		opcionActual = 0;
+			opcionActual = 0;
 		}
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_NEGATIVO);
 		if(ctx.evento == EVT_OK){
-			ctx.pesoReferencia = ctx.pesoActual;
+			ctx.pesoReferencia = ctx.tara? ctx.pesoActual-ctx.pesoReferencia : ctx.pesoActual;
 			cambiarEstado(EST_CONTEO);
 		}
 		break;
@@ -182,7 +203,7 @@ void balanzaStateMachine(void) {
 	case EST_CONTEO_NEGATIVO:
 		if(ctx.evento == EVT_CANCELAR){
 			cambiarEstado(EST_MENU_PRINCIPAL);
-		opcionActual = 0;
+			opcionActual = 0;
 		}
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_SET);
@@ -195,7 +216,7 @@ void balanzaStateMachine(void) {
 	case EST_CONTEO_SET:
 		if(ctx.evento == EVT_CANCELAR){
 			cambiarEstado(EST_MENU_PRINCIPAL);
-		opcionActual = 0;
+			opcionActual = 0;
 		}
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_POSITIVO);
@@ -206,6 +227,11 @@ void balanzaStateMachine(void) {
 		break;
 
 	case EST_CONTEO:
+		if(ctx.evento == EVT_CANCELAR){
+			cambiarEstado(EST_MENU_PRINCIPAL);
+			opcionActual = 0;
+		}
+
 		break;
 
         default:
