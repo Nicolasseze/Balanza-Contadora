@@ -8,6 +8,10 @@
 #include "balanza_fsm.h"
 #include "gui.h"
 
+#include "lcd_driver.h"
+#include "hx711_driver.h"
+#include "keypad_driver.h"
+
 static BalanzaContexto_t ctx = {
     .estadoActual = EST_GUI_INICIO,
     .evento = EVT_NINGUNO,
@@ -24,7 +28,7 @@ static void cambiarEstado(EstadoBalanza_t nuevo) {
     	guiMostrarInicio();
     	break;
     case EST_MENU_PRINCIPAL:
-    	guiMostrarMenuPrincipal();
+    	guiMostrarMenuPrincipal(MENU_OP_PESANDO);
     	break;
     case EST_PESANDO:
     	if(ctx.tara)
@@ -36,13 +40,13 @@ static void cambiarEstado(EstadoBalanza_t nuevo) {
     	guiMostrarTara(ctx.pesoActual);
     	break;
     case EST_CONTEO_POSITIVO:
-    	guiMostrarReferenciaConteo("Positivo");
+    	guiMostrarReferenciaConteo("Positivo     ");
     	break;
     case EST_CONTEO_NEGATIVO:
-    	guiMostrarReferenciaConteo("Negativo");
+    	guiMostrarReferenciaConteo("Negativo     ");
     	break;
     case EST_CONTEO_SET:
-    	guiMostrarReferenciaConteo("Ingrese valor en gr");
+    	guiMostrarReferenciaConteo("Ingrese valor");
     	break;
     case EST_CONTEO:
     	// En 000 deberia de estar el total almacenado de las piezas contadas
@@ -84,20 +88,48 @@ void balanzaFSM_Init(void) {
 
 
 void balanzaStateMachine(void) {
-//	if (ctx.evento == EVT_NINGUNO)
-//		return;
+
+	if (ctx.evento == EVT_NINGUNO)
+		return;
+
+	//Para opciones del manu principal
+	static int opcionActual = 0;
 
 	switch (ctx.estadoActual) {
 
 	case EST_MENU_PRINCIPAL:
-//		if (ctx.evento == EVT_OK) {
-//			int opcion = opcionSeleccionada();
-//			if (opcion == 0) cambiarEstado(EST_CALIB_OFFSET);
-//			else if (opcion == 1) cambiarEstado(EST_TARA);
-//			else if (opcion == 2) cambiarEstado(EST_CONTEO_REFERENCIA);
-//		}
-		if(ctx.evento == EVT_TECLA){
-			if( ctx.tecla == 'A')
+		if(ctx.evento == EVT_OK){
+			switch(opcionActual){
+			case MENU_OP_PESANDO:
+				cambiarEstado(EST_PESANDO);
+				break;
+
+			case MENU_OP_TARA:
+				cambiarEstado(EST_TARA);
+				break;
+			case MENU_OP_CONTEO:
+				cambiarEstado(EST_CONTEO);
+				break;
+			case MENU_OP_CALIBRACION:
+				cambiarEstado(EST_CALIB_OFFSET);
+				break;
+			case MENU_OP_CONFIG_UART:
+				cambiarEstado(EST_CONFIGURACION);
+				break;
+			default:
+				opcionActual = MENU_OP_PESANDO;
+			}
+		}
+		else if(ctx.evento == EVT_TECLA){
+			if(ctx.tecla == '8' || ctx.tecla == '6'){ // tecla para bajar
+				opcionActual = (opcionActual + 1) % MENU_OP_TOTAL;
+				guiMostrarMenu(opcionActual);
+			}
+			else if(ctx.tecla == '2' || ctx.tecla == '4'){ // tecla para subir
+				opcionActual = (opcionActual + MENU_OP_TOTAL - 1) % MENU_OP_TOTAL;
+				guiMostrarMenu(opcionActual);
+			}
+			else if( ctx.tecla == 'A')
 				cambiarEstado(EST_PESANDO);
 			else if(ctx.tecla == 'B')
 				cambiarEstado(EST_TARA);
@@ -109,6 +141,7 @@ void balanzaStateMachine(void) {
 	case EST_PESANDO:
 		if(ctx.evento == EVT_CANCELAR) {
 			cambiarEstado(EST_MENU_PRINCIPAL);
+			opcionActual = 0;
 			break;
 		}
 		if(ctx.evento == EVT_OK)
@@ -123,6 +156,7 @@ void balanzaStateMachine(void) {
 	case EST_TARA:
 		if (ctx.evento == EVT_CANCELAR) {
 			cambiarEstado(EST_MENU_PRINCIPAL);
+			opcionActual = 0;
 		}
 		else if(ctx.evento == EVT_OK){
 			ctx.pesoTara = ctx.pesoActual;
@@ -133,36 +167,42 @@ void balanzaStateMachine(void) {
 		break;
 
 	case EST_CONTEO_POSITIVO:
+		if(ctx.evento == EVT_CANCELAR){
+			cambiarEstado(EST_MENU_PRINCIPAL);
+		opcionActual = 0;
+		}
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_NEGATIVO);
 		if(ctx.evento == EVT_OK){
 			ctx.pesoReferencia = ctx.pesoActual;
 			cambiarEstado(EST_CONTEO);
 		}
-		if(ctx.evento == EVT_CANCELAR)
-			cambiarEstado(EST_MENU_PRINCIPAL);
 		break;
 
 	case EST_CONTEO_NEGATIVO:
+		if(ctx.evento == EVT_CANCELAR){
+			cambiarEstado(EST_MENU_PRINCIPAL);
+		opcionActual = 0;
+		}
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_SET);
 		if(ctx.evento == EVT_OK){
 			ctx.pesoReferencia = ctx.pesoActual;
 			cambiarEstado(EST_CONTEO);
 		}
-		if(ctx.evento == EVT_CANCELAR)
-			cambiarEstado(EST_MENU_PRINCIPAL);
 		break;
 
 	case EST_CONTEO_SET:
+		if(ctx.evento == EVT_CANCELAR){
+			cambiarEstado(EST_MENU_PRINCIPAL);
+		opcionActual = 0;
+		}
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_POSITIVO);
 		if(ctx.evento == EVT_OK){
 			ctx.pesoReferencia = ctx.pesoActual;
 			cambiarEstado(EST_CONTEO);
 		}
-		if(ctx.evento == EVT_CANCELAR)
-			cambiarEstado(EST_MENU_PRINCIPAL);
 		break;
 
 	case EST_CONTEO:

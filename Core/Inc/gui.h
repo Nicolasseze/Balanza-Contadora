@@ -18,10 +18,12 @@ typedef bool bool_t;
  */
 void guiMostrarInicio(void);
 
+
+void guiMostrarMenu(int opcion);
 /**
  * @brief Muestra el menú principal con opciones
  */
-void guiMostrarMenuPrincipal(void);
+void guiMostrarMenuPrincipal(int opcion);
 
 /**
  * @brief Muestra el modo de pesaje libre con peso actual

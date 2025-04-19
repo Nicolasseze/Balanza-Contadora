@@ -1,6 +1,6 @@
-../Core/Src/balanza_fsm.c:18:13:cambiarEstado	16	static
-../Core/Src/balanza_fsm.c:71:6:balanzaFSM_Init	8	static
-../Core/Src/balanza_fsm.c:86:6:balanzaStateMachine	8	static
-../Core/Src/balanza_fsm.c:179:6:balanzaSetEvento	16	static
-../Core/Src/balanza_fsm.c:184:6:balanzaSetPeso	16	static
-../Core/Src/balanza_fsm.c:188:6:balanzaSetTecla	16	static
+../Core/Src/balanza_fsm.c:22:13:cambiarEstado	16	static
+../Core/Src/balanza_fsm.c:75:6:balanzaFSM_Init	8	static
+../Core/Src/balanza_fsm.c:90:6:balanzaStateMachine	8	static
+../Core/Src/balanza_fsm.c:208:6:balanzaSetEvento	16	static
+../Core/Src/balanza_fsm.c:213:6:balanzaSetPeso	16	static
+../Core/Src/balanza_fsm.c:217:6:balanzaSetTecla	16	static

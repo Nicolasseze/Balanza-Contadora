@@ -11,6 +11,16 @@
 #include <stdio.h>
 #include <string.h>
 
+static const char* menuOpciones[] = {
+	    "1-Pesar",
+	    "2-Tarear",
+	    "3-Contar",
+	    "4-Calibracion",
+	    "5-Config UART"
+	};
+
+#define MENU_TOTAL_OPCIONES (sizeof(menuOpciones)/sizeof(menuOpciones[0]))
+#define MENU_VISIBLE_LINEAS	3
 
 static void printCentered(uint8_t row, const char* str) {
     char buffer[LCD_WIDTH + 1];
@@ -53,16 +63,36 @@ void guiMostrarInicio(void) {
     printCentered(3, "Nicolas Porco 2025");
 }
 
-void guiMostrarMenuPrincipal(void) {
+void guiMostrarMenu(int opcion){
+
+    // Determinar el primer índice visible (scroll)
+    static int inicio = 0;
+    // ¿Está fuera de la ventana actual?
+    if (opcion < inicio) {
+        inicio = opcion;
+    } else if (opcion >= inicio + MENU_VISIBLE_LINEAS) {
+        inicio = opcion - MENU_VISIBLE_LINEAS + 1;
+    }
+
+    for (int i = 0; i < MENU_VISIBLE_LINEAS; i++) {
+        int idx = inicio + i;
+        if (idx >= MENU_TOTAL_OPCIONES) break;
+
+        char buffer[21];
+        snprintf(buffer, sizeof(buffer), "%c %-*s", (idx == opcion) ? '>' : ' ',
+        				LCD_WIDTH - 2, menuOpciones[idx]);  // -2 por flecha y espacio
+        lcdShowLine(i + 1, buffer);
+    }
+}
+
+void guiMostrarMenuPrincipal(int opcion) {
     lcdClear();
     printCentered(0, " Balanza Contadora ");
-    lcdShowLine(1, "> 1-Calibrar");
-    lcdShowLine(2, "  2-Tarear");
-    lcdShowLine(3, "  3-Contar");
+    guiMostrarMenu(opcion);
 }
 
 void guiMostrarPesando(uint32_t pesoGr, bool_t tara) {
-    char buf[21];
+    char buf[21] = "                    " ;
     lcdClear();
     printCentered(0, "Modo: Pesando");
     snprintf(buf, sizeof(buf), "Peso: %lu g", pesoGr);
@@ -77,7 +107,7 @@ void guiMostrarPesando(uint32_t pesoGr, bool_t tara) {
 }
 
 void guiPesandoUpdate(uint32_t pesoGr, bool_t tara){
-	char buf[21];
+	char buf[21] = "              " ;
 	snprintf(buf, sizeof(buf), "%lu g", pesoGr);
 	lcdSetCursor(1, 6);
 	lcdPrint(buf);
@@ -89,7 +119,7 @@ void guiPesandoUpdate(uint32_t pesoGr, bool_t tara){
 }
 
 void guiMostrarTara(uint32_t pesoGr) {
-    char buf[21];
+	char buf[21] = "              ";
     lcdClear();
     printCentered(0, "Modo: Tara");
     lcdShowLine(1, "Coloque recipiente");
@@ -99,7 +129,7 @@ void guiMostrarTara(uint32_t pesoGr) {
 }
 
 void guiTaraUpdate(uint32_t pesoGr){
-	char buf[21];
+	char buf[21] = "                    " ;
 	snprintf(buf, sizeof(buf), "%lu g", pesoGr);
 	lcdSetCursor(1, 6);
 	lcdPrint(buf);
