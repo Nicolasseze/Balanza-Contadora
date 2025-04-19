@@ -50,10 +50,15 @@ void guiTaraOk(void);
 
 void guiTaraUpdate(uint32_t pesoGr);
 
+
+void guiMostrarConteoOpcion(int opcion);
 /**
  * @brief Muestra la pantalla para colocar la referencia en el conteo
  */
-void guiMostrarReferenciaConteo(const char *s);
+void guiMostrarConteoMenu(int opcion);
+
+void guiMostrarConteoNeg1(void);
+void guiMostrarConteoNeg2(void);
 
 /**
  * @brief Muestra la pantalla de conteo de piezas

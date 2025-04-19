@@ -17,7 +17,19 @@ static const char* menuOpciones[] = {
 	    "3-Contar",
 	    "4-Calibracion",
 	    "5-Config UART"
-	};
+};
+
+static const char *menuConteo[] = {
+		"Positivo",
+		"Negativo",
+		"Ingrese valor gr"
+};
+
+static const char *menuConteoBrief[] = {
+		"Coloque 1 pieza",
+		"Coloque el total pzs",
+		"Ingrese el valor",
+};
 
 #define MENU_TOTAL_OPCIONES (sizeof(menuOpciones)/sizeof(menuOpciones[0]))
 #define MENU_VISIBLE_LINEAS	3
@@ -140,13 +152,34 @@ void guiTaraOk(void){
 	printCentered(1,"TARA exitosa");
 }
 
-void guiMostrarReferenciaConteo(const char *s) {
-	char buf[21]="[B]";
+void guiMostrarConteoOpcion(int opcion){
+	char buf[21];
+	snprintf(buf, sizeof(buf),"%-*s", LCD_WIDTH, menuConteoBrief[opcion]);
+    lcdShowLine(1, buf);
+ 	snprintf(buf, sizeof(buf),"[B] %-*s", LCD_WIDTH-4, menuConteo[opcion]);
+    lcdShowLine(2, buf);
+}
+
+void guiMostrarConteoMenu(int opcion){
     lcdClear();
     printCentered(0, "Modo: Contador");
-    lcdShowLine(1, "Coloque 1 pieza");
-    strcat(buf, s);
-    lcdShowLine(2, buf);
+    guiMostrarConteoOpcion(opcion);
+    printSubmenu(3, "[*]Menu","[#]OK");
+}
+
+void guiMostrarConteoNeg1(void){
+	lcdClear();
+	printCentered(0, "Modo: Contador");
+	printCentered(1, "Negativo");
+	lcdShowLine(2, "Ponga todas las pzs");
+    printSubmenu(3, "[*]Menu","[#]OK");
+}
+
+void guiMostrarConteoNeg2(void){
+	lcdClear();
+	printCentered(0, "Modo: Contador");
+	printCentered(1, "Negativo");
+	lcdShowLine(2, "Retire 1 pza");
     printSubmenu(3, "[*]Menu","[#]OK");
 }
 

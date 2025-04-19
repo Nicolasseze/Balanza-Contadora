@@ -15,6 +15,25 @@
 
 typedef bool bool_t;
 
+//MENUSSS
+//Opciones menu principal
+typedef enum {
+    MENU_OP_PESANDO = 0,
+    MENU_OP_TARA,
+    MENU_OP_CONTEO,
+	MENU_OP_CALIBRACION,
+	MENU_OP_CONFIG_UART,
+    MENU_OP_TOTAL // <- No es una opción, solo indica la cantidad
+} menu_opciones_t;
+
+//Opciones menu contador
+typedef enum{
+	MENU_CONTEO_POS,
+	MENU_CONTEO_NEG,
+	MENU_CONTEO_SET,
+	MENU_CONTEO_TOTAL // <- No es una opción, solo indica la cantidad
+} menu_conteo_t;
+
 // Estados de la MEF
 typedef enum {
     EST_GUI_INICIO = 0,
@@ -22,9 +41,7 @@ typedef enum {
     EST_PESANDO,
     EST_TARA,
 	EST_TARA_OK,
-    EST_CONTEO_POSITIVO,
-    EST_CONTEO_NEGATIVO,
-    EST_CONTEO_SET,
+    EST_CONTEO_MENU,
 	EST_CONTEO,
     EST_CALIB_OFFSET,
     EST_CALIB_GANANCIA1,
@@ -45,15 +62,13 @@ typedef enum {
     EVT_ERROR_SENSOR,
 } EventoBalanza_t;
 
-//Opciones menu principal
+//ESTADOS MEF CONTADOR
 typedef enum {
-    MENU_OP_PESANDO = 0,
-    MENU_OP_TARA,
-    MENU_OP_CONTEO,
-	MENU_OP_CALIBRACION,
-	MENU_OP_CONFIG_UART,
-    MENU_OP_TOTAL // <- No es una opción, solo indica la cantidad
-} menu_opciones_t;
+    SUBMENU_IDLE,
+    SUBMENU_NEG_PESAR_TACHO,
+    SUBMENU_NEG_TOMAR_MUESTRA,
+    SUBMENU_SET_INGRESO_VALOR
+} conteo_subestado_t;
 
 // Contexto de la balanza
 typedef struct {
@@ -66,6 +81,7 @@ typedef struct {
     uint32_t pesoReferencia;
     uint32_t piezasContadas;
     uint32_t piezasTotales;
+    menu_conteo_t modoConteo;
 } BalanzaContexto_t;
 
 void balanzaFSM_Init(void);

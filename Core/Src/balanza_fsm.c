@@ -20,7 +20,50 @@ static BalanzaContexto_t ctx = {
 
 };
 
+static conteo_subestado_t subEstadoConteo = SUBMENU_IDLE;
+
 static delay_t delayTaraOk;
+
+static void conteoMenuFSM(void){
+
+	static uint32_t aux;
+	//Actualizo modo contador
+	if(ctx.evento == EVT_TECLA && ctx.tecla == 'B' && subEstadoConteo == SUBMENU_IDLE){
+		ctx.modoConteo ++;
+		ctx.modoConteo %= MENU_CONTEO_TOTAL;
+		guiMostrarConteoOpcion((int)ctx.modoConteo);
+	}else if(ctx.evento == EVT_OK){
+		switch( ctx.modoConteo ){
+		case MENU_CONTEO_POS:
+			ctx.pesoReferencia = ctx.tara? ctx.pesoActual-ctx.pesoTara : ctx.pesoActual;
+			cambiarEstado(EST_CONTEO);
+			break;
+		case MENU_CONTEO_NEG:
+			switch(subEstadoConteo) {
+			case SUBMENU_IDLE:
+				guiMostrarConteoNeg1();
+				subEstadoConteo = SUBMENU_NEG_PESAR_TACHO;
+				break;
+			case SUBMENU_NEG_PESAR_TACHO:
+				aux = ctx.tara? ctx.pesoActual - ctx.pesoTara : ctx.pesoActual;
+				guiMostrarConteoNeg2();
+				subEstadoConteo = SUBMENU_NEG_TOMAR_MUESTRA;
+				break;
+			case SUBMENU_NEG_TOMAR_MUESTRA:
+				aux -= ctx.tara? ctx.pesoActual - ctx.pesoTara : ctx.pesoActual;
+				ctx.pesoReferencia = aux;
+				cambiarEstado(EST_CONTEO);
+				subEstadoConteo = SUBMENU_IDLE;
+				break;
+			default:
+				subEstadoConteo = SUBMENU_IDLE;
+			}
+			break;
+		case MENU_CONTEO_SET:
+			break;
+		}
+	}
+}
 
 // Cambiar estado y mostrar GUI asociada
 static void cambiarEstado(EstadoBalanza_t nuevo) {
@@ -45,14 +88,8 @@ static void cambiarEstado(EstadoBalanza_t nuevo) {
     case EST_TARA_OK:
     	guiTaraOk();
     	break;
-    case EST_CONTEO_POSITIVO:
-    	guiMostrarReferenciaConteo("Positivo     ");
-    	break;
-    case EST_CONTEO_NEGATIVO:
-    	guiMostrarReferenciaConteo("Negativo     ");
-    	break;
-    case EST_CONTEO_SET:
-    	guiMostrarReferenciaConteo("Ingrese valor");
+    case EST_CONTEO_MENU:
+    	guiMostrarConteoMenu(MENU_CONTEO_POS);
     	break;
     case EST_CONTEO:
     	guiMostrarConteo(ctx.piezasContadas, ctx.pesoReferencia, ctx.piezasTotales);
@@ -85,6 +122,7 @@ void balanzaFSM_Init(void) {
 	ctx.pesoReferencia = 10;
 	ctx.piezasContadas = 75;
 	ctx.pesoTara = 100;
+	ctx.modoConteo = MENU_CONTEO_POS;
 	/* FIN PRUEBA */
 
 	guiMostrarInicio();
@@ -117,7 +155,7 @@ void balanzaStateMachine(void) {
 				cambiarEstado(EST_TARA);
 				break;
 			case MENU_OP_CONTEO:
-				cambiarEstado(EST_CONTEO);
+				cambiarEstado(EST_CONTEO_MENU);
 				break;
 			case MENU_OP_CALIBRACION:
 				cambiarEstado(EST_CALIB_OFFSET);
@@ -143,7 +181,7 @@ void balanzaStateMachine(void) {
 			else if(ctx.tecla == 'B')
 				cambiarEstado(EST_TARA);
 			else if(ctx.tecla == 'C')
-				cambiarEstado(EST_CONTEO_POSITIVO);
+				cambiarEstado(EST_CONTEO_MENU);
 		}
 		//Reseteo contexto
 		ctx.piezasContadas = 0;
@@ -188,6 +226,16 @@ void balanzaStateMachine(void) {
 		}
 		break;
 
+	case EST_CONTEO_MENU:
+		if(ctx.evento == EVT_CANCELAR){
+			cambiarEstado(EST_MENU_PRINCIPAL);
+			opcionActual = 0;
+		} else
+			conteoMenuFSM();
+		break;
+
+
+/*
 	case EST_CONTEO_POSITIVO:
 		if(ctx.evento == EVT_CANCELAR){
 			cambiarEstado(EST_MENU_PRINCIPAL);
@@ -226,7 +274,7 @@ void balanzaStateMachine(void) {
 			cambiarEstado(EST_CONTEO);
 		}
 		break;
-
+*/
 	case EST_CONTEO:
 		if(ctx.evento == EVT_CANCELAR){
 			cambiarEstado(EST_MENU_PRINCIPAL);
