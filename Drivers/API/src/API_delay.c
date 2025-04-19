@@ -58,3 +58,25 @@ bool_t delayIsRunning(delay_t * delay) {
 	return delay->running;
 }
 
+
+// Inicializa el DWT para poder usar delay_us
+void DWT_Delay_Init(void) {
+
+	// Habilita el uso del DWT (registro de seguimiento)
+    if (!(CoreDebug->DEMCR & CoreDebug_DEMCR_TRCENA_Msk)) {
+        CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    }
+
+	// Reinicia el contador de ciclos
+	DWT->CYCCNT = 0;
+
+	// Habilita el contador de ciclos
+	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+}
+
+void delay_us(uint32_t us) {
+	uint32_t start = DWT->CYCCNT;
+	uint32_t ticks = us * (HAL_RCC_GetHCLKFreq() / 1000000);
+	while ((DWT->CYCCNT - start) < ticks);
+}
+

@@ -25,7 +25,8 @@
 #define LCD_RS_CMD    	0x00U  /**< Bit RS en modo comando */
 #define LCD_RS_TXT    	0x80U  /**< Bit RS en modo texto/datos */
 
-#define LCD_BACKLIGHT 	0x00U  //Esta en 0 porque no lo tiene mas el de backlight/**< Bit para activar retroiluminación */
+//El Backlight esta seteado en "0x00" xq esta deshabilitado
+#define LCD_BACKLIGHT 	0x00U  /**< Bit para activar retroiluminación */
 /**@}*/
 
 /** @name Manejo de nibbles para la transmisión en 4 bits */

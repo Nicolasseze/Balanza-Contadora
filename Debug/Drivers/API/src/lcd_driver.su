@@ -1,8 +1,10 @@
 ../Drivers/API/src/lcd_driver.c:22:13:lcdSendCmd	16	static
 ../Drivers/API/src/lcd_driver.c:35:13:lcdSendData	16	static
-../Drivers/API/src/lcd_driver.c:45:6:lcdCommand	16	static
-../Drivers/API/src/lcd_driver.c:54:6:lcdData	16	static
-../Drivers/API/src/lcd_driver.c:65:8:lcdInit	8	static
-../Drivers/API/src/lcd_driver.c:81:6:lcdClear	8	static
-../Drivers/API/src/lcd_driver.c:92:6:lcdSetCursor	24	static
-../Drivers/API/src/lcd_driver.c:106:6:lcdPrint	16	static
+../Drivers/API/src/lcd_driver.c:46:6:lcdCommand	16	static
+../Drivers/API/src/lcd_driver.c:55:6:lcdData	16	static
+../Drivers/API/src/lcd_driver.c:66:8:lcdInit	8	static
+../Drivers/API/src/lcd_driver.c:82:6:lcdClear	8	static
+../Drivers/API/src/lcd_driver.c:93:6:lcdSetCursor	24	static
+../Drivers/API/src/lcd_driver.c:107:6:lcdPrint	16	static
+../Drivers/API/src/lcd_driver.c:116:6:lcdShowLine	16	static
+../Drivers/API/src/lcd_driver.c:124:6:lcdShowCentered	48	static

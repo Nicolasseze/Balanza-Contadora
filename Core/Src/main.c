@@ -26,6 +26,9 @@
 #include "keypad_driver.h"
 #include "keypad_port.h"
 
+//Core
+#include "balanza_fsm.h"
+
 
 /* USER CODE END Includes */
 
@@ -36,7 +39,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define PRUEBA
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -105,8 +108,14 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  //Inicializacion de modulos
-  //lcdInit();
+  /* CODIGO DE INICIALIZACION QUE TIENE QUE ESTAR SI O SI */
+  //Inicializacion delay us
+  DWT_Delay_Init();
+
+  //Inicializacion del LCD
+  lcdInit();
+
+  //Inicializacion del keypad
   keypadPortAttachRow(0, GPIOC, GPIO_PIN_7);
   keypadPortAttachRow(1, GPIOA, GPIO_PIN_9);
   keypadPortAttachRow(2, GPIOA, GPIO_PIN_8);
@@ -115,12 +124,25 @@ int main(void)
   keypadPortAttachCol(1, GPIOB, GPIO_PIN_5);
   keypadPortAttachCol(2, GPIOB, GPIO_PIN_3);
   keypadPortAttachCol(3, GPIOA, GPIO_PIN_10);
-
   keypadInit();
+
+  //Inicializacion de modulos
+#ifdef PRUEBA
+
+
   char key;
   bool_t keyStates[4][4];
 
-  //lcdPrint("Hola mundo");
+  BalanzaContexto_t ctx ={
+		  .estadoActual = EST_GUI_INICIO,
+  };
+
+  for(uint8_t i=0; i< (uint8_t)EST_CONFIGURACION; i++){
+	  cambiarEstado(ctx);
+	  ctx.estadoActual++;
+  }
+
+#endif
 
   /* USER CODE END 2 */
 
@@ -128,13 +150,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (keypadGetKey(&key)) {
-		  __NOP();// hacer algo con key
-	  }
-	  HAL_Delay(50);
-//	  if(keypadScanAll(keyStates)){
-//		  __NOP();
-//	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

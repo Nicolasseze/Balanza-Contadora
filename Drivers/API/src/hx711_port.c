@@ -15,10 +15,6 @@
 
 static bool_t HX711_IsReady(HX711_t *hx);
 
-static void DWT_Delay_Init(void);
-
-static void delay_us(uint32_t us);
-
 
 void HX711_Init(HX711_t *hx) {
     // Configura el puerto del clock como salida
@@ -84,26 +80,7 @@ static bool_t HX711_IsReady(HX711_t *hx) {
     return HAL_GPIO_ReadPin(hx->din_port, hx->din_pin) == GPIO_PIN_RESET;
 }
 
-// Inicializa el DWT para poder usar delay_us
-static void DWT_Delay_Init(void) {
 
-	// Habilita el uso del DWT (registro de seguimiento)
-    if (!(CoreDebug->DEMCR & CoreDebug_DEMCR_TRCENA_Msk)) {
-        CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    }
-
-	// Reinicia el contador de ciclos
-	DWT->CYCCNT = 0;
-
-	// Habilita el contador de ciclos
-	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-}
-
-static void delay_us(uint32_t us) {
-	uint32_t start = DWT->CYCCNT;
-	uint32_t ticks = us * (HAL_RCC_GetHCLKFreq() / 1000000);
-	while ((DWT->CYCCNT - start) < ticks);
-}
 
 
 #endif /* API_SRC_HX711_PORT_C_ */

@@ -1,0 +1,2 @@
+../Core/Src/balanza_fsm.c:18:6:cambiarEstado	16	static
+../Core/Src/balanza_fsm.c:115:13:lcdSubmenu	56	static

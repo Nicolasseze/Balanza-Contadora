@@ -34,7 +34,8 @@ static void lcdSendCmd(uint8_t cmd) {
  */
 static void lcdSendData(uint8_t data) {
     lcdPortWrite(data, true);
-    HAL_Delay(2);
+//    delay_us(2);
+//    HAL_Delay(2);
 }
 
 /**
@@ -110,5 +111,30 @@ void lcdPrint(const char *str) {
     while (*str) {
         lcdSendData(*str++);
     }
+}
+
+void lcdShowLine(uint8_t row, const char *str){
+	assert_param(str != NULL);
+
+	lcdSetCursor(row, 0);
+	lcdPrint(str);
+
+}
+
+void lcdShowCentered(uint8_t line, const char* str) {
+    char buffer[LCD_WIDTH + 1]; // +1 para el '\0'
+    size_t len = strlen(str);
+
+    if (len > LCD_WIDTH) {
+        strncpy(buffer, str, LCD_WIDTH);
+        buffer[LCD_WIDTH] = '\0';
+    } else {
+        size_t padding = (LCD_WIDTH - len) / 2;
+        memset(buffer, ' ', LCD_WIDTH);
+        memcpy(buffer + padding, str, len);
+        buffer[LCD_WIDTH] = '\0';
+    }
+
+    lcdShowLine(line, buffer);
 }
 

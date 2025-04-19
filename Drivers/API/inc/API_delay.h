@@ -60,4 +60,8 @@ void delayWrite( delay_t * delay, tick_t duration );
  */
 bool_t delayIsRunning (delay_t *delay);
 
+
+void DWT_Delay_Init(void);
+void delay_us(uint32_t us);
+
 #endif /* API_INC_API_DELAY_H_ */

@@ -16,6 +16,13 @@
  */
 extern I2C_HandleTypeDef hi2c1;
 
+
+/**
+ *  @brief Funcion para invertir orden de los bits
+ *
+ *  Esta funcion se utiliza porque se conectaron en orden inverso los pines del PCF8574
+ *  a los pines del LCD D7, D6, D5, D4
+ */
 static uint8_t reverse_nibble(uint8_t nibble);
 
 /**
@@ -32,14 +39,16 @@ static void lcdStrobe(uint8_t data) {
     if (HAL_I2C_Master_Transmit(&hi2c1, LCD_ADDRESS, &buf, 1, HAL_MAX_DELAY) != HAL_OK)
         Error_Handler();
 
-    HAL_Delay(1);
+    delay_us(2);
+    //HAL_Delay(1);
 
     buf = (data & ~LCD_EN) | LCD_BACKLIGHT;
 
     if (HAL_I2C_Master_Transmit(&hi2c1, LCD_ADDRESS, &buf, 1, HAL_MAX_DELAY) != HAL_OK)
         Error_Handler();
 
-    HAL_Delay(1);
+    delay_us(2);
+    //HAL_Delay(1);
 }
 
 /**
@@ -56,13 +65,13 @@ void lcdPortInit(void) {
     HAL_Delay(5);
 
     lcdStrobe(LCD_INIT);
-    HAL_Delay(5);
+    HAL_Delay(1);
 
     lcdStrobe(LCD_INIT);
-    HAL_Delay(5);
+    HAL_Delay(1);
 
     lcdStrobe(LCD_INIT2);
-    HAL_Delay(5);
+    HAL_Delay(1);
     // Modo 4 bits habilitado
 }
 
@@ -99,6 +108,5 @@ static uint8_t reverse_nibble(uint8_t nibble) {
 			0x3, 0xB, 0x7, 0xF
 	};
 	return reverse_table[nibble & 0x0F];
-
 }
 

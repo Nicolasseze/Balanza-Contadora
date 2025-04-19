@@ -2,3 +2,5 @@
 ../Drivers/API/src/API_delay.c:26:8:delayRead	16	static
 ../Drivers/API/src/API_delay.c:45:6:delayWrite	16	static
 ../Drivers/API/src/API_delay.c:54:8:delayIsRunning	16	static
+../Drivers/API/src/API_delay.c:63:6:DWT_Delay_Init	4	static
+../Drivers/API/src/API_delay.c:77:6:delay_us	24	static
