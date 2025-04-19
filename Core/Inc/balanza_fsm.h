@@ -65,6 +65,7 @@ typedef struct {
     bool_t tara;
     uint32_t pesoReferencia;
     uint32_t piezasContadas;
+    uint32_t piezasTotales;
 } BalanzaContexto_t;
 
 void balanzaFSM_Init(void);

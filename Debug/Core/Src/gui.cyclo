@@ -10,7 +10,7 @@
 ../Core/Src/gui.c:138:6:guiTaraOk	1
 ../Core/Src/gui.c:143:6:guiMostrarReferenciaConteo	1
 ../Core/Src/gui.c:153:6:guiMostrarConteo	1
-../Core/Src/gui.c:167:6:guiMostrarCalibrandoOffset	1
-../Core/Src/gui.c:175:6:guiMostrarCalibrandoGanancia	1
-../Core/Src/gui.c:183:6:guiMostrarConfirmacionCalibracion	1
-../Core/Src/gui.c:189:6:guiMostrarError	1
+../Core/Src/gui.c:168:6:guiMostrarCalibrandoOffset	1
+../Core/Src/gui.c:176:6:guiMostrarCalibrandoGanancia	1
+../Core/Src/gui.c:184:6:guiMostrarConfirmacionCalibracion	1
+../Core/Src/gui.c:190:6:guiMostrarError	1

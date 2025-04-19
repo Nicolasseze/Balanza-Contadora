@@ -45,6 +45,9 @@ void guiPesandoUpdate(uint32_t pesoGr, bool_t tara);
 void guiMostrarTara(uint32_t pesoGr);
 
 
+void guiTaraOk(void);
+
+
 void guiTaraUpdate(uint32_t pesoGr);
 
 /**

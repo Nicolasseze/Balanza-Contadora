@@ -25,7 +25,6 @@ static delay_t delayTaraOk;
 // Cambiar estado y mostrar GUI asociada
 static void cambiarEstado(EstadoBalanza_t nuevo) {
     ctx.estadoActual = nuevo;
-    ctx.evento = EVT_NINGUNO;
 
     switch (nuevo) {
     case EST_GUI_INICIO:
@@ -56,8 +55,7 @@ static void cambiarEstado(EstadoBalanza_t nuevo) {
     	guiMostrarReferenciaConteo("Ingrese valor");
     	break;
     case EST_CONTEO:
-    	// En 000 deberia de estar el total almacenado de las piezas contadas
-    	guiMostrarConteo(ctx.piezasContadas, ctx.pesoReferencia, 0);
+    	guiMostrarConteo(ctx.piezasContadas, ctx.pesoReferencia, ctx.piezasTotales);
     	break;
     case EST_CALIB_OFFSET:
     	guiMostrarCalibrandoOffset();
@@ -147,6 +145,9 @@ void balanzaStateMachine(void) {
 			else if(ctx.tecla == 'C')
 				cambiarEstado(EST_CONTEO_POSITIVO);
 		}
+		//Reseteo contexto
+		ctx.piezasContadas = 0;
+		ctx.piezasTotales = 0;
 		break;
 
 	//	LISTA O ESO CREO
@@ -195,7 +196,7 @@ void balanzaStateMachine(void) {
 		if(ctx.evento == EVT_TECLA && ctx.tecla == 'B')
 			cambiarEstado(EST_CONTEO_NEGATIVO);
 		if(ctx.evento == EVT_OK){
-			ctx.pesoReferencia = ctx.tara? ctx.pesoActual-ctx.pesoReferencia : ctx.pesoActual;
+			ctx.pesoReferencia = ctx.tara? ctx.pesoActual-ctx.pesoTara : ctx.pesoActual;
 			cambiarEstado(EST_CONTEO);
 		}
 		break;
@@ -231,11 +232,14 @@ void balanzaStateMachine(void) {
 			cambiarEstado(EST_MENU_PRINCIPAL);
 			opcionActual = 0;
 		}
-
+		ctx.piezasContadas = ( ctx.tara? (ctx.pesoActual-ctx.pesoTara) : ctx.pesoActual) / ctx.pesoReferencia;
+		if(ctx.evento == EVT_TECLA && ctx.tecla == 'C'){
+				ctx.piezasTotales += ctx.piezasContadas;
+		}
+		guiMostrarConteo( ctx.piezasContadas, ctx.pesoReferencia, ctx.piezasTotales);
 		break;
 
-        default:
-            break;
+	default:
     }
 
     ctx.evento = EVT_NINGUNO;

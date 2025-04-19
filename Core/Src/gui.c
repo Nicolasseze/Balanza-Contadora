@@ -129,7 +129,7 @@ void guiMostrarTara(uint32_t pesoGr) {
 }
 
 void guiTaraUpdate(uint32_t pesoGr){
-	char buf[21] = "                    " ;
+	char buf[21] = "                    ";
 	snprintf(buf, sizeof(buf), "%lu g", pesoGr);
 	lcdSetCursor(2, 6);
 	lcdPrint(buf);
@@ -151,7 +151,9 @@ void guiMostrarReferenciaConteo(const char *s) {
 }
 
 void guiMostrarConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
-    char linea1[21], linea2[21], linea3[21];
+    char linea1[21] = "                    ";
+    char linea2[21] = "                    ";
+    char linea3[21] = "                    ";
 
 	lcdClear();
     snprintf(linea1, sizeof(linea1), "Peso Muestra: %lu g", pesoRef);
@@ -162,7 +164,6 @@ void guiMostrarConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
     lcdShowLine(2, linea3);
     printSubmenu(3, "[*]Menu","[C]Suma");
 }
-
 
 void guiMostrarCalibrandoOffset(void) {
     lcdClear();
