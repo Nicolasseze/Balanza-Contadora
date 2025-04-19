@@ -1,3 +1,4 @@
 ../Drivers/API/src/keypad_driver.c:32:6:keypadInit	8	static
-../Drivers/API/src/keypad_driver.c:46:8:keypadGetKey	24	static
-../Drivers/API/src/keypad_driver.c:73:8:keypadScanAll	24	static
+../Drivers/API/src/keypad_driver.c:48:8:keypadReadKey	24	static
+../Drivers/API/src/keypad_driver.c:68:8:keypadGetKey	24	static
+../Drivers/API/src/keypad_driver.c:95:8:keypadScanAll	24	static

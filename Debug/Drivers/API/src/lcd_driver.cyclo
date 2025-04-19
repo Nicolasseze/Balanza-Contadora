@@ -4,7 +4,7 @@
 ../Drivers/API/src/lcd_driver.c:55:6:lcdData	1
 ../Drivers/API/src/lcd_driver.c:66:8:lcdInit	1
 ../Drivers/API/src/lcd_driver.c:82:6:lcdClear	1
-../Drivers/API/src/lcd_driver.c:93:6:lcdSetCursor	1
-../Drivers/API/src/lcd_driver.c:107:6:lcdPrint	2
-../Drivers/API/src/lcd_driver.c:116:6:lcdShowLine	1
+../Drivers/API/src/lcd_driver.c:93:6:lcdSetCursor	3
+../Drivers/API/src/lcd_driver.c:107:6:lcdPrint	3
+../Drivers/API/src/lcd_driver.c:116:6:lcdShowLine	2
 ../Drivers/API/src/lcd_driver.c:124:6:lcdShowCentered	2

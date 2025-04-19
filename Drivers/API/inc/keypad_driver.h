@@ -43,21 +43,25 @@
 typedef bool bool_t;
 
 /**
- * @brief Mapa de teclas definido por la aplicación.
- *
- * Esta matriz debe ser definida externamente por el usuario de este módulo.
- * Representa la correspondencia entre cada posición de la matriz (fila, columna)
- * y el valor lógico (carácter) que representa esa tecla.
- */
-extern const char keypadKeymap[KEYPAD_ROWS][KEYPAD_COLS];
-
-/**
  * @brief Inicializa el teclado matricial.
  *
  * Configura internamente la capa de puerto para manejar los pines definidos por la aplicación.
  * Debe llamarse una única vez antes de usar las demás funciones del driver.
  */
 void keypadInit(void);
+
+/**
+ * @brief Lee el estado de una única tecla del teclado matricial.
+ *
+ * Activa la fila indicada, lee la columna correspondiente, y luego
+ * desactiva nuevamente la fila. Útil para detectar el estado puntual
+ * de una tecla específica.
+ *
+ * @param row Índice de la fila (0 a KEYPAD_ROWS - 1)
+ * @param col Índice de la columna (0 a KEYPAD_COLS - 1)
+ * @return true si la tecla está presionada, false si no.
+ */
+bool_t keypadReadKey(uint8_t row, uint8_t col);
 
 /**
  * @brief Escanea el teclado y detecta si hay una tecla presionada.

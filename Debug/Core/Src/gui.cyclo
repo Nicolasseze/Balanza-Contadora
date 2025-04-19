@@ -1,0 +1,14 @@
+../Core/Src/gui.c:15:13:printCentered	2
+../Core/Src/gui.c:32:13:printSubmenu	2
+../Core/Src/gui.c:49:6:guiMostrarInicio	1
+../Core/Src/gui.c:56:6:guiMostrarMenuPrincipal	1
+../Core/Src/gui.c:64:6:guiMostrarPesando	2
+../Core/Src/gui.c:79:6:guiPesandoUpdate	2
+../Core/Src/gui.c:91:6:guiMostrarTara	1
+../Core/Src/gui.c:101:6:guiTaraUpdate	1
+../Core/Src/gui.c:108:6:guiMostrarReferenciaConteo	1
+../Core/Src/gui.c:118:6:guiMostrarConteo	1
+../Core/Src/gui.c:132:6:guiMostrarCalibrandoOffset	1
+../Core/Src/gui.c:140:6:guiMostrarCalibrandoGanancia	1
+../Core/Src/gui.c:148:6:guiMostrarConfirmacionCalibracion	1
+../Core/Src/gui.c:154:6:guiMostrarError	1

@@ -1,0 +1,2 @@
+../Core/Src/balanza.c:26:6:balanzaInit	8	static
+../Core/Src/balanza.c:58:6:balanzaLoop	16	static

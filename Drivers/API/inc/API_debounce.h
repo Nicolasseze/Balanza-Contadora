@@ -14,15 +14,19 @@
 #include "stm32f4xx_hal.h"
 #include "API_delay.h"
 
+#include "keypad_driver.h"
+
+#define TIME_DELAY	5
+
 /* Typedef -------------------------------------------------------------------*/
 
 
 /* Function prototypes -------------------------------------------------------*/
 void debounceFSM_init( void );
 
-void debounceFSM_update( void );
+char debounceFSM_update( void );
 
-bool_t readKey( GPIO_InitTypeDef* GPIOx, uint16_t GPIO_Pin );
+bool_t debounceWasPressed( char boton);
 
 
 

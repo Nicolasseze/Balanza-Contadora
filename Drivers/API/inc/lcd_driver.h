@@ -14,6 +14,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "string.h"
 
 /** @def LCD_WIDTH
  *  @brief Cantidad de caracteres por línea del LCD.

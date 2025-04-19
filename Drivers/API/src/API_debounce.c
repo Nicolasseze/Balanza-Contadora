@@ -6,9 +6,6 @@
  */
 
 #include "API_debounce.h"
-#include "main.h"
-
-#define TIME_DELAY	40
 
 typedef enum{
 	BUTTON_UP,
@@ -17,44 +14,75 @@ typedef enum{
 	BUTTON_RAISING,
 } debounceState_t;
 
+typedef struct{
+	char name;
+	uint8_t row;
+	uint8_t col;
+} btn_t;
+
 
 typedef struct{
 	debounceState_t state;
 	delay_t delay;
 	bool_t btnFalling;
-	GPIO_TypeDef* GPIOx;
-	uint16_t GPIO_Pin;
+	btn_t btn;
 } debounceFSM_t;
 
+#define TOTAL_KEYS	(KEYPAD_ROWS * KEYPAD_COLS)
+#define ASCII_SIZE 	128
 
-static debounceFSM_t btn[] = {
-		{.GPIOx = B1_GPIO_Port, .GPIO_Pin = B1_Pin}
+const char keypadKeymap[KEYPAD_ROWS][KEYPAD_COLS] = {
+		{'1','2','3','A'},
+		{'4','5','6','B'},
+		{'7','8','9','C'},
+		{'*','0','#','D'}
 };
-static const uint32_t cantBtn = sizeof( btn ) / sizeof( btn[0] );
+
+static debounceFSM_t botones[TOTAL_KEYS];
+static const uint32_t cantBtn = TOTAL_KEYS;
+
+static int8_t btnLookup[ASCII_SIZE];
+
+static bool_t readBtn(char letra){
+	int8_t index = btnLookup[(uint8_t)letra];
+	if (index >= 0) {
+		return keypadReadKey(botones[index].btn.row, botones[index].btn.col);
+	}
+	return false;
+}
 
 void debounceFSM_init( void ){
 
-	debounceFSM_t *pBtn;
+	uint8_t i;
+	for (i = 0; i < ASCII_SIZE; i++) {
+        btnLookup[i] = -1;
+    }
 
-	pBtn = btn;
+    i = 0;
+	for(uint8_t row = 0; row < KEYPAD_ROWS; row++){
+		for (uint8_t col = 0; col < KEYPAD_COLS; col++){
+			char letra = keypadKeymap[row][col];
+			botones[i].btn.name = letra;
+			botones[i].btn.row = row;
+			botones[i].btn.col = col;
+			botones[i].state = BUTTON_UP;
+			botones[i].btnFalling = false;
+			delayInit(&botones[i].delay, 40);  // 40 ms antirrebote
 
-	for( uint8_t i = 0; i < cantBtn; i++ ){
-		assert_param( pBtn );
-
-		pBtn->state = BUTTON_UP;
-		pBtn->btnFalling = false;
-		delayInit( &pBtn->delay, TIME_DELAY);
-		pBtn++;
+            // Guardamos el índice
+            btnLookup[(uint8_t)letra] = i;
+			i++;
+		}
 	}
-
 }
 
+char debounceFSM_update( void ){
 
-void debounceFSM_update( void ){
+	char tecla = 0;
 
 	debounceFSM_t *pBtn;
 
-	pBtn = btn;
+	pBtn = botones;
 
 	for( uint8_t i = 0; i < cantBtn; i++ ){
 
@@ -63,15 +91,16 @@ void debounceFSM_update( void ){
 		switch( pBtn->state ){
 
 		case BUTTON_UP:
-			if( HAL_GPIO_ReadPin(pBtn->GPIOx, pBtn->GPIO_Pin) == GPIO_PIN_RESET )
+			if( readBtn(pBtn->btn.name) == true )
 				pBtn->state = BUTTON_FALLING;
 			break;
 
 		case BUTTON_FALLING:
 			if( delayRead( &pBtn->delay ) ){
-				if( HAL_GPIO_ReadPin(pBtn->GPIOx, pBtn->GPIO_Pin) == GPIO_PIN_RESET ){
+				if( readBtn(pBtn->btn.name) == true ){
 					pBtn->state= BUTTON_DOWN;
 					pBtn->btnFalling = true;
+					tecla = pBtn->btn.name;
 				}
 				else {
 					pBtn->state = BUTTON_UP;
@@ -80,13 +109,13 @@ void debounceFSM_update( void ){
 			break;
 
 		case BUTTON_DOWN:
-			if( HAL_GPIO_ReadPin(pBtn->GPIOx, pBtn->GPIO_Pin) == GPIO_PIN_SET )
+			if( readBtn(pBtn->btn.name) == false )
 				pBtn->state = BUTTON_RAISING;
 			break;
 
 		case BUTTON_RAISING:
 			if( delayRead( &pBtn->delay ) ){
-				if( HAL_GPIO_ReadPin(pBtn->GPIOx, pBtn->GPIO_Pin) == GPIO_PIN_SET ){
+				if( readBtn(pBtn->btn.name) == false ){
 					pBtn->state = BUTTON_UP;
 				}
 				else {
@@ -102,13 +131,18 @@ void debounceFSM_update( void ){
 
 		pBtn++;
 	}
+
+	return tecla;
 }
 
-bool_t readKey( GPIO_InitTypeDef* GPIOx, uint16_t GPIO_Pin){
+bool_t debounceWasPressed( char boton){
 
 	debounceFSM_t *pBtn;
-
-	pBtn = btn;
+	int8_t idx = btnLookup[(uint8_t)boton];
+	if(idx >= 0)
+		pBtn = &botones[idx];
+	else
+		return false;
 
 	if( pBtn->btnFalling == true){
 		pBtn->btnFalling = false;
@@ -118,5 +152,4 @@ bool_t readKey( GPIO_InitTypeDef* GPIOx, uint16_t GPIO_Pin){
 		pBtn->btnFalling = false;
 
 	return false;
-
 }

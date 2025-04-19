@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "API_delay.h"
 
 /**
  * @def LCD_ADDRESS

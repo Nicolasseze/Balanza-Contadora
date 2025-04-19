@@ -20,9 +20,9 @@ typedef enum {
     EST_MENU_PRINCIPAL,
     EST_PESANDO,
     EST_TARA,
-    EST_CONTEO_MENU1,
-    EST_CONTEO_MENU2,
-    EST_CONTEO_MENU3,
+    EST_CONTEO_POSITIVO,
+    EST_CONTEO_NEGATIVO,
+    EST_CONTEO_SET,
 	EST_CONTEO,
     EST_CALIB_OFFSET,
     EST_CALIB_GANANCIA1,
@@ -37,23 +37,33 @@ typedef enum {
     EVT_NINGUNO,
     EVT_OK,
     EVT_CANCELAR,
-    EVT_SUBIR,
-    EVT_BAJAR,
-    EVT_PESO_ESTABLE,
+    EVT_TECLA,
+	EVT_NUMERO,
+	EVT_PESO_INESTABLE,
     EVT_ERROR_SENSOR,
-    EVT_TIMEOUT,
-    EVT_FIN_CONTEO
 } EventoBalanza_t;
 
 // Contexto de la balanza
 typedef struct {
     EstadoBalanza_t estadoActual;
     EventoBalanza_t evento;
-    float pesoActual;
-    float pesoReferencia;
-    uint16_t piezasContadas;
+    char tecla;
+    uint32_t pesoActual;
+    uint32_t pesoTara;
+    bool_t tara;
+    uint32_t pesoReferencia;
+    uint32_t piezasContadas;
 } BalanzaContexto_t;
 
+void balanzaFSM_Init(void);
+
 void balanzaStateMachine(void);
+
+// Setter externo para peso
+void balanzaSetPeso(uint32_t peso);
+
+void balanzaSetEvento(EventoBalanza_t e);
+
+void balanzaSetTecla(char tecla);
 
 #endif /* INC_BALANZA_FSM_H_ */

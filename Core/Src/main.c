@@ -21,14 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lcd_driver.h"
-#include "hx711_driver.h"
-#include "keypad_driver.h"
-#include "keypad_port.h"
-
-//Core
-#include "balanza_fsm.h"
-
+#include "balanza.h"
 
 /* USER CODE END Includes */
 
@@ -39,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define PRUEBA
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,12 +46,7 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-const char keypadKeymap[KEYPAD_ROWS][KEYPAD_COLS] = {
-		{'1','2','3','A'},
-		{'4','5','6','B'},
-		{'7','8','9','C'},
-		{'*','0','#','D'}
-};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -108,41 +96,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
-  /* CODIGO DE INICIALIZACION QUE TIENE QUE ESTAR SI O SI */
-  //Inicializacion delay us
-  DWT_Delay_Init();
-
-  //Inicializacion del LCD
-  lcdInit();
-
-  //Inicializacion del keypad
-  keypadPortAttachRow(0, GPIOC, GPIO_PIN_7);
-  keypadPortAttachRow(1, GPIOA, GPIO_PIN_9);
-  keypadPortAttachRow(2, GPIOA, GPIO_PIN_8);
-  keypadPortAttachRow(3, GPIOB, GPIO_PIN_10);
-  keypadPortAttachCol(0, GPIOB, GPIO_PIN_4);
-  keypadPortAttachCol(1, GPIOB, GPIO_PIN_5);
-  keypadPortAttachCol(2, GPIOB, GPIO_PIN_3);
-  keypadPortAttachCol(3, GPIOA, GPIO_PIN_10);
-  keypadInit();
-
-  //Inicializacion de modulos
-#ifdef PRUEBA
-
-
-  char key;
-  bool_t keyStates[4][4];
-
-  BalanzaContexto_t ctx ={
-		  .estadoActual = EST_GUI_INICIO,
-  };
-
-  for(uint8_t i=0; i< (uint8_t)EST_CONFIGURACION; i++){
-	  cambiarEstado(ctx);
-	  ctx.estadoActual++;
-  }
-
-#endif
+  balanzaInit();
 
   /* USER CODE END 2 */
 
@@ -150,7 +104,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	  balanzaLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

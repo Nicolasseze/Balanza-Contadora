@@ -35,6 +35,28 @@ void keypadInit(void) {
 }
 
 /**
+ * @brief Lee el estado de una única tecla del teclado matricial.
+ *
+ * Activa la fila indicada, lee la columna correspondiente, y luego
+ * desactiva nuevamente la fila. Útil para detectar el estado puntual
+ * de una tecla específica.
+ *
+ * @param row Índice de la fila (0 a KEYPAD_ROWS - 1)
+ * @param col Índice de la columna (0 a KEYPAD_COLS - 1)
+ * @return true si la tecla está presionada, false si no.
+ */
+bool_t keypadReadKey(uint8_t row, uint8_t col){
+
+	bool_t btn;
+
+	keypadPortSetRow(row, true);
+    btn = keypadPortReadCol(col);
+    keypadPortSetRow(row, false);
+
+    return btn;
+}
+
+/**
  * @brief Detecta la primera tecla presionada.
  *
  * Recorre la matriz activando cada fila y leyendo todas las columnas. Si detecta
