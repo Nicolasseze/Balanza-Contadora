@@ -10,9 +10,9 @@
 //Core
 #include "balanza.h"
 #include "balanza_fsm.h"
+#include "weight_filter.h"
 
 //Drivers
-#include "hx711_driver.h"
 #include "keypad_driver.h"
 #include "keypad_port.h"
 #include "lcd_driver.h"
@@ -21,7 +21,7 @@
 #include "API_delay.h"
 #include "API_debounce.h"
 
-static delay_t delay50;
+static delay_t delay50, delayMeasureWeight;
 
 void balanzaInit(void) {
 	//Inicializacion del delay us
@@ -29,12 +29,13 @@ void balanzaInit(void) {
 
 	//Inicializacion del delay ms no bloqueante
 	delayInit(&delay50, 200);
+	delayInit(&delayMeasureWeight, 100);
 
 	//Inicializacion del LCD en modo 4bits
     lcdInit();
 
     //Inicialiacion de la celda de Carga
-    //hx711Init();
+    weightInit();
 
     //Inicializacion del keypad
     keypadPortAttachRow(0, GPIOC, GPIO_PIN_7);
@@ -55,16 +56,20 @@ void balanzaInit(void) {
 }
 
 void balanzaLoop(void) {
-
+	uint32_t start, end, cycles;
+	static float tiempo_us1,tiempo_us2,tiempo_us3;
 	char tecla;
 
-	/*
-	 * DEBERIA DE LEER EL PESO DE LA BALANZA
-	 *
-    static uint32_t lastUpdate = 0;
-    float peso = hx711LeerPromedioKg();
-    balanzaSetPeso(peso);
-	*/
+	if( delayRead(&delayMeasureWeight) == true) {
+//		start = DWT->CYCCNT;
+		float pesoFiltrado = MedianFilterRead();
+		balanzaSetPeso((uint32_t)pesoFiltrado);
+//		end = DWT->CYCCNT;
+//		cycles = end - start;
+//
+//		tiempo_us1 = (float)cycles / (HAL_RCC_GetHCLKFreq() / 1e6); // Tiempo en microsegundos
+	}
+//	start = DWT->CYCCNT;
 	//	if(delayRead(&delay50) == true){
 	if(true){
 		tecla = debounceFSM_update();
@@ -79,9 +84,17 @@ void balanzaLoop(void) {
 			}
 		}
 	}
-
-    // Ejecutar MEF
-    if(delayRead(&delay50)==true) balanzaStateMachine();
+//	end = DWT->CYCCNT;
+//	cycles = end - start;
+//	tiempo_us2 = (float)cycles / (HAL_RCC_GetHCLKFreq() / 1e6); // Tiempo en microsegundos
+	// Ejecutar MEF
+	if(delayRead(&delay50)==true) {
+//		start = DWT->CYCCNT;
+		balanzaStateMachine();
+//		end = DWT->CYCCNT;
+//		cycles = end - start;
+//		tiempo_us3 = (float)cycles / (HAL_RCC_GetHCLKFreq() / 1e6); // Tiempo en microsegundos
+	}
 
 }
 
