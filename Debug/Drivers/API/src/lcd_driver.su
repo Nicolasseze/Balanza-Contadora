@@ -7,5 +7,7 @@
 ../Drivers/API/src/lcd_driver.c:93:6:lcdSetCursor	24	static
 ../Drivers/API/src/lcd_driver.c:107:6:lcdPrint	16	static
 ../Drivers/API/src/lcd_driver.c:116:6:lcdShowLine	16	static
-../Drivers/API/src/lcd_driver.c:124:6:lcdShowCentered	48	static
-../Drivers/API/src/lcd_driver.c:141:6:lcdClearRange	40	static
+../Drivers/API/src/lcd_driver.c:124:6:lcdOffCursor	8	static
+../Drivers/API/src/lcd_driver.c:128:6:lcdPrintConCursor	24	static
+../Drivers/API/src/lcd_driver.c:141:6:lcdShowCentered	48	static
+../Drivers/API/src/lcd_driver.c:158:6:lcdClearRange	40	static

@@ -169,6 +169,10 @@ void lcdShowLine(uint8_t row, const char *str);
 void lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd);
 
 
+void lcdOffCursor(void);
+
+void lcdPrintConCursor(uint8_t row, uint8_t col, const char *str);
+
 #endif // API_INC_LCD_DRIVER_H_
 
 

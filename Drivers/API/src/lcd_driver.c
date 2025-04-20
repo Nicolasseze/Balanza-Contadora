@@ -121,6 +121,23 @@ void lcdShowLine(uint8_t row, const char *str){
 
 }
 
+void lcdOffCursor(void){
+	lcdCommand(LCD_DISPLAY_ON);
+}
+
+void lcdPrintConCursor(uint8_t row, uint8_t col, const char *str) {
+    // Mostrar la cadena desde la posición deseada
+    lcdSetCursor(row, col);
+    lcdPrint(str);
+
+    // Calcular longitud para posicionar el cursor después del texto
+    size_t len = strlen(str);
+    lcdSetCursor(row, col + len);
+
+    // Habilitar cursor visible y parpadeante
+    lcdCommand(LCD_DISPLAY_ON_CURSOR_BLINK);  // Display ON, Cursor ON, Blink ON
+}
+
 void lcdShowCentered(uint8_t line, const char* str) {
     char buffer[LCD_WIDTH + 1]; // +1 para el '\0'
     size_t len = strlen(str);

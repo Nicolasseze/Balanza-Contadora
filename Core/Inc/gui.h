@@ -60,6 +60,9 @@ void guiMostrarConteoMenu(int opcion);
 void guiMostrarConteoNeg1(void);
 void guiMostrarConteoNeg2(void);
 
+void guiMostrarConteoSetIngreso(void);
+void guiActualizarIngreso(const char *str);
+void guiCursorOff(void);
 /**
  * @brief Muestra la pantalla de conteo de piezas
  * @param piezas Cantidad de piezas contadas

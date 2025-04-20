@@ -13,6 +13,7 @@
 #include "lcd_driver.h"
 #include "hx711_driver.h"
 #include "keypad_driver.h"
+#include "stdlib.h"
 
 /********** Variables **********/
 static BalanzaContexto_t ctx = {
@@ -117,49 +118,79 @@ static void fsmTaraOk(void) {
 // Estado: CONTEO_MENU
 static void fsmConteoMenu(void) {
     static uint32_t aux;
+    static char bufferIngreso[10] = {0}; // hasta 9 dígitos + '\0'
+    static uint8_t indexBuffer = 0;
 
     if (ctx.evento == EVT_CANCELAR) {
-        ctx.opcionMenu = 0;
-        subEstadoConteo = SUBMENU_IDLE;
-        cambiarEstado(EST_MENU_PRINCIPAL);
-        return;
+    	ctx.opcionMenu = 0;
+    	subEstadoConteo = SUBMENU_IDLE;
+    	guiCursorOff();
+    	cambiarEstado(EST_MENU_PRINCIPAL);
+    	return;
     }
 
     if (ctx.evento == EVT_TECLA && ctx.tecla == 'B' && subEstadoConteo == SUBMENU_IDLE) {
-        ctx.modoConteo = (ctx.modoConteo + 1) % MENU_CONTEO_TOTAL;
-        guiMostrarConteoOpcion((int)ctx.modoConteo);
+    	ctx.modoConteo = (ctx.modoConteo + 1) % MENU_CONTEO_TOTAL;
+    	guiMostrarConteoOpcion((int)ctx.modoConteo);
 
+    } else if(subEstadoConteo == SUBMENU_SET_INGRESO_VALOR && ctx.evento == EVT_TECLA) {
+    	if (ctx.tecla >= '0' && ctx.tecla <= '9' && indexBuffer < sizeof(bufferIngreso) - 1) {
+    		bufferIngreso[indexBuffer++] = ctx.tecla;
+    		bufferIngreso[indexBuffer] = '\0';
+    		guiActualizarIngreso(bufferIngreso);  // función para mostrar el buffer parcial
+    	}
+    	else if (ctx.tecla == 'C' && indexBuffer > 0) {
+    		bufferIngreso[--indexBuffer] = '\0';
+    		guiActualizarIngreso(bufferIngreso);
+    	}
     } else if (ctx.evento == EVT_OK) {
-        switch (ctx.modoConteo) {
-            case MENU_CONTEO_POS:
-                ctx.pesoReferencia = pesoNeto();
-                cambiarEstado(EST_CONTEO);
-                break;
-            case MENU_CONTEO_NEG:
-                switch (subEstadoConteo) {
-                    case SUBMENU_IDLE:
-                        guiMostrarConteoNeg1();
-                        subEstadoConteo = SUBMENU_NEG_PESAR_TACHO;
-                        break;
-                    case SUBMENU_NEG_PESAR_TACHO:
-                        aux = pesoNeto();
-                        guiMostrarConteoNeg2();
-                        subEstadoConteo = SUBMENU_NEG_TOMAR_MUESTRA;
-                        break;
-                    case SUBMENU_NEG_TOMAR_MUESTRA:
-                        aux -= pesoNeto();
-                        ctx.pesoReferencia = aux;
-                        cambiarEstado(EST_CONTEO);
-                        subEstadoConteo = SUBMENU_IDLE;
-                        break;
-                    default:
-                        subEstadoConteo = SUBMENU_IDLE;
-                }
-                break;
-            case MENU_CONTEO_SET:
-                // por implementar
-                break;
-        }
+    	switch (ctx.modoConteo) {
+    	case MENU_CONTEO_POS:
+    		ctx.pesoReferencia = pesoNeto();
+    		cambiarEstado(EST_CONTEO);
+    		break;
+    	case MENU_CONTEO_NEG:
+    		switch (subEstadoConteo) {
+    		case SUBMENU_IDLE:{
+    			guiMostrarConteoNeg1();
+    			subEstadoConteo = SUBMENU_NEG_PESAR_TACHO;
+    			break;
+    		}
+    		case SUBMENU_NEG_PESAR_TACHO:
+    		{
+    			aux = pesoNeto();
+    			guiMostrarConteoNeg2();
+    			subEstadoConteo = SUBMENU_NEG_TOMAR_MUESTRA;
+    			break;
+    		}
+    		case SUBMENU_NEG_TOMAR_MUESTRA:{
+    			aux -= pesoNeto();
+    			ctx.pesoReferencia = aux;
+    			cambiarEstado(EST_CONTEO);
+    			subEstadoConteo = SUBMENU_IDLE;
+    			break;
+    		}
+    		default:
+    			subEstadoConteo = SUBMENU_IDLE;
+    		}
+    		break;
+    	case MENU_CONTEO_SET:{
+    		if (subEstadoConteo == SUBMENU_IDLE) {
+    			memset(bufferIngreso, 0, sizeof(bufferIngreso));
+    			indexBuffer = 0;
+    			guiMostrarConteoSetIngreso();  // función que deberías definir para mostrar la GUI
+    			subEstadoConteo = SUBMENU_SET_INGRESO_VALOR;
+    		}
+    		else if(subEstadoConteo == SUBMENU_SET_INGRESO_VALOR){
+    			ctx.pesoReferencia = atoi(bufferIngreso);
+    			guiCursorOff();
+    			cambiarEstado(EST_CONTEO);
+    			subEstadoConteo = SUBMENU_IDLE;
+    		}
+    		break;
+    	default:
+    		}
+    	}
     }
 }
 

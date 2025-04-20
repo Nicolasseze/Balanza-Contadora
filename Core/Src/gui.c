@@ -28,14 +28,14 @@ static const char* menuOpciones[] = {
 static const char *menuConteo[] = {
 		"Positivo",
 		"Negativo",
-		"Ingrese valor gr"
+		"Seteo de muestra"
 };
 
 /** @brief Resumen del menu funcion conteo */
 static const char *menuConteoBrief[] = {
 		"Coloque 1 pieza",
 		"Coloque el total pzs",
-		"Ingrese el valor",
+		"Ingrese valor rn gr",
 };
 
 #define MENU_TOTAL_OPCIONES (sizeof(menuOpciones)/sizeof(menuOpciones[0]))
@@ -202,6 +202,23 @@ void guiMostrarConteoNeg2(void){
     printSubmenu(3, "[*]Menu","[#]OK");
 }
 
+void guiMostrarConteoSetIngreso(void){
+	lcdClear();
+	printCentered(0, "Contador Set Valor");
+//				   "                    "
+	lcdShowLine(1, "Ingrese un valor:");
+    printSubmenu(3, "[C]Borrar","[#]OK");
+}
+
+void guiActualizarIngreso(const char *str){
+	lcdClearRange(2, 0, DISPLAY_WIDTH-1);
+	lcdPrintConCursor(2, 0, str);
+}
+
+void guiCursorOff(void){
+	lcdOffCursor();
+}
+
 void guiMostrarConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
     char buf[BUFFER_LEN];
 	lcdClear();
@@ -229,6 +246,8 @@ void guiUpdateConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
     lcdSetCursor(2, 6);
     lcdPrint(buf);
 }
+
+
 
 
 //****************************** Hasta aca supongo que estoy corrigiendo
