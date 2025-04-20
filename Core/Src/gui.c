@@ -214,6 +214,22 @@ void guiMostrarConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
     printSubmenu(3, "[*]Menu","[C]Suma");
 }
 
+void guiUpdateConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
+    char buf[BUFFER_LEN];
+    lcdClearRange(0, 14, DISPLAY_WIDTH-1);
+    snprintf(buf, sizeof(buf), "%lu g", pesoRef);
+    lcdSetCursor(0, 14);
+    lcdPrint(buf);
+    lcdClearRange(1, 10, DISPLAY_WIDTH-1);
+    snprintf(buf, sizeof(buf), "%lu", piezas);
+    lcdSetCursor(1, 10);
+    lcdPrint(buf);
+    lcdClearRange(2, 6, DISPLAY_WIDTH);
+    snprintf(buf, sizeof(buf), "Total: %lu", totales);
+    lcdSetCursor(2, 6);
+    lcdPrint(buf);
+}
+
 
 //****************************** Hasta aca supongo que estoy corrigiendo
 void guiMostrarCalibrandoOffset(void) {

@@ -68,6 +68,8 @@ void guiMostrarConteoNeg2(void);
  */
 void guiMostrarConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales);
 
+void guiUpdateConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales);
+
 /**
  * @brief Muestra la pantalla de calibración de offset
  */

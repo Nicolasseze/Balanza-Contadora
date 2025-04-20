@@ -14,7 +14,8 @@
 ../Core/Src/gui.c:187:6:guiMostrarConteoNeg1	1
 ../Core/Src/gui.c:196:6:guiMostrarConteoNeg2	1
 ../Core/Src/gui.c:205:6:guiMostrarConteo	1
-../Core/Src/gui.c:219:6:guiMostrarCalibrandoOffset	1
-../Core/Src/gui.c:227:6:guiMostrarCalibrandoGanancia	1
-../Core/Src/gui.c:235:6:guiMostrarConfirmacionCalibracion	1
-../Core/Src/gui.c:241:6:guiMostrarError	1
+../Core/Src/gui.c:217:6:guiUpdateConteo	1
+../Core/Src/gui.c:235:6:guiMostrarCalibrandoOffset	1
+../Core/Src/gui.c:243:6:guiMostrarCalibrandoGanancia	1
+../Core/Src/gui.c:251:6:guiMostrarConfirmacionCalibracion	1
+../Core/Src/gui.c:257:6:guiMostrarError	1

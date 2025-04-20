@@ -83,8 +83,8 @@ static void fsmMenuPrincipal(void) {
 // Estado: PESANDO
 static void fsmPesando(void) {
     if (ctx.evento == EVT_CANCELAR) {
-        cambiarEstado(EST_MENU_PRINCIPAL);
         ctx.opcionMenu = 0;
+        cambiarEstado(EST_MENU_PRINCIPAL);
         return;
     }
     if (ctx.evento == EVT_OK) {
@@ -96,8 +96,8 @@ static void fsmPesando(void) {
 // Estado: TARA
 static void fsmTara(void) {
     if (ctx.evento == EVT_CANCELAR) {
-        cambiarEstado(EST_MENU_PRINCIPAL);
         ctx.opcionMenu = 0;
+        cambiarEstado(EST_MENU_PRINCIPAL);
     } else if (ctx.evento == EVT_OK) {
         ctx.pesoTara = ctx.pesoActual;
         cambiarEstado(EST_TARA_OK);
@@ -109,8 +109,8 @@ static void fsmTara(void) {
 // Estado: TARA_OK
 static void fsmTaraOk(void) {
     if (delayRead(&delayTaraOk)) {
-        cambiarEstado(EST_MENU_PRINCIPAL);
         ctx.opcionMenu = 0;
+        cambiarEstado(EST_MENU_PRINCIPAL);
     }
 }
 
@@ -119,9 +119,9 @@ static void fsmConteoMenu(void) {
     static uint32_t aux;
 
     if (ctx.evento == EVT_CANCELAR) {
-        cambiarEstado(EST_MENU_PRINCIPAL);
-        subEstadoConteo = SUBMENU_IDLE;
         ctx.opcionMenu = 0;
+        subEstadoConteo = SUBMENU_IDLE;
+        cambiarEstado(EST_MENU_PRINCIPAL);
         return;
     }
 
@@ -166,8 +166,8 @@ static void fsmConteoMenu(void) {
 // Estado: CONTEO
 static void fsmConteo(void) {
     if (ctx.evento == EVT_CANCELAR) {
-        cambiarEstado(EST_MENU_PRINCIPAL);
         ctx.opcionMenu = 0;
+        cambiarEstado(EST_MENU_PRINCIPAL);
         return;
     }
 
@@ -176,7 +176,7 @@ static void fsmConteo(void) {
     	if (ctx.evento == EVT_TECLA && ctx.tecla == 'C') {
     		ctx.piezasTotales += ctx.piezasContadas;
     	}
-    	guiMostrarConteo(ctx.piezasContadas, ctx.pesoReferencia, ctx.piezasTotales);
+    	guiUpdateConteo(ctx.piezasContadas, ctx.pesoReferencia, ctx.piezasTotales);
     }else{
     	cambiarEstado(EST_ERROR);
     }
