@@ -138,3 +138,16 @@ void lcdShowCentered(uint8_t line, const char* str) {
     lcdShowLine(line, buffer);
 }
 
+void lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd) {
+    if (colEnd >= LCD_WIDTH || colStart > colEnd)
+        return;
+
+    char buf[LCD_WIDTH + 1];
+    memset(buf, ' ', LCD_WIDTH);
+    buf[LCD_WIDTH] = '\0';
+
+    lcdSetCursor(row, colStart);
+    buf[colEnd - colStart + 1] = '\0';  // solo imprime lo necesario
+    lcdPrint(&buf[colStart]);
+}
+

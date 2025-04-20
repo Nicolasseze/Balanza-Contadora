@@ -28,7 +28,7 @@ void balanzaInit(void) {
 	DWT_Delay_Init();
 
 	//Inicializacion del delay ms no bloqueante
-	delayInit(&delay50, 50);
+	delayInit(&delay50, 200);
 
 	//Inicializacion del LCD en modo 4bits
     lcdInit();
@@ -81,7 +81,7 @@ void balanzaLoop(void) {
 	}
 
     // Ejecutar MEF
-    balanzaStateMachine();
+    if(delayRead(&delay50)==true) balanzaStateMachine();
 
 }
 

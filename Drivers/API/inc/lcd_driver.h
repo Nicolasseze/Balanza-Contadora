@@ -153,6 +153,22 @@ void lcdShowCentered(uint8_t line, const char* str);
  */
 void lcdShowLine(uint8_t row, const char *str);
 
+
+/**
+ * @brief Borra un rango específico de columnas en una fila del LCD.
+ *
+ * Esta función sobrescribe con espacios el rango de columnas especificado en la fila indicada.
+ * Es útil para limpiar parcialmente una línea sin tener que borrar todo el display.
+ *
+ * @param row      Número de fila donde se desea limpiar (comenzando en 0).
+ * @param colStart Columna inicial del rango a limpiar (inclusive).
+ * @param colEnd   Columna final del rango a limpiar (inclusive).
+ *
+ * @note Si colEnd >= LCD_WIDTH o colStart > colEnd, la función no realiza ninguna operación.
+ */
+void lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd);
+
+
 #endif // API_INC_LCD_DRIVER_H_
 
 

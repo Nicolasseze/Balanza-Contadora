@@ -8,3 +8,4 @@
 ../Drivers/API/src/lcd_driver.c:107:6:lcdPrint	3
 ../Drivers/API/src/lcd_driver.c:116:6:lcdShowLine	2
 ../Drivers/API/src/lcd_driver.c:124:6:lcdShowCentered	2
+../Drivers/API/src/lcd_driver.c:141:6:lcdClearRange	3

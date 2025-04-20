@@ -13,6 +13,8 @@
 #include "stdint.h"
 #include "stdbool.h"
 
+#define DELAY_INICIO	1000
+
 typedef bool bool_t;
 
 //MENUSSS
@@ -82,6 +84,7 @@ typedef struct {
     uint32_t piezasContadas;
     uint32_t piezasTotales;
     menu_conteo_t modoConteo;
+    uint8_t opcionMenu;
 } BalanzaContexto_t;
 
 void balanzaFSM_Init(void);

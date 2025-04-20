@@ -5,12 +5,17 @@
  * Este archivo encapsula el diseño visual de cada estado del sistema.
  * Todas las funciones están pensadas para usarse desde la FSM sin lógica de control.
  */
-
-#include "gui.h"
-#include "lcd_driver.h"
 #include <stdio.h>
 #include <string.h>
 
+#include "gui.h"
+#include "lcd_driver.h"
+
+#define DISPLAY_WIDTH		LCD_WIDTH
+#define BUFFER_LEN          (DISPLAY_WIDTH + 1)
+#define MENU_VISIBLE_LINEAS	3
+
+/** @brief Opciones del menú principal */
 static const char* menuOpciones[] = {
 	    "1-Pesar",
 	    "2-Tarear",
@@ -19,12 +24,14 @@ static const char* menuOpciones[] = {
 	    "5-Config UART"
 };
 
+/** @brief Comentarios del menu funcion conteo */
 static const char *menuConteo[] = {
 		"Positivo",
 		"Negativo",
 		"Ingrese valor gr"
 };
 
+/** @brief Resumen del menu funcion conteo */
 static const char *menuConteoBrief[] = {
 		"Coloque 1 pieza",
 		"Coloque el total pzs",
@@ -32,41 +39,47 @@ static const char *menuConteoBrief[] = {
 };
 
 #define MENU_TOTAL_OPCIONES (sizeof(menuOpciones)/sizeof(menuOpciones[0]))
-#define MENU_VISIBLE_LINEAS	3
+
+/********** Funciones privadas de impresión **********/
 
 static void printCentered(uint8_t row, const char* str) {
-    char buffer[LCD_WIDTH + 1];
+    char buffer[BUFFER_LEN];
     size_t len = strlen(str);
 
-    if (len > LCD_WIDTH) {
-        strncpy(buffer, str, LCD_WIDTH);
-        buffer[LCD_WIDTH] = '\0';
+    if (len >= DISPLAY_WIDTH) {
+        strncpy(buffer, str, DISPLAY_WIDTH);
     } else {
-        size_t padding = (LCD_WIDTH - len) / 2;
-        memset(buffer, ' ', LCD_WIDTH);
+        size_t padding = (DISPLAY_WIDTH - len) / 2;
+        memset(buffer, ' ', DISPLAY_WIDTH);
         memcpy(buffer + padding, str, len);
-        buffer[LCD_WIDTH] = '\0';
     }
 
+    buffer[DISPLAY_WIDTH] = '\0';
     lcdShowLine(row, buffer);
 }
 
-static void printSubmenu(uint8_t row, const char* str1, const char* str2) {
-    char buffer[LCD_WIDTH + 1];  // +1 para el '\0'
-    size_t len1 = strlen(str1);
-    size_t len2 = strlen(str2);
+static void printSubmenu(uint8_t row, const char* left, const char* right) {
+    char buffer[BUFFER_LEN];  // +1 para el '\0'
+    size_t len1 = strlen(left);
+    size_t len2 = strlen(right);
 
-    if ((len1 + len2) > LCD_WIDTH)
+    if ((len1 + len2) > DISPLAY_WIDTH)
         return;
 
-    memset(buffer, ' ', LCD_WIDTH);  // Inicializa todo en espacios
-    memcpy(buffer, str1, len1);      // Copia str1 al principio
-    memcpy(buffer + (LCD_WIDTH - len2), str2, len2);  // Copia str2 al final
+    memset(buffer, ' ', DISPLAY_WIDTH);  // Inicializa todo en espacios
+    memcpy(buffer, left, len1);      // Copia left al principio
+    memcpy(buffer + (DISPLAY_WIDTH - len2), right, len2);  // Copia right al final
 
-    buffer[LCD_WIDTH] = '\0';  // Null terminator
+    buffer[DISPLAY_WIDTH] = '\0';  // Null terminator
 
     lcdShowLine(row, buffer);  // Imprime toda la línea
 }
+
+static void printYesNo(bool_t condition) {
+    lcdPrint(condition ? "SI" : "NO");
+}
+
+/********** Pantallas **********/
 
 void guiMostrarInicio(void) {
     lcdClear();
@@ -79,6 +92,7 @@ void guiMostrarMenu(int opcion){
 
     // Determinar el primer índice visible (scroll)
     static int inicio = 0;
+
     // ¿Está fuera de la ventana actual?
     if (opcion < inicio) {
         inicio = opcion;
@@ -92,7 +106,7 @@ void guiMostrarMenu(int opcion){
 
         char buffer[21];
         snprintf(buffer, sizeof(buffer), "%c %-*s", (idx == opcion) ? '>' : ' ',
-        				LCD_WIDTH - 2, menuOpciones[idx]);  // -2 por flecha y espacio
+        		DISPLAY_WIDTH - 2, menuOpciones[idx]);  // -2 por flecha y espacio
         lcdShowLine(i + 1, buffer);
     }
 }
@@ -104,47 +118,50 @@ void guiMostrarMenuPrincipal(int opcion) {
 }
 
 void guiMostrarPesando(uint32_t pesoGr, bool_t tara) {
-    char buf[21] = "                    " ;
+    char buf[BUFFER_LEN];
     lcdClear();
     printCentered(0, "Modo: Pesando");
+
     snprintf(buf, sizeof(buf), "Peso: %lu g", pesoGr);
     lcdShowLine(1, buf);
-    //Aca falta acomodar
-    lcdShowLine(2, "Tara: ");
-    if(tara)
-    	lcdPrint("SI");
-    else
-    	lcdPrint("NO");
+
+    snprintf(buf, sizeof(buf), "Tara: ");
+    lcdShowLine(2, buf);
+    lcdSetCursor(2, 6);
+    printYesNo(tara);
+
     printSubmenu(3, "[*]Menu","[#]Tara");
 }
 
 void guiPesandoUpdate(uint32_t pesoGr, bool_t tara){
-	char buf[21] = "              " ;
-	snprintf(buf, sizeof(buf), "%lu g", pesoGr);
-	lcdSetCursor(1, 6);
-	lcdPrint(buf);
-	lcdSetCursor(2, 6);
-    if(tara)
-    	lcdPrint("SI");
-    else
-    	lcdPrint("NO");
+    char buf[BUFFER_LEN];
+    snprintf(buf, sizeof(buf), "%lu g", pesoGr);
+
+    lcdClearRange(1, 6, DISPLAY_WIDTH - 1);
+    lcdSetCursor(1, 6);
+    lcdPrint(buf);
+
+    lcdSetCursor(2, 6);
+    printYesNo(tara);
 }
 
 void guiMostrarTara(uint32_t pesoGr) {
-	char buf[21] = "              ";
+    char buf[BUFFER_LEN];
     lcdClear();
     printCentered(0, "Modo: Tara");
     lcdShowLine(1, "Coloque recipiente");
+
     snprintf(buf, sizeof(buf), "Tara: %lu g", pesoGr);
     lcdShowLine(2, buf);
-    printSubmenu(3, "[*]Menu","[#]Tara");
+    printSubmenu(3, "[*]Menu", "[#]Tara");
 }
 
-void guiTaraUpdate(uint32_t pesoGr){
-	char buf[21] = "                    ";
-	snprintf(buf, sizeof(buf), "%lu g", pesoGr);
-	lcdSetCursor(2, 6);
-	lcdPrint(buf);
+void guiTaraUpdate(uint32_t pesoGr) {
+    char buf[BUFFER_LEN];
+    snprintf(buf, sizeof(buf), "%lu g", pesoGr);
+    lcdClearRange(2, 6, DISPLAY_WIDTH - 1);  // Limpia desde columna 6 hasta 19
+    lcdSetCursor(2, 6);
+    lcdPrint(buf);
 }
 
 void guiTaraOk(void){
@@ -153,10 +170,10 @@ void guiTaraOk(void){
 }
 
 void guiMostrarConteoOpcion(int opcion){
-	char buf[21];
-	snprintf(buf, sizeof(buf),"%-*s", LCD_WIDTH, menuConteoBrief[opcion]);
+	char buf[BUFFER_LEN];
+	snprintf(buf, sizeof(buf),"%-*s", DISPLAY_WIDTH, menuConteoBrief[opcion]);
     lcdShowLine(1, buf);
- 	snprintf(buf, sizeof(buf),"[B] %-*s", LCD_WIDTH-4, menuConteo[opcion]);
+ 	snprintf(buf, sizeof(buf),"[B] %-*s", DISPLAY_WIDTH-4, menuConteo[opcion]);
     lcdShowLine(2, buf);
 }
 
@@ -169,35 +186,36 @@ void guiMostrarConteoMenu(int opcion){
 
 void guiMostrarConteoNeg1(void){
 	lcdClear();
-	printCentered(0, "Modo: Contador");
-	printCentered(1, "Negativo");
-	lcdShowLine(2, "Ponga todas las pzs");
+	printCentered(0, "Contador Negativo");
+//				   "                    "
+	lcdShowLine(1, "Por favor ponga to-");
+	lcdShowLine(2, "das las piezas.");
     printSubmenu(3, "[*]Menu","[#]OK");
 }
 
 void guiMostrarConteoNeg2(void){
 	lcdClear();
-	printCentered(0, "Modo: Contador");
-	printCentered(1, "Negativo");
-	lcdShowLine(2, "Retire 1 pza");
+	printCentered(0, "Contador Negativo");
+//				   "                    "
+	lcdShowLine(1, "Retire una pieza y");
+	lcdShowLine(2, "presione OK.");
     printSubmenu(3, "[*]Menu","[#]OK");
 }
 
 void guiMostrarConteo(uint32_t piezas, uint32_t pesoRef, uint32_t totales) {
-    char linea1[21] = "                    ";
-    char linea2[21] = "                    ";
-    char linea3[21] = "                    ";
-
+    char buf[BUFFER_LEN];
 	lcdClear();
-    snprintf(linea1, sizeof(linea1), "Peso Muestra: %lu g", pesoRef);
-    snprintf(linea2, sizeof(linea2), "Cantidad: %lu", piezas);
-    snprintf(linea3, sizeof(linea3), "Total: %lu", totales);
-    lcdShowLine(0, linea1);
-    lcdShowLine(1, linea2);
-    lcdShowLine(2, linea3);
+    snprintf(buf, sizeof(buf), "Peso Muestra: %lu g", pesoRef);
+    lcdShowLine(0, buf);
+    snprintf(buf, sizeof(buf), "Cantidad: %lu", piezas);
+    lcdShowLine(1, buf);
+    snprintf(buf, sizeof(buf), "Total: %lu", totales);
+    lcdShowLine(2, buf);
     printSubmenu(3, "[*]Menu","[C]Suma");
 }
 
+
+//****************************** Hasta aca supongo que estoy corrigiendo
 void guiMostrarCalibrandoOffset(void) {
     lcdClear();
     lcdShowLine(0, "Calibrando Offset");
