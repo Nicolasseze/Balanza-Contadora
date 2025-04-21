@@ -38,14 +38,6 @@ void balanzaInit(void) {
     weightInit();
 
     //Inicializacion del keypad
-    keypadPortAttachRow(0, GPIOC, GPIO_PIN_7);
-    keypadPortAttachRow(1, GPIOA, GPIO_PIN_9);
-    keypadPortAttachRow(2, GPIOA, GPIO_PIN_8);
-    keypadPortAttachRow(3, GPIOB, GPIO_PIN_10);
-    keypadPortAttachCol(0, GPIOB, GPIO_PIN_4);
-    keypadPortAttachCol(1, GPIOB, GPIO_PIN_5);
-    keypadPortAttachCol(2, GPIOB, GPIO_PIN_3);
-    keypadPortAttachCol(3, GPIOA, GPIO_PIN_10);
     keypadInit();
 
     //Inicializo el debounce

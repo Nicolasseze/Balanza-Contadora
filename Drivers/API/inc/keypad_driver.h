@@ -35,11 +35,19 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/**
+ * @brief Cantidad de filas del teclado.
+ */
 #define KEYPAD_ROWS 4
+
+/**
+ * @brief Cantidad de columnas del teclado.
+ */
 #define KEYPAD_COLS 4
 
-#define DELAY_MS_
-
+/**
+ * @brief Alias para tipo booleano compatible con HAL.
+ */
 typedef bool bool_t;
 
 /**
@@ -57,8 +65,8 @@ void keypadInit(void);
  * desactiva nuevamente la fila. Útil para detectar el estado puntual
  * de una tecla específica.
  *
- * @param row Índice de la fila (0 a KEYPAD_ROWS - 1)
- * @param col Índice de la columna (0 a KEYPAD_COLS - 1)
+ * @param row Índice de la fila (0 a KEYPAD_ROWS - 1).
+ * @param col Índice de la columna (0 a KEYPAD_COLS - 1).
  * @return true si la tecla está presionada, false si no.
  */
 bool_t keypadReadKey(uint8_t row, uint8_t col);
@@ -70,7 +78,7 @@ bool_t keypadReadKey(uint8_t row, uint8_t col);
  * las columnas. Si encuentra una tecla presionada, detiene el escaneo y
  * la devuelve a través del parámetro `key`.
  *
- * @param[out] key Puntero a variable donde se guarda la tecla leída.
+ * @param[out] key Puntero a variable donde se guarda el carácter de la tecla presionada.
  * @return true si se detectó una tecla, false si no hay ninguna presionada.
  */
 bool_t keypadGetKey(char* key);
