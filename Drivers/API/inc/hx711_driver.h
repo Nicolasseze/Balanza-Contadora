@@ -1,6 +1,11 @@
 /**
  * @file hx711_driver.h
  * @brief Interfaz de alto nivel para procesamiento de datos del HX711.
+ *
+ * Este módulo proporciona funciones para inicializar el sensor HX711,
+ * obtener lecturas crudas o calibradas, y configurar parámetros como
+ * offset (tara) y factor de escala. Se basa en una capa inferior que
+ * accede al hardware, permitiendo un diseño desacoplado y mantenible.
  */
 
 #ifndef API_INC_HX711_DRIVER_H_
@@ -8,58 +13,76 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
-#define WEIGHT_GAIN_DEFAULT  128
-#define WEIGHT_RATE_DEFAULT  fq_10hz
+#include <stdlib.h>
 
 /**
- * @brief Estructura de configuración de pines y hardware del HX711.
- *        Esta estructura debe ser compatible con la capa hx711_port.
+ * @brief Definición de tipo booleano para compatibilidad.
  */
-typedef struct {
-    void* din_port;
-    uint16_t din_pin;
-    void* sck_port;
-    uint16_t sck_pin;
-    void* rate_port;
-    uint16_t rate_pin;
-    uint8_t gain;
-    uint8_t rate;
-} Weight_HWConfig_t;
+typedef bool bool_t;
 
 /**
- * @brief Estructura de configuración para inicializar el driver HX711.
- */
-typedef struct {
-    Weight_HWConfig_t port_config;   /**< Configuración de pines y hardware */
-    float scale;                    /**< Escala de conversión: valores raw → kg */
-    int32_t offset;                 /**< Offset a restar a la lectura raw */
-} Weight_Config_t;
-
-/**
- * @brief Contexto interno del sensor. Almacena datos de calibración y lectura actual.
- */
-typedef struct {
-    float scale;           /**< Escala de conversión */
-    int32_t offset;        /**< Offset de tara */
-    float weight;          /**< Última lectura en kilogramos */
-} WeightSensor_t;
-
-void   WeightDriverInit(WeightSensor_t* ctx, Weight_Config_t* cfg);
-float  WeightRead(void);
-void   Weight_SetScale(float scale);
-void   Weight_SetOffset(int32_t offset);
-float  Weight_GetScale(void);
-int32_t Weight_GetOffset(void);
-
-/**
- * @brief Calibra la escala del sensor usando una masa conocida.
+ * @brief Inicializa el driver lógico del HX711.
  *
- * @param peso_known Peso real en kg de la masa colocada.
- * @param offset Valor de offset previamente medido (tara).
- * @param raw Valor raw leído con la masa colocada.
- * @return Escala calculada (cuentas por kg).
+ * Esta función configura el sensor con parámetros por defecto y deja el
+ * sistema listo para comenzar a leer datos. Asume que la capa de puerto
+ * ya contiene los pines correctamente definidos.
+ *
+ * @return true si la inicialización fue exitosa, false en caso de error.
  */
-float Weight_CalibrateScale(float peso_known, int32_t offset, int32_t raw);
+bool_t hx711Init(void);
+
+/**
+ * @brief Obtiene la lectura cruda actual del HX711.
+ *
+ * Devuelve el valor de 24 bits leído directamente del sensor, extendido
+ * a 32 bits con signo.
+ *
+ * @return Valor crudo actual del sensor (en bits).
+ */
+int32_t hx711ReadRaw(void);
+
+/**
+ * @brief Obtiene el peso medido, compensado y escalado.
+ *
+ * Aplica el offset y la escala configurados para devolver el peso en
+ * unidades físicas (por ejemplo, gramos o kilogramos).
+ *
+ * @return Peso actual medido, como número de punto flotante.
+ */
+float hx711ReadWeight(void);
+
+/**
+ * @brief Establece el offset a aplicar a la lectura cruda.
+ *
+ * Este valor se resta a cada lectura cruda para compensar la tara.
+ *
+ * @param offset Valor crudo a utilizar como tara.
+ */
+void hx711SetOffset(int32_t offset);
+
+/**
+ * @brief Obtiene el offset actualmente aplicado.
+ *
+ * @return Valor de offset en bits crudos.
+ */
+int32_t hx711GetOffset(void);
+
+/**
+ * @brief Establece el factor de escala para convertir a unidades físicas.
+ *
+ * El valor leído (menos el offset) se multiplica por este factor para
+ * obtener el peso final.
+ *
+ * @param scale Factor de conversión (por ejemplo, gramos/bit).
+ */
+void hx711SetScale(float scale);
+
+/**
+ * @brief Obtiene el factor de escala actual.
+ *
+ * @return Valor actual del factor de conversión aplicado.
+ */
+float hx711GetScale(void);
 
 #endif /* API_INC_HX711_DRIVER_H_ */
+

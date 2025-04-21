@@ -1,5 +1,8 @@
-../Drivers/API/src/hx711_port.c:14:15:HX711_IsReady	8	static
-../Drivers/API/src/hx711_port.c:18:6:HX711_Init	40	static
-../Drivers/API/src/hx711_port.c:63:9:HX711_ReadRaw	24	static
-../Drivers/API/src/hx711_port.c:91:6:HX711_SetGain	16	static
-../Drivers/API/src/hx711_port.c:99:6:HX711_SetRate	16	static
+../Drivers/API/src/hx711_port.c:21:29:HX711PortReadDOUT	8	static
+../Drivers/API/src/hx711_port.c:30:22:HX711PortIsReady	8	static
+../Drivers/API/src/hx711_port.c:37:20:HX711PortSCK_High	8	static
+../Drivers/API/src/hx711_port.c:44:20:HX711PortSCK_Low	8	static
+../Drivers/API/src/hx711_port.c:54:6:HX711PortInit	32	static
+../Drivers/API/src/hx711_port.c:97:9:HX711PortSetGain	16	static
+../Drivers/API/src/hx711_port.c:116:12:HX711PortSetRate	16	static
+../Drivers/API/src/hx711_port.c:137:9:HX711PortReadRaw	24	static

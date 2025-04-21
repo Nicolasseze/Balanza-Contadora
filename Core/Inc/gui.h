@@ -30,14 +30,14 @@ void guiMostrarMenuPrincipal(int opcion);
  * @param pesoKg Peso en gramos
  * @param tara Si esta activa la tara
  */
-void guiMostrarPesando(uint32_t pesoGr, bool_t tara);
+void guiMostrarPesando(int32_t pesoGr, bool_t tara);
 
 /**
  * @brief Actualiza el peso en modo pesando libre
  * @param pesoKg Peso en gramos
  * @param tara Si esta activada la tara.
  */
-void guiPesandoUpdate(uint32_t pesoGr, bool_t tara);
+void guiPesandoUpdate(int32_t pesoGr, bool_t tara);
 
 /**
  * @brief Muestra la pantalla para realizar la tara

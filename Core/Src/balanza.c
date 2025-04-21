@@ -21,15 +21,15 @@
 #include "API_delay.h"
 #include "API_debounce.h"
 
-static delay_t delay50, delayMeasureWeight;
+static delay_t delayFSM, delayMeasureWeight;
 
 void balanzaInit(void) {
 	//Inicializacion del delay us
 	DWT_Delay_Init();
 
 	//Inicializacion del delay ms no bloqueante
-	delayInit(&delay50, 200);
-	delayInit(&delayMeasureWeight, 100);
+	delayInit(&delayFSM, DELAY_MEF);
+	delayInit(&delayMeasureWeight, DELAY_MEDICION_PESO);
 
 	//Inicializacion del LCD en modo 4bits
     lcdInit();
@@ -48,14 +48,14 @@ void balanzaInit(void) {
 }
 
 void balanzaLoop(void) {
-	uint32_t start, end, cycles;
-	static float tiempo_us1,tiempo_us2,tiempo_us3;
+//	uint32_t start, end, cycles;
+//	static float tiempo_us1,tiempo_us2,tiempo_us3;
 	char tecla;
 
 	if( delayRead(&delayMeasureWeight) == true) {
 //		start = DWT->CYCCNT;
-		float pesoFiltrado = MedianFilterRead();
-		balanzaSetPeso((uint32_t)pesoFiltrado);
+		float pesoFiltrado = HybridFilterRead(0.8);
+		balanzaSetPeso((int32_t)pesoFiltrado / 1000);
 //		end = DWT->CYCCNT;
 //		cycles = end - start;
 //
@@ -80,7 +80,7 @@ void balanzaLoop(void) {
 //	cycles = end - start;
 //	tiempo_us2 = (float)cycles / (HAL_RCC_GetHCLKFreq() / 1e6); // Tiempo en microsegundos
 	// Ejecutar MEF
-	if(delayRead(&delay50)==true) {
+	if(delayRead(&delayFSM)==true) {
 //		start = DWT->CYCCNT;
 		balanzaStateMachine();
 //		end = DWT->CYCCNT;

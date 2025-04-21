@@ -1,7 +1,5 @@
-../Drivers/API/src/hx711_driver.c:12:6:WeightDriverInit	48	static
-../Drivers/API/src/hx711_driver.c:36:7:WeightRead	16	static
-../Drivers/API/src/hx711_driver.c:42:6:Weight_SetScale	16	static
-../Drivers/API/src/hx711_driver.c:47:6:Weight_SetOffset	16	static
-../Drivers/API/src/hx711_driver.c:51:7:Weight_GetScale	4	static
-../Drivers/API/src/hx711_driver.c:55:7:Weight_CalibrateScale	24	static
-../Drivers/API/src/hx711_driver.c:60:9:Weight_GetOffset	4	static
+../Drivers/API/src/hx711_driver.c:50:8:hx711Init	8	static
+../Drivers/API/src/hx711_driver.c:72:9:hx711ReadRaw	8	static
+../Drivers/API/src/hx711_driver.c:84:6:hx711SetOffset	16	static
+../Drivers/API/src/hx711_driver.c:93:9:hx711GetOffset	4	static
+../Drivers/API/src/hx711_driver.c:109:7:hx711ReadWeight	16	static

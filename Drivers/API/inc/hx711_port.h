@@ -1,8 +1,12 @@
 /**
  * @file hx711_port.h
- * @brief Interfaz de bajo nivel para el control físico del HX711.
+ * @brief Interfaz de la capa de puerto (acceso al hardware) para el sensor HX711.
  *
- * Este módulo implementa el acceso directo a los pines y temporización del HX711.
+ * Este archivo contiene las definiciones de tipos, macros y prototipos de funciones
+ * para manejar la comunicación directa con el ADC HX711. Proporciona funciones para
+ * inicialización, configuración y lectura del sensor utilizando pines GPIO.
+ *
+ * @author Nicolás Porco
  */
 
 #ifndef API_INC_HX711_PORT_H_
@@ -13,68 +17,77 @@
 #include "stm32f4xx_hal.h"
 #include "API_delay.h"
 
-#define HX711_GAIN_128  128
-#define HX711_GAIN_64   64
+// Reemplazá estos defines por los pines reales que uses
+#define HX_DOUT_PORT   		GPIOA
+#define HX_DOUT_PIN    		GPIO_PIN_6
 
-#define HX711_DELAY_US 	1  // delay entre flancos, ajustar si hace falta
+#define HX_SCK_PORT    		GPIOA
+#define HX_SCK_PIN     		GPIO_PIN_7
 
-// Definiciones del tipo booleano (si no tenés stdbool)
+#define HX_RATE_PORT   		NULL //nO SE USA
+#define HX_RATE_PIN    		0xFFFF
+
+#define HX711_GAIN_128  	128
+#define HX711_GAIN_64   	64
+#define HX711_GAIN_32   	32
+#define HX711_GAIN_DEFAULT	HX711_GAIN_128
+
+#define HX711_DELAY_US 		1
+
+/**
+ * @brief Definición de tipo booleano para compatibilidad.
+ */
 typedef bool bool_t;
 
 /**
  * @brief Frecuencias de muestreo disponibles del HX711.
  */
 typedef enum {
-    fq_10hz,
-    fq_80hz
+    fq_10hz,   /**< Frecuencia de muestreo: 10 Hz */
+    fq_80hz    /**< Frecuencia de muestreo: 80 Hz */
 } FreqRate_t;
 
-/**
- * @brief Estructura de configuración del sensor HX711.
- */
-typedef struct {
-    GPIO_TypeDef* din_port;
-    uint16_t din_pin;
-
-    GPIO_TypeDef* sck_port;
-    uint16_t sck_pin;
-
-    GPIO_TypeDef* rate_port;
-    uint16_t rate_pin;
-
-    uint8_t gain;      /**< Ganancia: 128, 64 */
-    FreqRate_t rate;   /**< Frecuencia de muestreo */
-
-    int32_t data;      /**< Última lectura raw */
-} HX711_t;
 
 /**
- * @brief Inicializa los pines y parámetros del HX711.
+ * @brief Inicializa los pines necesarios para el HX711.
  *
- * @param hx Puntero a estructura de configuración.
+ * Configura los pines GPIO del microcontrolador para manejar los
+ * pines DOUT, SCK y, si corresponde, RATE del HX711.
  */
-void HX711_Init(HX711_t *hx);
+void HX711PortInit(void);
+
 
 /**
- * @brief Realiza una lectura bruta de 24 bits desde el HX711.
+ * @brief Lee una medición cruda del HX711 directamente.
  *
- * @return Valor raw leído del conversor.
+ * Realiza el ciclo de reloj necesario para obtener los 24 bits
+ * de salida del ADC y devuelve el valor como entero con signo.
+ *
+ * @return Valor entero de 24 bits en complemento a dos, extendido a 32 bits.
  */
-int32_t HX711_ReadRaw(void);
+int32_t HX711PortReadRaw(void);
 
 /**
- * @brief Configura la ganancia del canal A del HX711 (128 o 64).
+ * @brief Configura la ganancia del HX711.
  *
- * @param gain Valor de ganancia (128 o 64). Si se pasa otro valor, se fuerza a 128.
+ * Permite seleccionar entre las ganancias disponibles para el canal A o B.
+ * La configuración se aplica en la próxima lectura válida.
+ *
+ * @param gain Valor de ganancia (64, 128 o 32).
+ * @return Valor de ganancia confirmado tras la configuración.
  */
-void HX711_SetGain(uint8_t gain);
+uint8_t HX711PortSetGain(uint8_t gain);
 
 /**
- * @brief Configura la frecuencia de muestreo del HX711 (10Hz o 80Hz).
+ * @brief Configura la frecuencia de muestreo del HX711.
  *
- * @param rate Frecuencia deseada.
+ * Establece la frecuencia de salida de datos del HX711, si el pin RATE
+ * está conectado y configurado. De lo contrario, no tiene efecto.
+ *
+ * @param rate Frecuencia deseada (10 Hz o 80 Hz).
+ * @return Frecuencia que se ha configurado efectivamente.
  */
-void HX711_SetRate(FreqRate_t rate);
+FreqRate_t HX711PortSetRate(FreqRate_t rate);
 
 #endif /* API_INC_HX711_PORT_H_ */
 

@@ -1,5 +1,8 @@
-../Drivers/API/src/hx711_port.c:14:15:HX711_IsReady	1
-../Drivers/API/src/hx711_port.c:18:6:HX711_Init	4
-../Drivers/API/src/hx711_port.c:63:9:HX711_ReadRaw	7
-../Drivers/API/src/hx711_port.c:91:6:HX711_SetGain	3
-../Drivers/API/src/hx711_port.c:99:6:HX711_SetRate	3
+../Drivers/API/src/hx711_port.c:21:29:HX711PortReadDOUT	1
+../Drivers/API/src/hx711_port.c:30:22:HX711PortIsReady	1
+../Drivers/API/src/hx711_port.c:37:20:HX711PortSCK_High	1
+../Drivers/API/src/hx711_port.c:44:20:HX711PortSCK_Low	1
+../Drivers/API/src/hx711_port.c:54:6:HX711PortInit	1
+../Drivers/API/src/hx711_port.c:97:9:HX711PortSetGain	3
+../Drivers/API/src/hx711_port.c:116:12:HX711PortSetRate	1
+../Drivers/API/src/hx711_port.c:137:9:HX711PortReadRaw	7

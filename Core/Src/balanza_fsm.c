@@ -304,7 +304,7 @@ void balanzaSetEvento(EventoBalanza_t e) {
     ctx.evento = e;
 }
 
-void balanzaSetPeso(uint32_t peso) {
+void balanzaSetPeso(int32_t peso) {
     ctx.pesoActual = peso;
 }
 

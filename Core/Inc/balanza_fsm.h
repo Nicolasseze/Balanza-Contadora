@@ -77,7 +77,7 @@ typedef struct {
     EstadoBalanza_t estadoActual;
     EventoBalanza_t evento;
     char tecla;
-    uint32_t pesoActual;
+    int32_t pesoActual;
     uint32_t pesoTara;
     bool_t tara;
     uint32_t pesoReferencia;
@@ -92,7 +92,7 @@ void balanzaFSM_Init(void);
 void balanzaStateMachine(void);
 
 // Setter externo para peso
-void balanzaSetPeso(uint32_t peso);
+void balanzaSetPeso(int32_t peso);
 
 void balanzaSetEvento(EventoBalanza_t e);
 

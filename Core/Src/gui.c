@@ -117,12 +117,12 @@ void guiMostrarMenuPrincipal(int opcion) {
     guiMostrarMenu(opcion);
 }
 
-void guiMostrarPesando(uint32_t pesoGr, bool_t tara) {
+void guiMostrarPesando(int32_t pesoGr, bool_t tara) {
     char buf[BUFFER_LEN];
     lcdClear();
     printCentered(0, "Modo: Pesando");
 
-    snprintf(buf, sizeof(buf), "Peso: %lu g", pesoGr);
+    snprintf(buf, sizeof(buf), "Peso: %ldg", pesoGr);
     lcdShowLine(1, buf);
 
     snprintf(buf, sizeof(buf), "Tara: ");
@@ -133,9 +133,9 @@ void guiMostrarPesando(uint32_t pesoGr, bool_t tara) {
     printSubmenu(3, "[*]Menu","[#]Tara");
 }
 
-void guiPesandoUpdate(uint32_t pesoGr, bool_t tara){
+void guiPesandoUpdate(int32_t pesoGr, bool_t tara){
     char buf[BUFFER_LEN];
-    snprintf(buf, sizeof(buf), "%lu g", pesoGr);
+    snprintf(buf, sizeof(buf), "%ldg", pesoGr);
 
     lcdClearRange(1, 6, DISPLAY_WIDTH - 1);
     lcdSetCursor(1, 6);
