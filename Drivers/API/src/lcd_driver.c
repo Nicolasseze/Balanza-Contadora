@@ -1,21 +1,13 @@
-/**
- * @file lcd_driver.c
- * @brief Implementación del controlador de alto nivel para un LCD tipo HD44780 vía I2C.
- *
- * Este archivo contiene las funciones necesarias para inicializar el display,
- * enviar comandos, imprimir texto y posicionar el cursor. Utiliza la capa `lcd_port`
- * para acceder al hardware físico mediante I2C.
- */
-
 #include "lcd_driver.h"
 #include "lcd_port.h"
-#include "stm32f4xx_hal.h"
+#include "assert.h"
+#include "string.h"
 
 /**
  * @brief Envía un comando al LCD.
  *
- * Esta función es interna y envía el comando utilizando la función de bajo nivel `lcdPortWrite`.
- * Se agrega un pequeño retardo requerido por la hoja de datos del LCD.
+ * Esta función interna envía el comando utilizando `lcdPortWrite`.
+ * Se agrega un retardo requerido por la hoja de datos.
  *
  * @param cmd Byte de comando a enviar.
  */
@@ -27,119 +19,167 @@ static void lcdSendCmd(uint8_t cmd) {
 /**
  * @brief Envía un dato (carácter) al LCD.
  *
- * Esta función es interna y envía un carácter para mostrar en pantalla.
- * Usa `lcdPortWrite` con el bit RS activado.
+ * Esta función interna envía un carácter para mostrar en pantalla,
+ * usando `lcdPortWrite` con el bit RS activado.
  *
- * @param data Byte de datos (por ejemplo, un código ASCII).
+ * @param data Byte de datos (por ejemplo, un carácter ASCII).
  */
 static void lcdSendData(uint8_t data) {
     lcdPortWrite(data, true);
-//    delay_us(2);
-//    HAL_Delay(2);
 }
 
 /**
- * @brief Envía un comando al LCD (interfaz pública).
+ * @brief Envía un comando de control al LCD.
  *
  * @param cmd Comando del conjunto de instrucciones HD44780.
+ * @retval LCD_OK si se envió correctamente.
  */
-void lcdCommand(uint8_t cmd) {
+LCD_Status_t lcdCommand(uint8_t cmd) {
     lcdSendCmd(cmd);
+    return LCD_OK;
 }
 
 /**
- * @brief Envía un carácter al LCD (interfaz pública).
+ * @brief Envía un carácter al LCD.
  *
- * @param data Carácter (byte) a mostrar en pantalla.
+ * @param data Carácter (byte) a mostrar.
+ * @retval LCD_OK si fue exitoso.
  */
-void lcdData(uint8_t data) {
+LCD_Status_t lcdData(uint8_t data) {
     lcdSendData(data);
+    return LCD_OK;
 }
 
 /**
- * @brief Inicializa el LCD en modo 4 bits y configuración estándar.
+ * @brief Inicializa el LCD en modo 4 bits.
  *
- * Configura el display con dos líneas, fuente de 5x8, entrada incremental y display encendido.
+ * Configura el display con dos líneas, fuente 5x8, entrada incremental y display encendido.
  *
- * @return `true` si la inicialización fue exitosa.
+ * @retval LCD_OK si la inicialización fue exitosa.
  */
-bool_t lcdInit(void) {
+LCD_Status_t lcdInit(void) {
+    lcdPortInit();  // Inicializa la capa de bajo nivel
 
-    lcdPortInit(); // Inicializa capa de bajo nivel y espera inicial
-
-    lcdSendCmd(LCD_FUNCTION_4BIT_2LINE_5x8);   // Configura modo 4 bits, 2 líneas
-    lcdSendCmd(LCD_DISPLAY_ON);               // Enciende display sin cursor ni blink
-    lcdSendCmd(LCD_ENTRY_MODE_INC);           // Cursor avanza a derecha, sin scroll
-    lcdClear();                               // Limpia display
+    lcdSendCmd(LCD_FUNCTION_4BIT_2LINE_5x8);
+    lcdSendCmd(LCD_DISPLAY_ON);
+    lcdSendCmd(LCD_ENTRY_MODE_INC);
+    lcdClear();
     HAL_Delay(2);
 
-    return true;
+    return LCD_OK;
 }
 
 /**
  * @brief Limpia completamente el contenido del LCD.
+ *
+ * @retval LCD_OK si fue exitoso.
  */
-void lcdClear(void) {
+LCD_Status_t lcdClear(void) {
     lcdSendCmd(LCD_CLEAR_DISPLAY);
     HAL_Delay(2);
+    return LCD_OK;
 }
 
 /**
- * @brief Posiciona el cursor en una coordenada específica del display.
+ * @brief Posiciona el cursor en una coordenada específica.
  *
- * @param row Número de fila (0 a 3).
- * @param col Número de columna (0 a 19).
+ * @param row Fila (0 a 3).
+ * @param col Columna (0 a 19).
+ * @retval LCD_OK si se posicionó correctamente.
  */
-void lcdSetCursor(uint8_t row, uint8_t col) {
-    uint8_t address[] = {LCD_LINEA1, LCD_LINEA2, LCD_LINEA3, LCD_LINEA4};
+LCD_Status_t lcdSetCursor(uint8_t row, uint8_t col) {
+    static const uint8_t address[] = {LCD_LINEA1, LCD_LINEA2, LCD_LINEA3, LCD_LINEA4};
 
     if (row > 3 || col > 19)
-        assert_param(0); // Verifica que la posición sea válida
+        return LCD_ERROR;
 
     lcdSendCmd(address[row] + col);
+    return LCD_OK;
 }
 
 /**
- * @brief Muestra una cadena de texto en el LCD desde la posición actual del cursor.
+ * @brief Muestra una cadena desde la posición actual del cursor.
  *
- * @param str Puntero a la cadena terminada en null.
+ * @param str Cadena terminada en null.
+ * @retval LCD_OK si se imprimió correctamente.
+ * @retval LCD_ERROR si el puntero es nulo.
  */
-void lcdPrint(const char *str) {
-
-    assert_param(str != NULL); // Asegura que el puntero no sea nulo
+LCD_Status_t lcdPrint(const char *str) {
+    if (str == NULL)
+        return LCD_ERROR;
 
     while (*str) {
-        lcdSendData(*str++);
+        lcdSendData((uint8_t)*str++);
     }
+    return LCD_OK;
 }
 
-void lcdShowLine(uint8_t row, const char *str){
-	assert_param(str != NULL);
+/**
+ * @brief Imprime una cadena alineada a la izquierda en una línea.
+ *
+ * @param row Fila (0 a 3).
+ * @param str Cadena terminada en null.
+ * @retval LCD_OK si se imprimió correctamente.
+ * @retval LCD_ERROR si los parámetros son inválidos.
+ */
+LCD_Status_t lcdShowLine(uint8_t row, const char *str) {
+    if (str == NULL || row > 3)
+        return LCD_ERROR;
 
-	lcdSetCursor(row, 0);
-	lcdPrint(str);
+    if (lcdSetCursor(row, 0) != LCD_OK)
+        return LCD_ERROR;
 
+    return lcdPrint(str);
 }
 
-void lcdOffCursor(void){
-	lcdCommand(LCD_DISPLAY_ON);
+/**
+ * @brief Apaga el cursor visible del LCD.
+ *
+ * @retval LCD_OK si se desactivó correctamente.
+ */
+LCD_Status_t lcdOffCursor(void) {
+    return lcdCommand(LCD_DISPLAY_ON);
 }
 
-void lcdPrintConCursor(uint8_t row, uint8_t col, const char *str) {
-    // Mostrar la cadena desde la posición deseada
-    lcdSetCursor(row, col);
-    lcdPrint(str);
+/**
+ * @brief Imprime una cadena desde una posición y deja el cursor visible.
+ *
+ * @param row Fila (0 a 3).
+ * @param col Columna (0 a 19).
+ * @param str Cadena terminada en null.
+ * @retval LCD_OK si fue exitoso.
+ * @retval LCD_ERROR si los parámetros son inválidos.
+ */
+LCD_Status_t lcdPrintConCursor(uint8_t row, uint8_t col, const char *str) {
+    if (str == NULL || row > 3 || col > 19)
+        return LCD_ERROR;
 
-    // Calcular longitud para posicionar el cursor después del texto
+    if (lcdSetCursor(row, col) != LCD_OK)
+        return LCD_ERROR;
+
+    if (lcdPrint(str) != LCD_OK)
+        return LCD_ERROR;
+
     size_t len = strlen(str);
-    lcdSetCursor(row, col + len);
+    if (lcdSetCursor(row, col + len) != LCD_OK)
+        return LCD_ERROR;
 
-    // Habilitar cursor visible y parpadeante
-    lcdCommand(LCD_DISPLAY_ON_CURSOR_BLINK);  // Display ON, Cursor ON, Blink ON
+    return lcdCommand(LCD_DISPLAY_ON_CURSOR_BLINK);
 }
 
-void lcdShowCentered(uint8_t line, const char* str) {
-    char buffer[LCD_WIDTH + 1]; // +1 para el '\0'
+/**
+ * @brief Muestra una cadena centrada horizontalmente.
+ *
+ * @param line Línea del LCD (0 a 3).
+ * @param str Cadena terminada en null.
+ * @retval LCD_OK si fue exitoso.
+ * @retval LCD_ERROR si los parámetros son inválidos.
+ */
+LCD_Status_t lcdShowCentered(uint8_t line, const char* str) {
+    if (str == NULL || line > 3)
+        return LCD_ERROR;
+
+    char buffer[LCD_WIDTH + 1];
     size_t len = strlen(str);
 
     if (len > LCD_WIDTH) {
@@ -152,19 +192,29 @@ void lcdShowCentered(uint8_t line, const char* str) {
         buffer[LCD_WIDTH] = '\0';
     }
 
-    lcdShowLine(line, buffer);
+    return lcdShowLine(line, buffer);
 }
 
-void lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd) {
-    if (colEnd >= LCD_WIDTH || colStart > colEnd)
-        return;
+/**
+ * @brief Borra un rango de columnas en una línea del LCD.
+ *
+ * @param row Fila (0 a 3).
+ * @param colStart Columna inicial (inclusive).
+ * @param colEnd Columna final (inclusive).
+ * @retval LCD_OK si fue exitoso.
+ * @retval LCD_ERROR si los parámetros son inválidos.
+ */
+LCD_Status_t lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd) {
+    if (colEnd >= LCD_WIDTH || colStart > colEnd || row > 3)
+        return LCD_ERROR;
 
     char buf[LCD_WIDTH + 1];
     memset(buf, ' ', LCD_WIDTH);
-    buf[LCD_WIDTH] = '\0';
+    buf[colEnd - colStart + 1] = '\0';
 
-    lcdSetCursor(row, colStart);
-    buf[colEnd - colStart + 1] = '\0';  // solo imprime lo necesario
-    lcdPrint(&buf[colStart]);
+    if (lcdSetCursor(row, colStart) != LCD_OK)
+        return LCD_ERROR;
+
+    return lcdPrint(buf);
 }
 

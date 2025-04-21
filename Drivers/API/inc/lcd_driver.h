@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "string.h"
+#include "stm32f4xx_hal.h"
 
 /** @def LCD_WIDTH
  *  @brief Cantidad de caracteres por línea del LCD.
@@ -89,89 +90,134 @@ typedef enum {
 } LCD_Status_t;
 
 /**
- * @brief Inicializa el LCD.
+ * @brief Inicializa el LCD en modo 4 bits.
  *
- * Debe llamarse una única vez al inicio del programa para configurar el LCD en modo 4 bits.
+ * Debe llamarse una única vez al inicio del programa. Configura la interfaz
+ * y deja el cursor en la posición inicial.
  *
- * @return `true` si la inicialización fue exitosa, `false` si hubo un error.
+ * @retval LCD_OK       Si la inicialización fue exitosa.
+ * @retval LCD_ERROR    Si ocurrió un error de hardware o comunicación.
  */
-bool_t lcdInit(void);
+LCD_Status_t lcdInit(void);
 
 /**
  * @brief Limpia completamente el contenido del LCD.
  *
- * También posiciona el cursor en la posición inicial (0,0).
+ * También reposiciona el cursor en la fila 0, columna 0.
+ *
+ * @retval LCD_OK       Si la operación fue exitosa.
+ * @retval LCD_ERROR    Si ocurrió un error.
  */
-void lcdClear(void);
+LCD_Status_t lcdClear(void);
 
 /**
  * @brief Posiciona el cursor en una ubicación específica.
  *
- * @param row Número de fila (0 a 3 según el modelo de LCD).
+ * @param row Número de fila (0 a 3 según el modelo del LCD).
  * @param col Número de columna (0 a 19 en un LCD 20x4).
+ *
+ * @retval LCD_OK       Si se posicionó correctamente.
+ * @retval LCD_ERROR    Si se ingresó una posición inválida.
  */
-void lcdSetCursor(uint8_t row, uint8_t col);
+LCD_Status_t lcdSetCursor(uint8_t row, uint8_t col);
 
 /**
- * @brief Muestra una cadena de texto a partir de la posición actual del cursor.
+ * @brief Muestra una cadena de texto desde la posición actual del cursor.
  *
- * Si la cadena sobrepasa el final de la línea, no se realiza un salto automático.
+ * Si la cadena excede el límite de la línea, no se realiza salto de línea automático.
  *
  * @param str Cadena de caracteres terminada en null.
+ *
+ * @retval LCD_OK       Si se imprimió correctamente.
+ * @retval LCD_ERROR    Si ocurrió un error.
  */
-void lcdPrint(const char *str);
+LCD_Status_t lcdPrint(const char *str);
 
 /**
- * @brief Envía un comando de control directamente al LCD.
+ * @brief Envía un comando de control al LCD.
  *
- * Utilizado para operaciones como limpiar pantalla o mover cursor.
+ * Se utiliza para operaciones como limpiar pantalla, mover cursor, etc.
  *
- * @param cmd Comando a enviar (por ejemplo `LCD_CLEAR_DISPLAY`).
+ * @param cmd Comando a enviar (por ejemplo, @c LCD_CLEAR_DISPLAY).
+ *
+ * @retval LCD_OK       Si el comando fue aceptado.
+ * @retval LCD_ERROR    Si hubo un fallo de transmisión.
  */
-void lcdCommand(uint8_t cmd);
+LCD_Status_t lcdCommand(uint8_t cmd);
 
 /**
- * @brief Envía un byte de datos al LCD (por ejemplo un carácter).
+ * @brief Envía un byte de datos al LCD.
  *
- * @param data Byte ASCII o carácter personalizado a mostrar.
+ * Este byte puede ser un carácter ASCII o un carácter personalizado.
+ *
+ * @param data Byte a mostrar.
+ *
+ * @retval LCD_OK       Si se mostró correctamente.
+ * @retval LCD_ERROR    Si ocurrió un error.
  */
-void lcdData(uint8_t data);
+LCD_Status_t lcdData(uint8_t data);
 
 /**
  * @brief Muestra una cadena centrada horizontalmente en la línea especificada.
  *
  * @param line Línea del LCD (0 a 3).
- * @param str  Cadena de texto a centrar.
+ * @param str  Cadena de texto terminada en null.
+ *
+ * @retval LCD_OK       Si se imprimió correctamente.
+ * @retval LCD_ERROR    Si hubo un error de transmisión.
  */
-void lcdShowCentered(uint8_t line, const char* str);
+LCD_Status_t lcdShowCentered(uint8_t line, const char* str);
 
 /**
- * @brief Imprime una cadena de texto alineada a la izquierda en una línea específica del LCD.
+ * @brief Imprime una cadena alineada a la izquierda en una línea específica del LCD.
  *
- * @param row Línea en la que se imprimirá el texto (0 a 3).
- * @param str Cadena a mostrar.
+ * @param row Línea donde se imprimirá el texto (0 a 3).
+ * @param str Cadena terminada en null.
+ *
+ * @retval LCD_OK       Si se imprimió correctamente.
+ * @retval LCD_ERROR    Si hubo un error.
  */
-void lcdShowLine(uint8_t row, const char *str);
-
+LCD_Status_t lcdShowLine(uint8_t row, const char *str);
 
 /**
- * @brief Borra un rango específico de columnas en una fila del LCD.
+ * @brief Borra un rango de columnas en una fila del LCD.
  *
- * Esta función sobrescribe con espacios el rango de columnas especificado en la fila indicada.
- * Es útil para limpiar parcialmente una línea sin tener que borrar todo el display.
+ * Esta función sobrescribe con espacios el rango de columnas indicado.
+ * Es útil para limpiar parcialmente una línea sin borrar todo el display.
  *
- * @param row      Número de fila donde se desea limpiar (comenzando en 0).
- * @param colStart Columna inicial del rango a limpiar (inclusive).
- * @param colEnd   Columna final del rango a limpiar (inclusive).
+ * @param row      Fila a modificar (0 a 3).
+ * @param colStart Columna inicial del rango (inclusive).
+ * @param colEnd   Columna final del rango (inclusive).
  *
- * @note Si colEnd >= LCD_WIDTH o colStart > colEnd, la función no realiza ninguna operación.
+ * @note Si @p colEnd >= LCD_WIDTH o @p colStart > @p colEnd, no se realiza ninguna operación.
+ *
+ * @retval LCD_OK       Si se limpió correctamente.
+ * @retval LCD_ERROR    Si ocurrió un error.
  */
-void lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd);
+LCD_Status_t lcdClearRange(uint8_t row, uint8_t colStart, uint8_t colEnd);
 
+/**
+ * @brief Apaga el cursor visible del LCD.
+ *
+ * Desactiva el subrayado o parpadeo del cursor, si estaba activo.
+ *
+ * @retval LCD_OK       Si el comando fue exitoso.
+ * @retval LCD_ERROR    Si hubo un error.
+ */
+LCD_Status_t lcdOffCursor(void);
 
-void lcdOffCursor(void);
+/**
+ * @brief Imprime una cadena desde una posición específica y deja el cursor visible.
+ *
+ * @param row Fila del LCD (0 a 3).
+ * @param col Columna del LCD (0 a 19).
+ * @param str Cadena de texto terminada en null.
+ *
+ * @retval LCD_OK       Si se imprimió correctamente.
+ * @retval LCD_ERROR    Si ocurrió un error.
+ */
+LCD_Status_t lcdPrintConCursor(uint8_t row, uint8_t col, const char *str);
 
-void lcdPrintConCursor(uint8_t row, uint8_t col, const char *str);
 
 #endif // API_INC_LCD_DRIVER_H_
 

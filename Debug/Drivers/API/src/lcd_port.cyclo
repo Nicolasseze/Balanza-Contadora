@@ -1,4 +1,4 @@
-../Drivers/API/src/lcd_port.c:36:13:lcdStrobe	3
-../Drivers/API/src/lcd_port.c:60:6:lcdPortInit	1
-../Drivers/API/src/lcd_port.c:88:8:lcdPortWrite	2
-../Drivers/API/src/lcd_port.c:103:16:reverse_nibble	1
+../Drivers/API/src/lcd_port.c:35:13:lcdStrobe	3
+../Drivers/API/src/lcd_port.c:57:6:lcdPortInit	1
+../Drivers/API/src/lcd_port.c:84:8:lcdPortWrite	2
+../Drivers/API/src/lcd_port.c:99:23:reverse_nibble	2

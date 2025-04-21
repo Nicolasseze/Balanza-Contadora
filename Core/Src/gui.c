@@ -35,7 +35,7 @@ static const char *menuConteo[] = {
 static const char *menuConteoBrief[] = {
 		"Coloque 1 pieza",
 		"Coloque el total pzs",
-		"Ingrese valor rn gr",
+		"Ingrese valor en gr",
 };
 
 #define MENU_TOTAL_OPCIONES (sizeof(menuOpciones)/sizeof(menuOpciones[0]))

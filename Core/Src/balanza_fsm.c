@@ -202,7 +202,7 @@ static void fsmConteo(void) {
         return;
     }
 
-    if(ctx.pesoReferencia != 0){
+    if(ctx.pesoReferencia > 0){
     	ctx.piezasContadas = pesoNeto() / ctx.pesoReferencia;
     	if (ctx.evento == EVT_TECLA && ctx.tecla == 'C') {
     		ctx.piezasTotales += ctx.piezasContadas;

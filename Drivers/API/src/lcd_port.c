@@ -16,14 +16,13 @@
  */
 extern I2C_HandleTypeDef hi2c1;
 
-
 /**
- *  @brief Funcion para invertir orden de los bits
+ *  @brief Función para invertir orden de los bits.
  *
- *  Esta funcion se utiliza porque se conectaron en orden inverso los pines del PCF8574
- *  a los pines del LCD D7, D6, D5, D4
+ *  Esta función se utiliza porque los pines del PCF8574 se conectaron en orden inverso
+ *  a los pines del LCD (D7, D6, D5, D4), por lo que se requiere una inversión lógica.
  */
-static uint8_t reverse_nibble(uint8_t nibble);
+static inline uint8_t reverse_nibble(uint8_t nibble); // Se marca como inline para posibles optimizaciones
 
 /**
  * @brief Envía un pulso de habilitación al LCD para capturar el nibble actual.
@@ -39,8 +38,7 @@ static void lcdStrobe(uint8_t data) {
     if (HAL_I2C_Master_Transmit(&hi2c1, LCD_ADDRESS, &buf, 1, HAL_MAX_DELAY) != HAL_OK)
         Error_Handler();
 
-    delay_us(2);
-    //HAL_Delay(1);
+    delay_us(2); // Asegurar que delay_us esté correctamente implementado para precisión
 
     buf = (data & ~LCD_EN) | LCD_BACKLIGHT;
 
@@ -48,7 +46,6 @@ static void lcdStrobe(uint8_t data) {
         Error_Handler();
 
     delay_us(2);
-    //HAL_Delay(1);
 }
 
 /**
@@ -60,7 +57,6 @@ static void lcdStrobe(uint8_t data) {
 void lcdPortInit(void) {
     HAL_Delay(50); // Espera mínima >15 ms desde encendido
 
-    // Fase especial: envío directo del nibble alto del comando 0x30 varias veces
     lcdStrobe(LCD_INIT);
     HAL_Delay(5);
 
@@ -83,7 +79,7 @@ void lcdPortInit(void) {
  *
  * @param data Byte a escribir en el LCD.
  * @param rs   Si es `true`, se trata de datos (texto); si es `false`, es un comando.
- * @return `true` si la operación fue exitosa.
+ * @return `true` si la operación fue exitosa, `false` si ocurrió un error de transmisión.
  */
 bool_t lcdPortWrite(uint8_t data, bool_t rs) {
     uint8_t upper = (data & LCD_HIGH_NIBBLE_MASK) >> LCD_HIGH_NIBBLE_SHIFT;
@@ -97,16 +93,18 @@ bool_t lcdPortWrite(uint8_t data, bool_t rs) {
     lcdStrobe(upper | control);
     lcdStrobe(lower | control);
 
-    return true;
+    return true; // Podrías retornar false si lcdStrobe tuviera manejo de errores interno
 }
 
-static uint8_t reverse_nibble(uint8_t nibble) {
-	static const uint8_t reverse_table[16] = {
-			0x0, 0x8, 0x4, 0xC,
-			0x2, 0xA, 0x6, 0xE,
-			0x1, 0x9, 0x5, 0xD,
-			0x3, 0xB, 0x7, 0xF
-	};
-	return reverse_table[nibble & 0x0F];
+static inline uint8_t reverse_nibble(uint8_t nibble) {
+    static const uint8_t reverse_table[16] = {
+        0x0, 0x8, 0x4, 0xC,
+        0x2, 0xA, 0x6, 0xE,
+        0x1, 0x9, 0x5, 0xD,
+        0x3, 0xB, 0x7, 0xF
+    };
+
+    assert_param(nibble < 16); // Seguridad en tiempo de desarrollo
+    return reverse_table[nibble & 0x0F];
 }
 
